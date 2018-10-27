@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.GUI", "RobotController.GUI\RobotController.GUI.csproj", "{A862523B-EB60-4E44-B389-A640BD1985AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.Communication", "RobotController.Communication\RobotController.Communication.csproj", "{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A862523B-EB60-4E44-B389-A640BD1985AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A862523B-EB60-4E44-B389-A640BD1985AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A862523B-EB60-4E44-B389-A640BD1985AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
