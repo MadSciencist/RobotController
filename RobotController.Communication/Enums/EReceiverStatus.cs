@@ -1,4 +1,4 @@
-﻿namespace RobotController.Communication.ReceivingTask
+﻿namespace RobotController.Communication.Enums
 {
     public enum EReceiverStatus
     {

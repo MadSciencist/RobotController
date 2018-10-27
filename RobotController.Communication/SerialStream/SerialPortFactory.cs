@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using RobotController.Communication.Interfaces;
+using System.IO.Ports;
 using System.Text;
 
 namespace RobotController.Communication.SerialStream

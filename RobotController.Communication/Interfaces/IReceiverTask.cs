@@ -1,6 +1,8 @@
-﻿using System;
+﻿using RobotController.Communication.Enums;
+using RobotController.Communication.ReceivingTask;
+using System;
 
-namespace RobotController.Communication.ReceivingTask
+namespace RobotController.Communication.Interfaces
 {
     public interface IReceiverTask
     {

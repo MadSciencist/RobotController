@@ -41,21 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\CommunicationTasks.cs" />
+    <Compile Include="Configuration\Framing.cs" />
+    <Compile Include="Enums\EReceiverCommand.cs" />
+    <Compile Include="Interfaces\IMessage.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\MessageParsedEventArgs.cs" />
+    <Compile Include="Messages\MessageParser.cs" />
     <Compile Include="ReceivingTask\DataReceivedEventArgs.cs" />
-    <Compile Include="ReceivingTask\EReceiverStatus.cs" />
-    <Compile Include="ReceivingTask\IReceiverTask.cs" />
+    <Compile Include="Enums\EReceiverStatus.cs" />
+    <Compile Include="Interfaces\IReceiverTask.cs" />
     <Compile Include="ReceivingTask\ReceiverErrorEventArgs.cs" />
     <Compile Include="ReceivingTask\ReceiverTask.cs" />
     <Compile Include="RobotConnection.cs" />
     <Compile Include="SerialStream\ConnectionEventArgs.cs" />
     <Compile Include="IStreamResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerialStream\ISerialPortFactory.cs" />
+    <Compile Include="Interfaces\ISerialPortFactory.cs" />
     <Compile Include="SerialStream\SerialPortEventArgs.cs" />
     <Compile Include="SerialStream\SerialPortFactory.cs" />
     <Compile Include="SerialStream\SerialPortAdapter.cs" />
     <Compile Include="SerialStream\SerialPortManager.cs" />
     <Compile Include="SerialStream\SerialPortUtils.cs" />
+    <Compile Include="Utils\ChecksumUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

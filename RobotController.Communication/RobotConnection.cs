@@ -1,4 +1,5 @@
-﻿using RobotController.Communication.ReceivingTask;
+﻿using RobotController.Communication.Messages;
+using RobotController.Communication.ReceivingTask;
 using System;
 
 namespace RobotController.Communication
@@ -12,8 +13,14 @@ namespace RobotController.Communication
         {
             _streamResource = streamResource;
             _receiverTask = new ReceiverTask(streamResource);
-
+            _receiverTask.DataReceived += DataReceived;
             _receiverTask.Start();
+        }
+
+        private void DataReceived(object e, DataReceivedEventArgs args)
+        {
+            var parser = new MessageParser();
+            parser.TryGetMessage(args.Data, args.Length);
         }
 
         public void StopConnection() => _receiverTask.Close();

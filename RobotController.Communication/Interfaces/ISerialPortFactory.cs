@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-namespace RobotController.Communication.SerialStream
+namespace RobotController.Communication.Interfaces
 {
     public interface ISerialPortFactory
     {

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RobotController.Communication.Configuration;
+using RobotController.Communication.Enums;
+using RobotController.Communication.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -92,22 +95,20 @@ namespace RobotController.Communication.ReceivingTask
 
         private void TryReceiveData()
         {
-            int count = 5;
+            int numBytesRead = 0;
+            byte[] data = new byte[Framing.FrameLength];
 
             if (_streamResource.BytesToRead() == 0)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(Framing.ReceivingTaskSleepTime);
             }
-
-            byte[] frameBytes = new byte[count];
-            int numBytesRead = 0;
-
-            while (numBytesRead != count)
+                                                
+            while (numBytesRead != Framing.FrameLength)
             {
-                numBytesRead += _streamResource.Read(frameBytes, numBytesRead, count - numBytesRead);
+                numBytesRead += _streamResource.Read(data, numBytesRead, Framing.FrameLength - numBytesRead);
             }
 
-            DataReceived?.Invoke(this, new DataReceivedEventArgs() { Data = frameBytes, Length = frameBytes.Length });
+            DataReceived?.Invoke(this, new DataReceivedEventArgs { Data = data, Length = data.Length });
         }
 
         private void ExceptionHandler(Task task)
