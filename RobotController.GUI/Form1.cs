@@ -1,4 +1,5 @@
 ﻿using RobotController.Communication;
+using RobotController.Communication.SerialStream;
 using System;
 using System.Windows.Forms;
 
@@ -6,13 +7,9 @@ namespace RobotController.GUI
 {
     public partial class Form1 : Form
     {
-        private Connection _connection;
         public Form1()
         {
             InitializeComponent();
-
-            _connection = new Connection();
-            _connection.PortInUse += PortInUse;
             LoadPortNames();
         }
 
@@ -20,7 +17,7 @@ namespace RobotController.GUI
 
         private void LoadPortNames()
         {
-            var ports = _connection.GetAvailablePorts();
+            var ports = SerialPortUtils.GetAvailablePorts();
 
             if (ports.Length > 0)
             {
@@ -30,11 +27,11 @@ namespace RobotController.GUI
             }
         }
         private void PortInUse(object o, ConnectionEventArgs args) => LabelConnectionStatus.Text = "Port already in use.";
+        private void InvalidPortOperation(object o, ConnectionEventArgs args) => LabelConnectionStatus.Text = args.ExceptionMessage;
+        private void OnConnect(object o, ConnectionEventArgs args) => LabelConnectionStatus.Text = "Connected";
+        private void OnDisconnect(object o, ConnectionEventArgs args) => LabelConnectionStatus.Text = "Disconnected";
+
 
         private void ButtonRefresh_Click(object sender, EventArgs e) => LoadPortNames();
-
-        private void ButtonConnect_Click(object sender, EventArgs e) => _connection.ConnectToPort(ComboboxAvailablePorts.Text);
-
-        private void ButtonDisconnect_Click(object sender, EventArgs e) => _connection.Disconnect();
     }
 }
