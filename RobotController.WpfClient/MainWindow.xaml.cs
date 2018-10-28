@@ -32,7 +32,11 @@ namespace RobotController.WpfGui
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e) => CreateConnection();
         private void ComboboxPortsOnDropdownOpened(object sender, EventArgs e) => LoadPortNames();
-        private void BtnDisconnect_Click(object sender, RoutedEventArgs e) => connection?.Dispose();
+        private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            connection.StopConnection();
+            connection.Dispose();
+        }
 
         private void CreateConnection()
         {

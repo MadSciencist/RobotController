@@ -3,29 +3,32 @@ using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Utils;
 using System;
+using System.Diagnostics;
 
 namespace RobotController.Communication.Messages
 {
     public class MessageParser
     {
         public EventHandler<MessageParsedEventArgs> MessageParsed;
+        static int messageCount = 0;
 
         public void TryGetMessage(byte[] data, int lentgh)
         {
             if (CheckLengthAndMarkers(data))
             {
-                if (CheckChecksum(data))
+                if (CheckChecksumMatching(data))
                 {
                     GetMessage(data);
+                    Debug.WriteLine($"Message parsed, count: {++messageCount}");
                 }
                 else
                 {
-                    throw new NotImplementedException(); ;
+                    Debug.WriteLine("Checksum mismatch, message dropped");
                 }
             }
             else
             {
-                throw new NotImplementedException();
+                Debug.WriteLine("Framing mismatch, message dropped");
             }
         }
 
@@ -45,33 +48,11 @@ namespace RobotController.Communication.Messages
             OnMessageParsed(message);
         }
 
-        protected void OnMessageParsed(IMessage message)
-        {
-            MessageParsed?.Invoke(this, new MessageParsedEventArgs { Message = message });
-        }
+        protected void OnMessageParsed(IMessage message) => MessageParsed?.Invoke(this, new MessageParsedEventArgs { Message = message });
 
-        private bool CheckChecksum(byte[] data)
-        {
-            return GetFrameChecksum(data) == CalculateFrameChecksum(data);
-        }
-
-
-        private ushort GetFrameChecksum(byte[] data)
-        {
-            return BitConverter.ToUInt16(data, 10);
-        }
-
-        private ushort CalculateFrameChecksum(byte[] data)
-        {
-            //verify index
-            return BitConverter.ToUInt16(ChecksumUtils.CalculateCrc(data), 0);
-        }
-
-        private bool CheckLengthAndMarkers(byte[] data)
-        {
-            if (data[0] == Framing.FrameStart && data[Framing.FrameLength] == Framing.FrameEnd)
-                return true;
-            else return false;
-        }
+        private bool CheckLengthAndMarkers(byte[] data) => (data[0] == Framing.FrameStart && data[Framing.FrameLength - 1] == Framing.FrameEnd);
+        private bool CheckChecksumMatching(byte[] data) => GetFrameChecksum(data) == CalculateFrameChecksum(data);
+        private ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, Framing.CrcStartByte);
+        private ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, Framing.NumOfBytesToCrcCalculation);
     }
 }

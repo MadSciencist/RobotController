@@ -36,21 +36,23 @@ namespace RobotController.Communication.SerialStream
 
         public void DiscardInBuffer()
         {
+            if (!_serialPort.IsOpen) return;
             _serialPort.DiscardInBuffer();
         }
 
         public int BytesToRead()
         {
-            return _serialPort.BytesToRead;
+            return _serialPort.IsOpen ? _serialPort.BytesToRead : -1;
         }
 
         public int Read(byte[] buffer, int offset, int count)
         {
-            return _serialPort.Read(buffer, offset, count);
+            return _serialPort.IsOpen ? _serialPort.Read(buffer, offset, count) : -1;
         }
 
         public void Write(byte[] buffer, int offset, int count)
         {
+            if (!_serialPort.IsOpen) return;
             _serialPort.Write(buffer, offset, count);
         }
 

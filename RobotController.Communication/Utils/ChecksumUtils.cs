@@ -40,7 +40,7 @@ namespace RobotController.Communication.Utils
             0X8201, 0X42C0, 0X4380, 0X8341, 0X4100, 0X81C1, 0X8081, 0X4040
         };
 
-        public static byte[] CalculateCrc(byte[] data)
+        public static ushort CalculateCrc(byte[] data)
         {
             if (data == null)
             {
@@ -56,7 +56,27 @@ namespace RobotController.Communication.Utils
                 crc ^= CrcTable[tableIndex];
             }
 
-            return BitConverter.GetBytes(crc);
+            return crc;
+        }
+
+        public static ushort CalculateCrc(byte[] data, byte offset, byte length)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            ushort crc = ushort.MaxValue;
+
+            for (short b = offset; b <= length; b++)
+            {
+                byte currentByte = data[b];
+                byte tableIndex = (byte)(crc ^ currentByte);
+                crc >>= 8;
+                crc ^= CrcTable[tableIndex];
+            }
+
+            return crc;
         }
     }
 }
