@@ -49,13 +49,12 @@
     <Compile Include="Messages\MessageParsedEventArgs.cs" />
     <Compile Include="Messages\MessageParser.cs" />
     <Compile Include="ReceivingTask\DataReceivedEventArgs.cs" />
-    <Compile Include="Enums\EReceiverStatus.cs" />
     <Compile Include="Interfaces\IReceiverTask.cs" />
     <Compile Include="ReceivingTask\ReceiverErrorEventArgs.cs" />
     <Compile Include="ReceivingTask\ReceiverTask.cs" />
-    <Compile Include="RobotConnection.cs" />
+    <Compile Include="RobotConnectionFacade.cs" />
     <Compile Include="SerialStream\ConnectionEventArgs.cs" />
-    <Compile Include="IStreamResource.cs" />
+    <Compile Include="Interfaces\IStreamResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\ISerialPortFactory.cs" />
     <Compile Include="SerialStream\SerialPortEventArgs.cs" />

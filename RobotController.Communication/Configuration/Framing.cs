@@ -8,7 +8,5 @@
         public static int PayloadLength { get { return 10; } }
         public static byte CrcStartByte { get { return 13; } }
         public static byte NumOfBytesToCrcCalculation { get { return 12; } }
-
-        public static int ReceivingTaskSleepTime { get { return 10; } }
     }
 }

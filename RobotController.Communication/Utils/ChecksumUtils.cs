@@ -4,6 +4,9 @@ namespace RobotController.Communication.Utils
 {
     public class ChecksumUtils
     {
+        /// <summary>
+        /// This functions are originally created by: NModbus4 (github) and modified to my needs
+        /// </summary>
         private static readonly ushort[] CrcTable =
         {
             0X0000, 0XC0C1, 0XC181, 0X0140, 0XC301, 0X03C0, 0X0280, 0XC241,

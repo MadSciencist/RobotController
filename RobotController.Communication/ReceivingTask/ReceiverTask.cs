@@ -1,18 +1,16 @@
 ﻿using RobotController.Communication.Configuration;
-using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace RobotController.Communication.ReceivingTask
 {
-    public class ReceiverTask : IDisposable, IReceiverTask
+    public class ReceiverTask : IReceiverTask
     {
         public event EventHandler<DataReceivedEventArgs> DataReceived;
         public event EventHandler<ReceiverErrorEventArgs> ErrorOccurred;
-
-        public EReceiverStatus Status { get; private set; }
 
         private readonly IStreamResource _streamResource;
         private Task _task;
@@ -22,39 +20,17 @@ namespace RobotController.Communication.ReceivingTask
         public ReceiverTask(IStreamResource streamResource)
         {
             _streamResource = streamResource;
-            Status = EReceiverStatus.Waiting;
         }
 
         public void Start()
         {
-            if (Status == EReceiverStatus.Waiting)
-            {
-                StartReceivingTask(TaskRun);
-                Status = EReceiverStatus.Receiving;
-            }
-            else if (Status != EReceiverStatus.Receiving)
-            {
-                RestartReceivingTask(TaskRun);
-                Status = EReceiverStatus.Receiving;
-            }
-            else
-            {
-                throw new InvalidOperationException("Already started");
-            }
+            StartReceivingTask(TaskRun);
+            Debug.WriteLine("SRECEIVER starting...");
         }
 
         public void Stop()
         {
-            Status = EReceiverStatus.Stopped;
-        }
-
-        public void Cancel()
-        {
-            _cancellation.Cancel();
-        }
-
-        public void Close()
-        {
+            Debug.WriteLine("RECEIVER Closing...");
             _cancellation.Cancel();
             _task.Wait();
         }
@@ -69,19 +45,11 @@ namespace RobotController.Communication.ReceivingTask
             _numberOfRestoreAttemps = 0;
         }
 
-        private void RestartReceivingTask(Action action)
-        {
-            _cancellation.Dispose();
-            _task.Dispose();
-
-            StartReceivingTask(action);
-        }
-
         private void TaskRun()
         {
             try
             {
-                while (Status == EReceiverStatus.Receiving)
+                while (true)
                 {
                     TryReceiveData();
                     _cancellation.Token.ThrowIfCancellationRequested();
@@ -89,7 +57,6 @@ namespace RobotController.Communication.ReceivingTask
             }
             catch (OperationCanceledException)
             {
-                Status = EReceiverStatus.Canceled;
             }
         }
 
@@ -100,9 +67,9 @@ namespace RobotController.Communication.ReceivingTask
 
             if (_streamResource.BytesToRead() == 0)
             {
-                Thread.Sleep(Framing.ReceivingTaskSleepTime);
+                Thread.Sleep(10);
             }
-                                                
+
             while (numBytesRead != Framing.FrameLength)
             {
                 numBytesRead += _streamResource.Read(data, numBytesRead, Framing.FrameLength - numBytesRead);
@@ -113,25 +80,28 @@ namespace RobotController.Communication.ReceivingTask
 
         private void ExceptionHandler(Task task)
         {
-            Status = EReceiverStatus.Error;
             ErrorOccurred?.Invoke(this, new ReceiverErrorEventArgs(task.Exception) { NumberOfRestoreAttemps = _numberOfRestoreAttemps });
-            ++_numberOfRestoreAttemps;
         }
 
-        private bool disposedValue = false;
+        public void Dispose()
+        {
+            Debug.WriteLine("RECEIVER Dispose method public...");
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            Debug.WriteLine("RECEIVER Dispose method virtual...");
+            if (disposing)
             {
-                Close();
+                Debug.WriteLine("RECEIVER Disposing...");
+                _cancellation.Cancel();
+                _task.Wait();
+
                 _cancellation.Dispose();
                 _task.Dispose();
-
-                disposedValue = true;
             }
         }
-
-        public void Dispose() => Dispose(true);
     }
 }

@@ -6,7 +6,6 @@ namespace RobotController.Communication.SerialStream
 {
     public class SerialPortAdapter : IStreamResource
     {
-        private const string NewLine = "\r\n";
         private SerialPort _serialPort;
 
         public SerialPortAdapter(SerialPort serialPort)
@@ -14,7 +13,6 @@ namespace RobotController.Communication.SerialStream
             Debug.Assert(serialPort != null, "Argument serialPort cannot be null.");
 
             _serialPort = serialPort;
-            _serialPort.NewLine = NewLine;
         }
 
         public int InfiniteTimeout
@@ -54,21 +52,6 @@ namespace RobotController.Communication.SerialStream
         {
             if (!_serialPort.IsOpen) return;
             _serialPort.Write(buffer, offset, count);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _serialPort?.Dispose();
-                _serialPort = null;
-            }
         }
     }
 }

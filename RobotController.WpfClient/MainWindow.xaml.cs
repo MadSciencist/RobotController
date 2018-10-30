@@ -3,6 +3,8 @@ using RobotController.Communication.SerialStream;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,35 +25,50 @@ namespace RobotController.WpfGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        RobotConnection connection;
+        SerialPort serialPort;
+        SerialPortAdapter serialPortAdapter;
+        SerialPortFactory serialPortFactory;
+        SerialPortManager serialPortManager;
+        RobotConnectionFacade robotConnection;
+
         public MainWindow()
         {
+            serialPortFactory = new SerialPortFactory();
+            serialPortManager = new SerialPortManager();
+
             InitializeComponent();
             LoadPortNames();
         }
 
-        private void BtnConnect_Click(object sender, RoutedEventArgs e) => CreateConnection();
-        private void ComboboxPortsOnDropdownOpened(object sender, EventArgs e) => LoadPortNames();
+        private void BtnConnect_Click(object sender, RoutedEventArgs e)
+        {
+            if (robotConnection == null)
+            {
+                serialPort = serialPortFactory.GetPort("COM3");
+                serialPortManager.TryOpen(serialPort);
+                serialPortAdapter = new SerialPortAdapter(serialPort);
+                robotConnection = new RobotConnectionFacade(serialPortAdapter);
+            }
+        }
+
         private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
         {
-            connection.StopConnection();
-            connection.Dispose();
+            if (robotConnection != null)
+            {
+                robotConnection.Dispose();
+                robotConnection = null;
+            }
+
+            if (serialPort != null)
+            {
+                serialPort.DiscardInBuffer();
+                serialPortManager.Close(serialPort);
+                serialPort.Dispose();
+                serialPort = null;
+            }
         }
 
-        private void CreateConnection()
-        {
-            var portName = PortsCombobox.Text;
-            if (string.IsNullOrEmpty(portName)) return;
-
-            var factory = new SerialPortFactory(portName);
-            var port = factory.GetPort();
-            var portManager = new SerialPortManager();
-            portManager.TryOpen(port);
-            
-            var adapter = new SerialPortAdapter(port);
-            connection = new RobotConnection(adapter);
-        }
-
+        private void ComboboxPortsOnDropdownOpened(object sender, EventArgs e) => LoadPortNames();
         private void LoadPortNames()
         {
             var ports = SerialPortUtils.GetAvailablePorts();

@@ -2,7 +2,7 @@
 
 namespace RobotController.Communication
 {
-    public interface IStreamResource : IDisposable
+    public interface IStreamResource
     {
         int ReadTimeout { get; set; }
         int WriteTimeout { get; set; }
