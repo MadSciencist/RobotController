@@ -99,6 +99,10 @@
       <Project>{8d1fd0f1-24fb-4811-9bf4-2849d6c81021}</Project>
       <Name>RobotController.Communication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RobotController.Gamepad\RobotController.Gamepad.csproj">
+      <Project>{749b171c-9933-48b1-8eb9-c072c0c9092a}</Project>
+      <Name>RobotController.Gamepad</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,58 +1,66 @@
 ﻿using RobotController.Communication.Configuration;
 using RobotController.Communication.Enums;
+using RobotController.Communication.Exceptions;
 using RobotController.Communication.Interfaces;
-using RobotController.Communication.Utils;
+using RobotController.RobotParameters;
 using System;
-using System.Diagnostics;
 
 namespace RobotController.Communication.Messages
 {
-    public class MessageParser
+    public class MessageParser 
     {
-        public EventHandler<MessageParsedEventArgs> MessageParsed;
-        static int messageCount = 0;
+        public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured;
+        public EventHandler<MessageParsedEventArgs> KeepAliveReceived;
+        public EventHandler<MessageParsedEventArgs> FeedbackReceived;
 
-        public void TryGetMessage(byte[] data, int lentgh)
+        public void Parse(IMessage message)
         {
-            if (CheckLengthAndMarkers(data))
+            try
             {
-                if (CheckChecksumMatching(data))
+                VerifyReciepient(message);
+
+                switch (message.Command)
                 {
-                    GetMessage(data);
-                    Debug.WriteLine($"Message parsed, count: {++messageCount}");
-                }
-                else
-                {
-                    Debug.WriteLine("Checksum mismatch, message dropped");
+                    case EReceiverCommand.KeepAlive:
+                        KeepAliveReceived?.Invoke(this, new MessageParsedEventArgs());
+                        break;
+
+                    case EReceiverCommand.Feedback:
+                        var parsed = new MessageParsedEventArgs
+                        {
+                            LeftMotor = new SensorData
+                            {
+                                RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 0),
+                                RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 2),
+                                RawVoltage = BitConverter.ToInt16(message.Payload as byte[], 4),
+                                RawTemperature = BitConverter.ToInt16(message.Payload as byte[], 6)
+                            },
+                            RightMotor = new SensorData
+                            {
+                                RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 8),
+                                RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 10),
+                                RawVoltage = BitConverter.ToInt16(message.Payload as byte[], 12),
+                                RawTemperature = BitConverter.ToInt16(message.Payload as byte[], 14)
+                            }
+                        };
+
+                        FeedbackReceived?.Invoke(this, parsed);
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
                 }
             }
-            else
+            catch (Exception e)
             {
-                Debug.WriteLine("Framing mismatch, message dropped");
+                ParsingErrorOccured?.Invoke(this, new MessageParsingErrorEventArgs(e));
             }
         }
 
-        private void GetMessage(byte[] data)
+        private void VerifyReciepient(IMessage message)
         {
-            byte[] payload = new byte[Framing.PayloadLength];
-            Buffer.BlockCopy(data, 3, payload, 0, Framing.PayloadLength);
-
-            var message = new Message
-            {
-                DeviceAddress = data[1],
-                Command = (EReceiverCommand)data[2],
-                Payload = payload,
-                Checksum = BitConverter.ToUInt16(data, 10)
-            };
-
-            OnMessageParsed(message);
+            if (message.DeviceAddress == DeviceAddresses.Me)
+                throw new WrongRecipientException();
         }
-
-        protected void OnMessageParsed(IMessage message) => MessageParsed?.Invoke(this, new MessageParsedEventArgs { Message = message });
-
-        private bool CheckLengthAndMarkers(byte[] data) => (data[0] == Framing.FrameStart && data[Framing.FrameLength - 1] == Framing.FrameEnd);
-        private bool CheckChecksumMatching(byte[] data) => GetFrameChecksum(data) == CalculateFrameChecksum(data);
-        private ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, Framing.CrcStartByte);
-        private ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, Framing.NumOfBytesToCrcCalculation);
     }
 }

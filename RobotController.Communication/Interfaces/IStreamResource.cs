@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RobotController.Communication
+﻿namespace RobotController.Communication
 {
     public interface IStreamResource
     {

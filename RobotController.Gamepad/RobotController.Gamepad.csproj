@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}</ProjectGuid>
+    <ProjectGuid>{749B171C-9933-48B1-8EB9-C072C0C9092A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RobotController.Communication</RootNamespace>
-    <AssemblyName>RobotController.Communication</AssemblyName>
+    <RootNamespace>RobotController.Gamepad</RootNamespace>
+    <AssemblyName>RobotController.Gamepad</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,37 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\CommunicationTasks.cs" />
-    <Compile Include="Configuration\DeviceAddresses.cs" />
-    <Compile Include="Configuration\Framing.cs" />
-    <Compile Include="Enums\EReceiverCommand.cs" />
-    <Compile Include="Exceptions\WrongRecipientException.cs" />
-    <Compile Include="Interfaces\IMessage.cs" />
-    <Compile Include="Messages\Message.cs" />
-    <Compile Include="Messages\MessageExtractor.cs" />
-    <Compile Include="Messages\MessageParsedEventArgs.cs" />
-    <Compile Include="Messages\MessageParser.cs" />
-    <Compile Include="Messages\MessageParsingErrorEventArgs.cs" />
-    <Compile Include="ReceivingTask\RobotDataReceivedEventArgs.cs" />
-    <Compile Include="Interfaces\IReceiverTask.cs" />
-    <Compile Include="ReceivingTask\ReceiverErrorEventArgs.cs" />
-    <Compile Include="ReceivingTask\ReceiverTask.cs" />
-    <Compile Include="RobotConnectionFacade.cs" />
-    <Compile Include="SerialStream\ConnectionEventArgs.cs" />
-    <Compile Include="Interfaces\IStreamResource.cs" />
+    <Compile Include="GamepadController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\ISerialPortFactory.cs" />
-    <Compile Include="SerialStream\SerialPortEventArgs.cs" />
-    <Compile Include="SerialStream\SerialPortFactory.cs" />
-    <Compile Include="SerialStream\SerialPortAdapter.cs" />
-    <Compile Include="SerialStream\SerialPortManager.cs" />
-    <Compile Include="SerialStream\SerialPortUtils.cs" />
-    <Compile Include="Utils\ChecksumUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RobotParameters\RobotController.RobotParameters.csproj">
-      <Project>{7b48551a-51ab-4381-ba1e-017b6df7e4af}</Project>
-      <Name>RobotController.RobotParameters</Name>
+    <ProjectReference Include="..\J2i.Net.XInputWrapper\J2i.Net.XInputWrapper.csproj">
+      <Project>{146bcdf6-0354-4401-bbdd-57a52d2598a6}</Project>
+      <Name>J2i.Net.XInputWrapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

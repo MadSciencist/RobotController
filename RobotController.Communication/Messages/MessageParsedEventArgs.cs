@@ -1,10 +1,11 @@
-﻿using RobotController.Communication.Interfaces;
+﻿using RobotController.RobotParameters;
 using System;
 
 namespace RobotController.Communication.Messages
 {
     public class MessageParsedEventArgs : EventArgs
     {
-        public IMessage Message { get; set; }
+        public SensorData LeftMotor { get; set; }
+        public SensorData RightMotor { get; set; }
     }
 }

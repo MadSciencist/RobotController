@@ -1,5 +1,6 @@
 ﻿using RobotController.Communication;
 using RobotController.Communication.SerialStream;
+using RobotController.Gamepad;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,11 +31,13 @@ namespace RobotController.WpfGui
         SerialPortFactory serialPortFactory;
         SerialPortManager serialPortManager;
         RobotConnectionFacade robotConnection;
+        GamepadController gamepad;
 
         public MainWindow()
         {
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
+            gamepad = new GamepadController(0, 50);
 
             InitializeComponent();
             LoadPortNames();

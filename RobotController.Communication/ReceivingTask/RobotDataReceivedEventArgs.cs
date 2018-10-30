@@ -2,7 +2,7 @@
 
 namespace RobotController.Communication.ReceivingTask
 {
-    public class DataReceivedEventArgs : EventArgs
+    public class RobotDataReceivedEventArgs : EventArgs
     {
         public byte[] Data { get; set; }
         public int Length { get; set; }

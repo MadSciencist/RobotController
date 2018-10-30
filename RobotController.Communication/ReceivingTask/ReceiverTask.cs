@@ -9,7 +9,7 @@ namespace RobotController.Communication.ReceivingTask
 {
     public class ReceiverTask : IReceiverTask
     {
-        public event EventHandler<DataReceivedEventArgs> DataReceived;
+        public event EventHandler<RobotDataReceivedEventArgs> DataReceived;
         public event EventHandler<ReceiverErrorEventArgs> ErrorOccurred;
 
         private readonly IStreamResource _streamResource;
@@ -75,7 +75,7 @@ namespace RobotController.Communication.ReceivingTask
                 numBytesRead += _streamResource.Read(data, numBytesRead, Framing.FrameLength - numBytesRead);
             }
 
-            DataReceived?.Invoke(this, new DataReceivedEventArgs { Data = data, Length = data.Length });
+            DataReceived?.Invoke(this, new RobotDataReceivedEventArgs { Data = data, Length = data.Length });
         }
 
         private void ExceptionHandler(Task task)

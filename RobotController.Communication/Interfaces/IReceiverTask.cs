@@ -5,7 +5,7 @@ namespace RobotController.Communication.Interfaces
 {
     public interface IReceiverTask
     {
-        event EventHandler<DataReceivedEventArgs> DataReceived;
+        event EventHandler<RobotDataReceivedEventArgs> DataReceived;
         event EventHandler<ReceiverErrorEventArgs> ErrorOccurred;
 
         void Start();

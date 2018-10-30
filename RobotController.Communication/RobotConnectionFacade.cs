@@ -10,19 +10,20 @@ namespace RobotController.Communication
     {
         private readonly IStreamResource _streamResource;
         private IReceiverTask _receiverTask;
+        private readonly MessageExtractor _messageParser;
 
         public RobotConnectionFacade(IStreamResource streamResource)
         {
+            _messageParser = new MessageExtractor();
             _streamResource = streamResource;
             _receiverTask = new ReceiverTask(_streamResource);
-            _receiverTask.Start();
             _receiverTask.DataReceived += DataReceived;
+            _receiverTask.Start();
         }
 
-        private void DataReceived(object e, ReceivingTask.DataReceivedEventArgs args)
+        private void DataReceived(object sender, RobotDataReceivedEventArgs args)
         {
-            var parser = new MessageParser();
-            parser.TryGetMessage(args.Data, args.Length);
+            _messageParser.TryGetMessage(args.Data, args.Length);
         }
 
         public void Dispose()
