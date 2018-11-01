@@ -1,8 +1,8 @@
 ﻿namespace RobotController.Gamepad.Models
 {
-    public struct RobotControlModel
+    public class RobotControlModel
     {
-        public RobotControlModel(short left, short right) : this()
+        public RobotControlModel(short left, short right)
         {
             LeftSpeed = left;
             RightSpeed = right;

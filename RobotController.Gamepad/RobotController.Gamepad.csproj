@@ -44,12 +44,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArguments\GamepadErrorEventArgs.cs" />
+    <Compile Include="Interfaces\ISteeringConfig.cs" />
+    <Compile Include="Config\SteeringConfig.cs" />
     <Compile Include="Converters\Helpres.cs" />
     <Compile Include="Converters\LowPassFilter.cs" />
     <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\OutputMixer.cs" />
     <Compile Include="GamepadController.cs" />
-    <Compile Include="GamepadEventArgs.cs" />
+    <Compile Include="EventArguments\GamepadEventArgs.cs" />
     <Compile Include="Interfaces\IGamepadController.cs" />
     <Compile Include="Models\ActionButtonsModel.cs" />
     <Compile Include="Models\CrossModel.cs" />

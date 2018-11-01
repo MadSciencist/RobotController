@@ -1,7 +1,7 @@
-﻿using RobotController.Gamepad.Models;
-using System;
+﻿using System;
+using RobotController.Gamepad.Models;
 
-namespace RobotController.Gamepad
+namespace RobotController.Gamepad.EventArguments
 {
     public class GamepadEventArgs : EventArgs
     {

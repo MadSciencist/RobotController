@@ -23,6 +23,8 @@
                     <lvc:CartesianChart Series="{Binding GamepadChartViewModel.GamepadChart.SeriesCollection}" Margin="317,95,48.6,10.4" />
                     <ProgressBar Value="{Binding GamepadViewModel.GamepadModel.LeftThumbstick.X}" HorizontalAlignment="Left" Height="28" Margin="152,17,0,0" VerticalAlignment="Top" Width="145" Maximum="255" Minimum="-255"/>
                     <ProgressBar Value="{Binding GamepadViewModel.GamepadModel.RightThumbstick.Y}" HorizontalAlignment="Left" Height="28" Margin="152,65,0,0" VerticalAlignment="Top" Width="145" Maximum="255" Minimum="-255"/>
+                    <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.LeftSpeed}" HorizontalAlignment="Left" Height="28" Margin="152,132,0,0" VerticalAlignment="Top" Width="145" Maximum="510" Minimum="0"/>
+                    <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.RightSpeed}" HorizontalAlignment="Left" Height="28" Margin="152,171,0,0" VerticalAlignment="Top" Width="145" Maximum="510" Minimum="0"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">

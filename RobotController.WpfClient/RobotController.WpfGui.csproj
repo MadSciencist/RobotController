@@ -67,6 +67,7 @@
     <Compile Include="ViewModels\GamepadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ObservableEntity.cs" />
+    <Compile Include="ViewModels\RobotControlsViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RobotController.Communication.Interfaces;
+using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ViewModels;
@@ -64,6 +65,7 @@ namespace RobotController.WpfGui
         private void GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
+            _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
         }
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
