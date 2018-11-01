@@ -39,9 +39,23 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="XInput.Wrapper, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XInput.Wrapper.0.3.1\lib\net40\XInput.Wrapper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\Helpres.cs" />
+    <Compile Include="Converters\LowPassFilter.cs" />
+    <Compile Include="Converters\RangeConverter.cs" />
+    <Compile Include="Converters\OutputMixer.cs" />
     <Compile Include="GamepadController.cs" />
+    <Compile Include="GamepadEventArgs.cs" />
+    <Compile Include="Interfaces\IGamepadController.cs" />
+    <Compile Include="Models\ActionButtonsModel.cs" />
+    <Compile Include="Models\CrossModel.cs" />
+    <Compile Include="Models\GamepadModel.cs" />
+    <Compile Include="Models\RobotControlModel.cs" />
+    <Compile Include="Models\ThumbstickModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,5 +64,9 @@
       <Name>J2i.Net.XInputWrapper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

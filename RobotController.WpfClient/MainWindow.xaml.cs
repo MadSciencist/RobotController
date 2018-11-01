@@ -2,6 +2,8 @@
 using RobotController.Communication.SerialStream;
 using RobotController.Gamepad;
 using System;
+using LiveCharts;
+using LiveCharts.Wpf;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -18,6 +20,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RobotController.Communication.Interfaces;
+using RobotController.Gamepad.Interfaces;
+using RobotController.WpfGui.Charts;
+using RobotController.WpfGui.ViewModels;
 
 namespace RobotController.WpfGui
 {
@@ -26,21 +32,38 @@ namespace RobotController.WpfGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        SerialPort serialPort;
-        SerialPortAdapter serialPortAdapter;
-        SerialPortFactory serialPortFactory;
-        SerialPortManager serialPortManager;
-        RobotConnectionFacade robotConnection;
-        GamepadController gamepad;
+        private SerialPort serialPort;
+        private IStreamResource serialPortAdapter;
+        private ISerialPortFactory serialPortFactory;
+        private SerialPortManager serialPortManager;
+        private RobotConnectionFacade robotConnection;
+        private IGamepadController gamepad;
+        private MainViewModel _mainViewModel;
 
         public MainWindow()
         {
+            InitializeComponent();
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
-            gamepad = new GamepadController(0, 50);
 
-            InitializeComponent();
+
+            var chart = new GamepadChart();
+            _mainViewModel = new MainViewModel();
+            gamepad = new GamepadController(0, 25);
+            gamepad.GamepadStateChanged += GamepadStateChanged;
+            gamepad.Start();
+            _mainViewModel.GamepadChartViewModel.GamepadChart = chart;
+           
+
+            DataContext = _mainViewModel;
+
+           
             LoadPortNames();
+        }
+
+        private void GamepadStateChanged(object sender, GamepadEventArgs e)
+        {
+            _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
         }
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
@@ -50,7 +73,7 @@ namespace RobotController.WpfGui
                 serialPort = serialPortFactory.GetPort("COM3");
                 serialPortManager.TryOpen(serialPort);
                 serialPortAdapter = new SerialPortAdapter(serialPort);
-                robotConnection = new RobotConnectionFacade(serialPortAdapter);
+                //robotConnection = new RobotConnectionFacade(serialPortAdapter);
             }
         }
 
@@ -81,5 +104,11 @@ namespace RobotController.WpfGui
                 PortsCombobox.ItemsSource = observable;
             }
         }
+
+        //protected override void OnClosing(CancelEventArgs e)
+        //{
+        //    BtnDisconnect_Click(this, null);
+        //    base.OnClosing(e);
+        //}
     }
 }

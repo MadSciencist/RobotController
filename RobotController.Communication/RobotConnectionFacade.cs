@@ -6,15 +6,15 @@ using System.Diagnostics;
 
 namespace RobotController.Communication
 {
-    public class RobotConnectionFacade
+    public class RobotConnectionFacade : IDisposable
     {
         private readonly IStreamResource _streamResource;
         private IReceiverTask _receiverTask;
-        private readonly MessageExtractor _messageParser;
+        private readonly MessageExtractor _messageExtractor;
 
         public RobotConnectionFacade(IStreamResource streamResource)
         {
-            _messageParser = new MessageExtractor();
+            _messageExtractor = new MessageExtractor();
             _streamResource = streamResource;
             _receiverTask = new ReceiverTask(_streamResource);
             _receiverTask.DataReceived += DataReceived;
@@ -23,7 +23,7 @@ namespace RobotController.Communication
 
         private void DataReceived(object sender, RobotDataReceivedEventArgs args)
         {
-            _messageParser.TryGetMessage(args.Data, args.Length);
+            _messageExtractor.TryGetMessage(args.Data, args.Length);
         }
 
         public void Dispose()

@@ -1,9 +1,11 @@
-﻿<Window x:Class="RobotController.WpfGui.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:RobotController.WpfClient"
+        xmlns:ViewModels="clr-namespace:RobotController.WpfGui.ViewModels" x:Class="RobotController.WpfGui.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
     <Grid>
@@ -17,7 +19,11 @@
                 </TransformGroup>
             </TabControl.RenderTransform>
             <TabItem Header="Main">
-                <Grid Background="#FFE5E5E5" Margin="0,0,9.8,2.4"/>
+                <Grid Background="#FFE5E5E5" Margin="0,0,9.8,2.4">
+                    <lvc:CartesianChart Series="{Binding GamepadChartViewModel.GamepadChart.SeriesCollection}" Margin="317,95,48.6,10.4" />
+                    <ProgressBar Value="{Binding GamepadViewModel.GamepadModel.LeftThumbstick.X}" HorizontalAlignment="Left" Height="28" Margin="152,17,0,0" VerticalAlignment="Top" Width="145" Maximum="255" Minimum="-255"/>
+                    <ProgressBar Value="{Binding GamepadViewModel.GamepadModel.RightThumbstick.Y}" HorizontalAlignment="Left" Height="28" Margin="152,65,0,0" VerticalAlignment="Top" Width="145" Maximum="255" Minimum="-255"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Settings">
                 <Grid Background="#FFE5E5E5" Margin="0,0,-0.2,0" Height="442" VerticalAlignment="Top"/>
@@ -36,5 +42,7 @@
         </Border>
         <ComboBox x:Name="PortsCombobox" HorizontalAlignment="Left" Margin="20,43,0,0" VerticalAlignment="Top" Width="120" DropDownOpened="ComboboxPortsOnDropdownOpened"/>
         <Label Content="Select port" HorizontalAlignment="Left" Margin="20,12,0,0" VerticalAlignment="Top"/>
+        <TextBlock Margin="320,135,576.6,0" Text="{Binding GamepadViewModel.GamepadModel.LeftThumbstick.X}" VerticalAlignment="Top" Height="25" Width="97"/>
+        <TextBlock Margin="320,185,576.6,0" Text="{Binding GamepadViewModel.GamepadModel.RightThumbstick.Y}" VerticalAlignment="Top" Height="25" Width="97"/>
     </Grid>
 </Window>
