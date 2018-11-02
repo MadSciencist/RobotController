@@ -1,11 +1,10 @@
 ﻿using J2i.Net.XInputWrapper;
 using RobotController.Gamepad.Converters;
+using RobotController.Gamepad.EventArguments;
+using RobotController.Gamepad.Interfaces;
 using RobotController.Gamepad.Models;
 using System;
 using System.Timers;
-using RobotController.Gamepad.Config;
-using RobotController.Gamepad.EventArguments;
-using RobotController.Gamepad.Interfaces;
 
 namespace RobotController.Gamepad
 {
@@ -32,8 +31,8 @@ namespace RobotController.Gamepad
             var controller = XboxController.RetrieveController(controllerIndex);
             controller.StateChanged += StateChanged;
             XboxController.UpdateFrequency = updateFrequency;
-               
-            _lowPassFilterTimer = new Timer((double)20);
+
+            _lowPassFilterTimer = new Timer(10);
             _lowPassFilterTimer.Elapsed += LowPassFilterTimerOnElapsed;
         }
 

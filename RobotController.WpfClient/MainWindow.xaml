@@ -58,7 +58,7 @@
                     <TextBlock HorizontalAlignment="Left" Height="14.4" Text="Select port:" VerticalAlignment="Top" Width="84.8" Canvas.Left="80.8" Canvas.Top="50.6"/>
                     <ComboBox Width="84.8" Height="22" Canvas.Left="80.8" Canvas.Top="76"/>
                     <Button Content="Connect" Canvas.Left="189.2" Canvas.Top="34.63" Width="80" Height="25" Click="Button_Click"/>
-                    <Button Content="Disconnect" Canvas.Left="189.2" Canvas.Top="73" Width="80" Height="25"/>
+                    <Button Content="Disconnect" Canvas.Left="193" Canvas.Top="73" Width="80" Height="25" Click="Button_Click_1"/>
                 </Canvas>
             </Border>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch">

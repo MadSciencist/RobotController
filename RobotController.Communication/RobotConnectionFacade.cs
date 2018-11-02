@@ -8,6 +8,8 @@ namespace RobotController.Communication
 {
     public class RobotConnectionFacade : IDisposable
     {
+        public event EventHandler<MessageParsedEventArgs> FeedbackReceived;
+
         private readonly IStreamResource _streamResource;
         private IReceiverTask _receiverTask;
         private readonly MessageExtractor _messageExtractor;
@@ -15,6 +17,7 @@ namespace RobotController.Communication
         public RobotConnectionFacade(IStreamResource streamResource)
         {
             _messageExtractor = new MessageExtractor();
+            _messageExtractor.FeedbackReceived += (sender, args) => FeedbackReceived?.Invoke(sender, args);
             _streamResource = streamResource;
             _receiverTask = new ReceiverTask(_streamResource);
             _receiverTask.DataReceived += DataReceived;

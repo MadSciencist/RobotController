@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RobotController.Communication.Interfaces;
+using RobotController.Communication.Messages;
 using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
@@ -42,63 +43,49 @@ namespace RobotController.WpfGui
         private IGamepadController gamepad;
         private MainViewModel _mainViewModel;
         private SteeringConfig config;
+        private GamepadChart _chart;
 
         public MainWindow()
         {
             InitializeComponent();
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
-
-            config = new SteeringConfig(){UseExponentialCurve = true, UseLowPassFilter = true};
-            var chart = new GamepadChart();
+            _chart = new GamepadChart();
+            config = new SteeringConfig();
             _mainViewModel = new MainViewModel();
             gamepad = new GamepadController(config, 0, 25);
             gamepad.GamepadStateChanged += GamepadStateChanged;
             gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
             gamepad.Start();
-            _mainViewModel.GamepadChartViewModel.GamepadChart = chart;
+            _mainViewModel.GamepadChartViewModel.GamepadChart = _chart;
             _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
 
             DataContext = _mainViewModel;
             LoadPortNames();
         }
 
+
+        private System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+
         private void GamepadOnRobotControlChanged(object sender, RobotControlEventArgs e)
         {
+
+
             _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
+            //watch.Start();
         }
 
         private void GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
         }
-
-        private void BtnConnect_Click(object sender, RoutedEventArgs e)
+        private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
-            if (robotConnection == null)
-            {
-                serialPort = serialPortFactory.GetPort("COM3");
-                serialPortManager.TryOpen(serialPort);
-                serialPortAdapter = new SerialPortAdapter(serialPort);
-                //robotConnection = new RobotConnectionFacade(serialPortAdapter);
-            }
-        }
+            watch.Stop();
 
-        private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
-        {
-            if (robotConnection != null)
-            {
-                robotConnection.Dispose();
-                robotConnection = null;
-            }
-
-            if (serialPort != null)
-            {
-                serialPort.DiscardInBuffer();
-                serialPortManager.Close(serialPort);
-                serialPort.Dispose();
-                serialPort = null;
-            }
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                _chart.UpdateLivePointChart(e.LeftMotor.RawCurrent, e.LeftMotor.RawSpeed);
+            });
         }
 
         private void ComboboxPortsOnDropdownOpened(object sender, EventArgs e) => LoadPortNames();
@@ -114,7 +101,33 @@ namespace RobotController.WpfGui
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (robotConnection == null)
+            {
+                serialPort = serialPortFactory.GetPort("COM3");
+                serialPortManager.TryOpen(serialPort);
+                serialPortAdapter = new SerialPortAdapter(serialPort);
+                robotConnection = new RobotConnectionFacade(serialPortAdapter);
+                robotConnection.FeedbackReceived += RobotConnectionOnFeedbackReceived;
+            }
+        }
 
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (robotConnection != null)
+            {
+                robotConnection.Dispose();
+                robotConnection = null;
+            }
+
+            if (serialPort != null)
+            {
+                serialPort.DiscardInBuffer();
+                serialPortManager.Close(serialPort);
+                serialPort.Dispose();
+                serialPort = null;
+            }
         }
 
         //protected override void OnClosing(CancelEventArgs e)

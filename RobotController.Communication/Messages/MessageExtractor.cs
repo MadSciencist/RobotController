@@ -8,7 +8,7 @@ namespace RobotController.Communication.Messages
 {
     public class MessageExtractor : MessageParser
     {
-        static int messageCount = 0;
+        //static int messageCount = 0;
 
         public void TryGetMessage(byte[] data, int lentgh)
         {
@@ -17,7 +17,7 @@ namespace RobotController.Communication.Messages
                 if (CheckChecksumMatching(data))
                 {
                     GetMessage(data);
-                    Debug.WriteLine($"Message parsed, count: {++messageCount}");
+                   // Debug.WriteLine($"Message parsed, count: {++messageCount}");
                 }
                 else
                 {
@@ -32,7 +32,7 @@ namespace RobotController.Communication.Messages
 
         private void GetMessage(byte[] data)
         {
-            byte[] payload = new byte[Framing.PayloadLength];
+            var payload = new byte[Framing.PayloadLength];
             Buffer.BlockCopy(data, Framing.CommandPosition+1, payload, 0, Framing.PayloadLength);
 
             var message = new Message
