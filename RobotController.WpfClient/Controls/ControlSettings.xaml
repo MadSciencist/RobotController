@@ -1,0 +1,20 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RobotController.WpfGui.Controls"
+             xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" x:Class="RobotController.WpfGui.Controls.ControlSettings"
+             mc:Ignorable="d" 
+             d:DesignHeight="426.639" d:DesignWidth="756.967">
+    <Canvas HorizontalAlignment="Left" Width="746.967" Margin="0">
+
+        <Wpf:CartesianChart Height="321.039" Canvas.Left="310.888" Canvas.Top="95.6" Width="436.079"/>
+        <Canvas Height="159.467" Canvas.Top="182" Width="215.732" Canvas.Left="10">
+            <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.LeftSpeed}" Height="18" Canvas.Left="105.732" Canvas.Top="21.867" Width="100" Minimum="0" Maximum="510"/>
+            <TextBlock Height="18" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotControl.LeftSpeed, StringFormat=Motor left: \{0\}}" Canvas.Top="21.867" Width="88.932"/>
+            <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.RightSpeed}" Height="18" Canvas.Left="105.732" Canvas.Top="54.934" Width="100" Minimum="0" Maximum="510"/>
+            <TextBlock Height="18" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotControl.RightSpeed, StringFormat=Motor left: \{0\}}" Canvas.Top="54.934" Width="88.932"/>
+        </Canvas>
+    </Canvas>
+</UserControl>

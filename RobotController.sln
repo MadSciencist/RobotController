@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Blend for Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.Communication", "RobotController.Communication\RobotController.Communication.csproj", "{8D1FD0F1-24FB-4811-9BF4-2849D6C81021}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.WpfGui", "RobotController.WpfClient\RobotController.WpfGui.csproj", "{32AB3877-5F8A-4F40-9E4A-3BE103CFC387}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobotController.Tests", "RobotController.Tests\RobotController.Tests.csproj", "{4DADD82C-F696-4FB5-A3E5-20567CD98309}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.Tests", "RobotController.Tests\RobotController.Tests.csproj", "{4DADD82C-F696-4FB5-A3E5-20567CD98309}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.RobotParameters", "RobotParameters\RobotController.RobotParameters.csproj", "{7B48551A-51AB-4381-BA1E-017B6DF7E4AF}"
 EndProject

@@ -16,11 +16,9 @@ namespace RobotController.Communication.SerialStream
             {
                 serialPort.Open();
 
-                if (serialPort.IsOpen)
-                {
-                    serialPort.DiscardInBuffer();
-                    ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = true, PortName = serialPort.PortName });
-                }
+                if (!serialPort.IsOpen) return;
+                serialPort.DiscardInBuffer();
+                ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = true, PortName = serialPort.PortName });
             }
             catch (Exception e)
             {
@@ -30,12 +28,10 @@ namespace RobotController.Communication.SerialStream
 
         public void Close(SerialPort serialPort)
         {
-            if (serialPort.IsOpen)
-            {
-                serialPort.DiscardInBuffer();
-                serialPort.Close();
-                ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = false, PortName = string.Empty });
-            }
+            if (!serialPort.IsOpen) return;
+            serialPort.DiscardInBuffer();
+            serialPort.Close();
+            ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = false, PortName = string.Empty });
         }
     }
 }

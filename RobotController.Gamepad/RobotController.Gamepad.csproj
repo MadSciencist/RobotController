@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventArguments\GamepadErrorEventArgs.cs" />
+    <Compile Include="EventArguments\RobotControlEventArgs.cs" />
     <Compile Include="Interfaces\ISteeringConfig.cs" />
     <Compile Include="Config\SteeringConfig.cs" />
     <Compile Include="Converters\Helpres.cs" />

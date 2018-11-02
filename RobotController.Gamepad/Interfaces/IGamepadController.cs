@@ -6,7 +6,7 @@ namespace RobotController.Gamepad.Interfaces
     public interface IGamepadController
     {
         event EventHandler<GamepadEventArgs> GamepadStateChanged;
-        event EventHandler<GamepadEventArgs> RobotControlChanged;
+        event EventHandler<RobotControlEventArgs> RobotControlChanged;
         event EventHandler<GamepadErrorEventArgs> GamepadErrorOccured;
 
         void Start();

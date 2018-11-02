@@ -9,9 +9,5 @@ namespace RobotController.Gamepad.Converters
 {
     public class LowPassFilter
     {
-        public RobotControlModel Proceess()
-        {
-            return new RobotControlModel();
-        }
     }
 }

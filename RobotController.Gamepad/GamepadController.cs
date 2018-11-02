@@ -9,10 +9,10 @@ using RobotController.Gamepad.Interfaces;
 
 namespace RobotController.Gamepad
 {
-    public class GamepadController : IDisposable, IGamepadController
+    public class GamepadController : IGamepadController, IDisposable
     {
         public event EventHandler<GamepadEventArgs> GamepadStateChanged;
-        public event EventHandler<GamepadEventArgs> RobotControlChanged; 
+        public event EventHandler<RobotControlEventArgs> RobotControlChanged; 
         public event EventHandler<GamepadErrorEventArgs> GamepadErrorOccured;
 
         public ISteeringConfig SteeringConfig { get; set; }
@@ -108,10 +108,7 @@ namespace RobotController.Gamepad
                 e.CurrentInputState.Gamepad.IsButtonPressed((int)ButtonFlags.XINPUT_GAMEPAD_BACK);
             #endregion
 
-            //TODO
-            //probably these events needs some refactoring to prevent nulls
-            //consider creating separate event args
-            GamepadStateChanged?.Invoke(this, new GamepadEventArgs { GamepadModel = _gamepadModel, RobotControl = null });
+            GamepadStateChanged?.Invoke(this, new GamepadEventArgs { GamepadModel = _gamepadModel });
 
             //this method also rises robot controll event
             TryToProcessMixing();
@@ -124,7 +121,7 @@ namespace RobotController.Gamepad
                 var mixer = new OutputMixer(SteeringConfig);
                 var robotControls = mixer.Process(_gamepadModel);
 
-                RobotControlChanged?.Invoke(this, new GamepadEventArgs { GamepadModel = null, RobotControl = robotControls });
+                RobotControlChanged?.Invoke(this, new RobotControlEventArgs { RobotControl = robotControls });
             }
             catch (Exception exception)
             {

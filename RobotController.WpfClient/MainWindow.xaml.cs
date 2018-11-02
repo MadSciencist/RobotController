@@ -52,6 +52,7 @@ namespace RobotController.WpfGui
             _mainViewModel = new MainViewModel();
             gamepad = new GamepadController(0, 25);
             gamepad.GamepadStateChanged += GamepadStateChanged;
+            gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
             gamepad.Start();
             _mainViewModel.GamepadChartViewModel.GamepadChart = chart;
            
@@ -62,10 +63,14 @@ namespace RobotController.WpfGui
             LoadPortNames();
         }
 
+        private void GamepadOnRobotControlChanged(object sender, RobotControlEventArgs e)
+        {
+            _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
+        }
+
         private void GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
-            _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
         }
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
@@ -103,7 +108,7 @@ namespace RobotController.WpfGui
             if (ports.Length > 0)
             {
                 var observable = new ObservableCollection<string>(ports);
-                PortsCombobox.ItemsSource = observable;
+                //PortsCombobox.ItemsSource = observable;
             }
         }
 
