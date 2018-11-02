@@ -27,6 +27,9 @@ namespace RobotController.Gamepad.Converters
                 ProcessLeftRightReverse(lr, ref tempLeft, ref tempRight);
                 ProcessBackForwardReverse(leftTrigger, rightTrigger, out var tempFwd, out var tempBwd);
 
+                //process expo curve
+                ProcessExponentialLookup(ref tempLeft, ref tempRight, ref tempFwd, ref tempBwd);
+
                 //constrain inputs
                 tempLeft = Helpres.ConstrainNonnegative(tempLeft, 255);
                 tempRight = Helpres.ConstrainNonnegative(tempRight, 255);
@@ -41,6 +44,18 @@ namespace RobotController.Gamepad.Converters
             }
 
             return new RobotControlModel(motorLeft, motorRight);
+        }
+
+        private void ProcessExponentialLookup(ref short tempLeft, ref short tempRight, ref short tempFwd, ref short tempBwd)
+        {
+            checked
+            {
+                if (!_config.UseExponentialCurve) return;
+                tempFwd = ExponentialCurve.PerformLookup(tempFwd, _config.ExponentialCurveCoefficient);
+                tempBwd = ExponentialCurve.PerformLookup(tempBwd, _config.ExponentialCurveCoefficient);
+                tempLeft = ExponentialCurve.PerformLookup(tempLeft, _config.ExponentialCurveCoefficient);
+                tempRight = ExponentialCurve.PerformLookup(tempRight, _config.ExponentialCurveCoefficient);
+            }
         }
 
         private (short, short) ProcessMixing(GamepadModel gamepadState, short tempFwd, short tempBwd, short tempLeft, short tempRight)

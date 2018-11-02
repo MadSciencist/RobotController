@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RobotController.Communication.Interfaces;
+using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
 using RobotController.WpfGui.Charts;
@@ -40,6 +41,7 @@ namespace RobotController.WpfGui
         private RobotConnectionFacade robotConnection;
         private IGamepadController gamepad;
         private MainViewModel _mainViewModel;
+        private SteeringConfig config;
 
         public MainWindow()
         {
@@ -47,19 +49,17 @@ namespace RobotController.WpfGui
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
 
-
+            config = new SteeringConfig(){UseExponentialCurve = true, UseLowPassFilter = true};
             var chart = new GamepadChart();
             _mainViewModel = new MainViewModel();
-            gamepad = new GamepadController(0, 25);
+            gamepad = new GamepadController(config, 0, 25);
             gamepad.GamepadStateChanged += GamepadStateChanged;
             gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
             gamepad.Start();
             _mainViewModel.GamepadChartViewModel.GamepadChart = chart;
-           
+            _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
 
             DataContext = _mainViewModel;
-
-           
             LoadPortNames();
         }
 
@@ -110,6 +110,11 @@ namespace RobotController.WpfGui
                 var observable = new ObservableCollection<string>(ports);
                 //PortsCombobox.ItemsSource = observable;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         //protected override void OnClosing(CancelEventArgs e)

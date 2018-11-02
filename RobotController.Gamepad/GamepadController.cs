@@ -15,17 +15,16 @@ namespace RobotController.Gamepad
         public event EventHandler<RobotControlEventArgs> RobotControlChanged; 
         public event EventHandler<GamepadErrorEventArgs> GamepadErrorOccured;
 
-        public ISteeringConfig SteeringConfig { get; set; }
-
+        private readonly ISteeringConfig _config;
         private readonly GamepadModel _gamepadModel;
         private readonly RangeConverter _rangeConverter;
         private readonly Timer _lowPassFilterTimer;
 
-        public GamepadController(int controllerIndex, int updateFrequency)
+        public GamepadController(ISteeringConfig config, int controllerIndex, int updateFrequency)
         {
             if (updateFrequency <= 0) throw new ArgumentException("Update frequency should be positive");
 
-            SteeringConfig = new SteeringConfig();
+            _config = config;
             //divide by 128 to get -255 <=> 255 range on thumbstick
             _rangeConverter = new RangeConverter(128f, 255);
             _gamepadModel = new GamepadModel();
@@ -34,14 +33,14 @@ namespace RobotController.Gamepad
             controller.StateChanged += StateChanged;
             XboxController.UpdateFrequency = updateFrequency;
                
-            _lowPassFilterTimer = new Timer(5);
+            _lowPassFilterTimer = new Timer((double)20);
             _lowPassFilterTimer.Elapsed += LowPassFilterTimerOnElapsed;
         }
 
         public void Start()
         {
             XboxController.StartPolling();
-           // _lowPassFilterTimer.Start();
+            _lowPassFilterTimer.Start();
         }
 
         public void Stop()
@@ -52,7 +51,8 @@ namespace RobotController.Gamepad
 
         private void LowPassFilterTimerOnElapsed(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("ELAPSED");
+            //this method also rises robot controll event
+            TryToProcessMixing();
         }
 
 
@@ -109,16 +109,13 @@ namespace RobotController.Gamepad
             #endregion
 
             GamepadStateChanged?.Invoke(this, new GamepadEventArgs { GamepadModel = _gamepadModel });
-
-            //this method also rises robot controll event
-            TryToProcessMixing();
         }
 
         private void TryToProcessMixing()
         {
             try
             {
-                var mixer = new OutputMixer(SteeringConfig);
+                var mixer = new OutputMixer(_config);
                 var robotControls = mixer.Process(_gamepadModel);
 
                 RobotControlChanged?.Invoke(this, new RobotControlEventArgs { RobotControl = robotControls });

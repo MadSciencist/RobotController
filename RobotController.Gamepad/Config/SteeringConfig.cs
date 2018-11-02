@@ -8,5 +8,8 @@ namespace RobotController.Gamepad.Config
         public short Centervalue { get; set; } = 255;
         public bool IsReversed { get; set; } = false;
         public bool IsLeftRightReverse { get; set; } = false;
+        public bool UseExponentialCurve { get; set; } = true;
+        public short ExponentialCurveCoefficient { get; set; } = 10;
+        public bool UseLowPassFilter { get; set; } = true;
     }
 }

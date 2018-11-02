@@ -65,7 +65,9 @@
     <Compile Include="Controls\ControlSettings.xaml.cs">
       <DependentUpon>ControlSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\ControlSettingsViewModel.cs" />
     <Compile Include="ViewModels\GamepadChartViewModel.cs" />
     <Compile Include="ViewModels\GamepadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

@@ -44,6 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ExponentialCurve.cs" />
     <Compile Include="EventArguments\GamepadErrorEventArgs.cs" />
     <Compile Include="EventArguments\RobotControlEventArgs.cs" />
     <Compile Include="Interfaces\ISteeringConfig.cs" />
