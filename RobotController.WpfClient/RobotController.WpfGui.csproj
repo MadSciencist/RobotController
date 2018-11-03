@@ -61,19 +61,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Charts\SpeedFeedbackChart.cs" />
     <Compile Include="Charts\GamepadChart.cs" />
+    <Compile Include="Charts\MeasurementModel.cs" />
     <Compile Include="Controls\ControlSettings.xaml.cs">
       <DependentUpon>ControlSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Status.xaml.cs">
+      <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ControlSettingsViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackChartViewModel.cs" />
     <Compile Include="ViewModels\GamepadChartViewModel.cs" />
     <Compile Include="ViewModels\GamepadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ObservableEntity.cs" />
     <Compile Include="ViewModels\RobotControlsViewModel.cs" />
     <Page Include="Controls\ControlSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Status.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

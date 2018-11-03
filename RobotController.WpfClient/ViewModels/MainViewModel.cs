@@ -7,6 +7,7 @@ namespace RobotController.WpfGui.ViewModels
         public GamepadViewModel GamepadViewModel { get; private set; }
         public RobotControlsViewModel RobotControlsViewModel { get; private set; }
         public GamepadChartViewModel GamepadChartViewModel { get; private set; }
+        public FeedbackChartViewModel FeedbackChartViewModel { get; private set; }  
         public ControlSettingsViewModel  ControlSettingsViewModel { get; set; }
 
         public MainViewModel()
@@ -15,6 +16,7 @@ namespace RobotController.WpfGui.ViewModels
             GamepadChartViewModel = new GamepadChartViewModel();
             RobotControlsViewModel = new RobotControlsViewModel();
             ControlSettingsViewModel = new ControlSettingsViewModel();
+            FeedbackChartViewModel = new FeedbackChartViewModel();
         }
     }
 }

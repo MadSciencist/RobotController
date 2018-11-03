@@ -34,6 +34,7 @@ namespace RobotController.Gamepad
 
             _lowPassFilterTimer = new Timer(10);
             _lowPassFilterTimer.Elapsed += LowPassFilterTimerOnElapsed;
+
         }
 
         public void Start()

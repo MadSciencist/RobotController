@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LiveCharts.Configurations;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Gamepad.Config;
@@ -44,6 +45,7 @@ namespace RobotController.WpfGui
         private MainViewModel _mainViewModel;
         private SteeringConfig config;
         private GamepadChart _chart;
+        private SpeedFeedbackChart _speedFeedbackChart;
 
         public MainWindow()
         {
@@ -51,14 +53,18 @@ namespace RobotController.WpfGui
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
             _chart = new GamepadChart();
+            _speedFeedbackChart = new SpeedFeedbackChart();
             config = new SteeringConfig();
             _mainViewModel = new MainViewModel();
             gamepad = new GamepadController(config, 0, 25);
             gamepad.GamepadStateChanged += GamepadStateChanged;
             gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
             gamepad.Start();
+
+            _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart = _speedFeedbackChart;
             _mainViewModel.GamepadChartViewModel.GamepadChart = _chart;
             _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
+
 
             DataContext = _mainViewModel;
             LoadPortNames();
@@ -69,22 +75,19 @@ namespace RobotController.WpfGui
 
         private void GamepadOnRobotControlChanged(object sender, RobotControlEventArgs e)
         {
-
-
             _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
-            //watch.Start();
         }
 
         private void GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
         }
-        private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
-        {
-            watch.Stop();
 
-            Application.Current.Dispatcher.Invoke((Action)delegate {
-                _chart.UpdateLivePointChart(e.LeftMotor.RawCurrent, e.LeftMotor.RawSpeed);
+        private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
+        { 
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart.AddNewPoint(e.LeftMotor.RawSpeed, e.RightMotor.RawSpeed);
             });
         }
 

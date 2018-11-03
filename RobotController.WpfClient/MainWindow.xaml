@@ -22,7 +22,15 @@
         </Grid.ColumnDefinitions>
         <TabControl HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" >
             <TabItem Header="Status">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <controls:Status Grid.Row="0" Grid.Column="0"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Control settings">
                 <Grid Background="#FFE5E5E5">
@@ -57,7 +65,7 @@
                     <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Connection" VerticalAlignment="Top" Width="84.8" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
                     <TextBlock HorizontalAlignment="Left" Height="14.4" Text="Select port:" VerticalAlignment="Top" Width="84.8" Canvas.Left="80.8" Canvas.Top="50.6"/>
                     <ComboBox Width="84.8" Height="22" Canvas.Left="80.8" Canvas.Top="76"/>
-                    <Button Content="Connect" Canvas.Left="189.2" Canvas.Top="34.63" Width="80" Height="25" Click="Button_Click"/>
+                    <Button Content="Connect" Canvas.Left="193" Canvas.Top="38" Width="80" Height="25" Click="Button_Click"/>
                     <Button Content="Disconnect" Canvas.Left="193" Canvas.Top="73" Width="80" Height="25" Click="Button_Click_1"/>
                 </Canvas>
             </Border>
