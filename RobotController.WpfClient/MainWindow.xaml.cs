@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts.Configurations;
+using NLog;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Gamepad.Config;
@@ -28,6 +29,7 @@ using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ViewModels;
+using Console = System.Console;
 
 namespace RobotController.WpfGui
 {
@@ -47,9 +49,14 @@ namespace RobotController.WpfGui
         private GamepadChart _chart;
         private SpeedFeedbackChart _speedFeedbackChart;
 
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public MainWindow()
         {
             InitializeComponent();
+            _logger.Info("Created GUI instance");
+            Console.WriteLine("console");
+
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
             _chart = new GamepadChart();
@@ -104,6 +111,7 @@ namespace RobotController.WpfGui
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            _logger.Info("Starting connection...");
             if (robotConnection == null)
             {
                 serialPort = serialPortFactory.GetPort("COM3");
@@ -118,6 +126,8 @@ namespace RobotController.WpfGui
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            _logger.Info("Stopping connection...");
+
             if (robotConnection != null)
             {
                 robotConnection.Dispose();

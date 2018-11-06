@@ -47,6 +47,11 @@
             <TabItem Header="Robot settings">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
+            <TabItem Header="Logs">
+                <Grid Background="#FFE5E5E5">
+                    <controls:Debug />
+                </Grid>
+            </TabItem>
         </TabControl>
         <Grid HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>

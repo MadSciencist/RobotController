@@ -21,6 +21,8 @@ namespace RobotController.Gamepad
 
         public GamepadController(ISteeringConfig config, int controllerIndex, int updateFrequency)
         {
+
+
             if (updateFrequency <= 0) throw new ArgumentException("Update frequency should be positive");
 
             _config = config;
