@@ -7,46 +7,118 @@
              xmlns:local="clr-namespace:RobotController.WpfGui.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <lvc:CartesianChart AnimationsSpeed="0:0:0" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}" Height="160" Width="410" Canvas.Left="330.4" Canvas.Top="53.2" Grid.Column="1" Margin="25.2,201.4,64.8,88.6">
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding FeedbackChartViewModel.SpeedFeedbackChart.MotorLeftValues}" 
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <lvc:CartesianChart AnimationsSpeed="0:0:0" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10, 0, 0, 0">
+                    <lvc:CartesianChart.Series>
+                        <lvc:LineSeries Values="{Binding FeedbackChartViewModel.SpeedFeedbackChart.MotorLeftValues}" 
                                     PointGeometry="{x:Null}" 
                                     LineSmoothness="0.25"
                                     StrokeThickness="2" 
                                     Stroke="#F34336"
                                     Fill="Transparent"
                                     />
-                <lvc:LineSeries Values="{Binding FeedbackChartViewModel.SpeedFeedbackChart.MotorRightValues}" 
+                        <lvc:LineSeries Values="{Binding FeedbackChartViewModel.SpeedFeedbackChart.MotorRightValues}" 
                                     PointGeometry="{x:Null}" 
                                     LineSmoothness="0.25"
                                     StrokeThickness="2" 
                                     Stroke="YellowGreen"
                                     Fill="Transparent"
                                     />
-            </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding FeedbackChartViewModel.SpeedFeedbackChart.DateTimeFormatter}" 
+                    </lvc:CartesianChart.Series>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis LabelFormatter="{Binding FeedbackChartViewModel.SpeedFeedbackChart.DateTimeFormatter}" 
                               MaxValue="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisMax}" 
                               MinValue="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisMin}"
                               Unit="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisUnit}"
                               DisableAnimations="True">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisStep}" />
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Velocity [m/s]" DisableAnimations="True"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
-        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="180" Margin="0" VerticalAlignment="Stretch"/>
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisStep}" />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Velocity [m/s]" DisableAnimations="True"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <lvc:CartesianChart AnimationsSpeed="0:0:0" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10, 0, 0, 0">
+                    <lvc:CartesianChart.Series>
+                        <lvc:LineSeries Values="{Binding FeedbackChartViewModel.SpeedFeedbackChart.MotorLeftValues}" 
+                                    PointGeometry="{x:Null}" 
+                                    LineSmoothness="0.25"
+                                    StrokeThickness="2" 
+                                    Stroke="#F34336"
+                                    Fill="Transparent"
+                                    />
+                        <lvc:LineSeries Values="{Binding FeedbackChartViewModel.SpeedFeedbackChart.MotorRightValues}" 
+                                    PointGeometry="{x:Null}" 
+                                    LineSmoothness="0.25"
+                                    StrokeThickness="2" 
+                                    Stroke="YellowGreen"
+                                    Fill="Transparent"
+                                    />
+                    </lvc:CartesianChart.Series>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis LabelFormatter="{Binding FeedbackChartViewModel.SpeedFeedbackChart.DateTimeFormatter}" 
+                              MaxValue="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisMax}" 
+                              MinValue="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisMin}"
+                              Unit="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisUnit}"
+                              DisableAnimations="True">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="{Binding FeedbackChartViewModel.SpeedFeedbackChart.AxisStep}" />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Current [A]" DisableAnimations="True"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <Rectangle Fill="#FF3D3D46" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0" Stroke="Black" VerticalAlignment="Stretch"/>
+                <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Padding="10, 4" TextWrapping="Wrap" Text="Live data" Foreground="White"/>
+            </Grid>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0, 0, 5, 0" VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Rectangle Fill="#FF3D3D46" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0" Stroke="Black" VerticalAlignment="Stretch"/>
+                <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,-0.4,79.8" Padding="10, 4" TextWrapping="Wrap" Text="Statuses" Foreground="White" Grid.RowSpan="2"/>
+                <Image HorizontalAlignment="Left" Height="55" Margin="2,10.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5" Source="../Assets/Icons/thermometer.png"/>
+                <Image HorizontalAlignment="Left" Height="55" Margin="143,10.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5" Source="../Assets/Icons/battery.png"/>
+                <TextBlock HorizontalAlignment="Left" Margin="62,12.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Left: 38*C" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="62,42.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Right: 55*C" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="203,12.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Left: 24.1 V" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="203,42.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Right: 25.6 V" VerticalAlignment="Top"/>
+                <Image HorizontalAlignment="Stretch" Margin="27,0,31.8,0" Grid.Row="4" VerticalAlignment="Stretch" Source="../Assets/Icons/robo_scaled.png"/>
+
+                <Rectangle Fill="#FF3D3D46" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" Stroke="Black" VerticalAlignment="Stretch"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Padding="10, 4" TextWrapping="Wrap" Text="State" Foreground="White"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

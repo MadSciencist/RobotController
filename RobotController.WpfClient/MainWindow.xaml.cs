@@ -55,8 +55,6 @@ namespace RobotController.WpfGui
         {
             InitializeComponent();
             _logger.Info("Created GUI instance");
-            Console.WriteLine("console");
-
             serialPortFactory = new SerialPortFactory();
             serialPortManager = new SerialPortManager();
             _chart = new GamepadChart();
