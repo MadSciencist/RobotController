@@ -30,6 +30,7 @@ using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ViewModels;
+using RobotModels;
 using Console = System.Console;
 
 namespace RobotController.WpfGui
@@ -70,7 +71,6 @@ namespace RobotController.WpfGui
             _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart = _speedFeedbackChart;
             _mainViewModel.GamepadChartViewModel.GamepadChart = _chart;
             _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
-
 
             DataContext = _mainViewModel;
             LoadPortNames();
@@ -143,19 +143,55 @@ namespace RobotController.WpfGui
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            var pi = Math.PI;
+            int integer = 25;
+
             var command = new Command()
             {
                 CommandType = ESenderCommand.KeepAlive,
-                Payload = new byte[] {1, 2, 3, 4, 5, 6, 7, 8}
+                Node = ENode.Master,
+                Payload = pi
             };
 
-            robotConnection.SendCommand(command, EPriority.Normal);
+            var command1 = new Command()
+            {
+                CommandType = ESenderCommand.KeepAlive,
+                Node = ENode.Driver1,
+                Payload = integer
+            };
+
+            var command2 = new Command()
+            {
+                CommandType = ESenderCommand.Controls,
+                Node = ENode.Driver2,
+                Payload = new ControlsModel()
+                {
+                    LeftSpeed = 10,
+                    RightSpeed = 10
+                }
+            };
+
+            robotConnection?.SendCommand(command, EPriority.Normal);
+            robotConnection?.SendCommand(command1, EPriority.Normal);
+            robotConnection?.SendCommand(command2, EPriority.VeryHigh);
         }
 
-        //protected override void OnClosing(CancelEventArgs e)
-        //{
-        //    BtnDisconnect_Click(this, null);
-        //    base.OnClosing(e);
-        //}
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (robotConnection != null)
+            {
+                _logger.Info("Stopping connection...");
+                robotConnection.Dispose();
+                robotConnection = null;
+            }
+
+            if (serialPort != null)
+            {
+                serialPort.DiscardInBuffer();
+                serialPortManager.Close(serialPort);
+                serialPort.Dispose();
+                serialPort = null;
+            }
+        }
     }
 }

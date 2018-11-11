@@ -50,7 +50,7 @@ namespace RobotController.Communication.Utils
                 throw new ArgumentNullException(nameof(data));
             }
 
-            ushort crc = ushort.MaxValue;
+            var crc = ushort.MaxValue;
 
             foreach (byte b in data)
             {
@@ -69,7 +69,7 @@ namespace RobotController.Communication.Utils
                 throw new ArgumentNullException(nameof(data));
             }
 
-            ushort crc = ushort.MaxValue;
+            var crc = ushort.MaxValue;
 
             for (short b = offset; b <= length; b++)
             {

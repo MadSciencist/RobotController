@@ -1,7 +1,7 @@
 ﻿using NLog;
 using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
-using RobotController.RobotParameters;
+using RobotController.RobotModels;
 using System;
 
 namespace RobotController.Communication.Messages

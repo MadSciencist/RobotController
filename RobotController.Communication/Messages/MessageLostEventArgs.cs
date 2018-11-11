@@ -1,5 +1,4 @@
-﻿using RobotController.RobotParameters;
-using System;
+﻿using System;
 
 namespace RobotController.Communication.Messages
 {

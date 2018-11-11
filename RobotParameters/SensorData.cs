@@ -1,4 +1,4 @@
-﻿namespace RobotController.RobotParameters
+﻿namespace RobotController.RobotModels
 {
     public class SensorData
     {

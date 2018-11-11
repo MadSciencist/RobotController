@@ -66,7 +66,7 @@ namespace RobotController.Communication.ReceivingTask
             {
                 if (_streamResource.BytesToRead() == 0)
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(CommunicationTasks.ReceivingTaskSleepTime);
                 }
 
                 while (numBytesRead != Framing.FrameLength)

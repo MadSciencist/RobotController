@@ -1,6 +1,6 @@
 ﻿namespace RobotController.Communication.Enums
 {
-    public enum EPriority
+    public enum EPriority : int
     {
         VeryHigh = 0,
         High = 1,

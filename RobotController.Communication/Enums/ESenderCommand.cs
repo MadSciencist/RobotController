@@ -1,6 +1,6 @@
 ﻿namespace RobotController.Communication.Enums
 {
-    public enum ESenderCommand
+    public enum ESenderCommand : byte
     {
         KeepAlive = 0,
         Controls = 1

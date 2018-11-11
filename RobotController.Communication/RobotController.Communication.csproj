@@ -53,8 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\CommunicationTasks.cs" />
-    <Compile Include="Configuration\DeviceAddresses.cs" />
     <Compile Include="Configuration\Framing.cs" />
+    <Compile Include="Enums\ENode.cs" />
     <Compile Include="Enums\EPriority.cs" />
     <Compile Include="Enums\EReceiverCommand.cs" />
     <Compile Include="Enums\ESenderCommand.cs" />
@@ -92,9 +92,9 @@
     <Compile Include="Utils\Watchdog.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RobotParameters\RobotController.RobotParameters.csproj">
+    <ProjectReference Include="..\RobotParameters\RobotController.RobotModels.csproj">
       <Project>{7b48551a-51ab-4381-ba1e-017b6df7e4af}</Project>
-      <Name>RobotController.RobotParameters</Name>
+      <Name>RobotController.RobotModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

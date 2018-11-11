@@ -4,6 +4,7 @@ using RobotController.Communication.Messages;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using RobotController.Communication.Configuration;
 
 namespace RobotController.Communication.SendingTask
 {
@@ -66,7 +67,7 @@ namespace RobotController.Communication.SendingTask
             {
                 if(_queue.Count() == 0)
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(CommunicationTasks.TrasmitingTaskSleepTime);
                 }
                 else
                 {
