@@ -22,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts.Configurations;
 using NLog;
+using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Gamepad.Config;
@@ -138,6 +139,17 @@ namespace RobotController.WpfGui
                 serialPort.Dispose();
                 serialPort = null;
             }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var command = new Command()
+            {
+                CommandType = ESenderCommand.KeepAlive,
+                Payload = new byte[] {1, 2, 3, 4, 5, 6, 7, 8}
+            };
+
+            robotConnection.SendCommand(command, EPriority.Normal);
         }
 
         //protected override void OnClosing(CancelEventArgs e)

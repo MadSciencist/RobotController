@@ -96,6 +96,7 @@
                     <Button Content="Stop" Canvas.Left="99.2" Canvas.Top="73" Width="80" Height="25"/>
                 </Canvas>
             </Border>
+            <Button Content="Button" Grid.Column="3" HorizontalAlignment="Left" Margin="80.8,25,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
         </Grid>
     </Grid>
 </Window>

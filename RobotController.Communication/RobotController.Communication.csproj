@@ -34,6 +34,9 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="Priority Queue, Version=4.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OptimizedPriorityQueue.4.1.1\lib\net45\Priority Queue.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -52,10 +55,15 @@
     <Compile Include="Configuration\CommunicationTasks.cs" />
     <Compile Include="Configuration\DeviceAddresses.cs" />
     <Compile Include="Configuration\Framing.cs" />
+    <Compile Include="Enums\EPriority.cs" />
     <Compile Include="Enums\EReceiverCommand.cs" />
+    <Compile Include="Enums\ESenderCommand.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IMessage.cs" />
+    <Compile Include="Messages\Command.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageExtractor.cs" />
+    <Compile Include="Messages\MessageGenerator.cs" />
     <Compile Include="Messages\MessageLostEventArgs.cs" />
     <Compile Include="Messages\MessageParsedEventArgs.cs" />
     <Compile Include="Messages\MessageParser.cs" />
@@ -65,6 +73,11 @@
     <Compile Include="ReceivingTask\ReceiverErrorEventArgs.cs" />
     <Compile Include="ReceivingTask\ReceiverTask.cs" />
     <Compile Include="RobotConnectionFacade.cs" />
+    <Compile Include="Interfaces\ISenderTask.cs" />
+    <Compile Include="Interfaces\IQueueWrapper.cs" />
+    <Compile Include="SendingTask\QueueWrapper.cs" />
+    <Compile Include="SendingTask\SenderErrorEventArgs.cs" />
+    <Compile Include="SendingTask\SenderTask.cs" />
     <Compile Include="SerialStream\ConnectionEventArgs.cs" />
     <Compile Include="Interfaces\IStreamResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

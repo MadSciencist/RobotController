@@ -2,9 +2,10 @@
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Communication.ReceivingTask;
-using System;
-using System.Runtime.Remoting.Channels;
+using RobotController.Communication.SendingTask;
 using RobotController.Communication.Utils;
+using System;
+using RobotController.Communication.Enums;
 
 
 namespace RobotController.Communication
@@ -15,13 +16,19 @@ namespace RobotController.Communication
 
         private readonly IStreamResource _streamResource;
         private readonly IReceiverTask _receiverTask;
+        private readonly ISenderTask _senderTask;
         private readonly MessageExtractor _messageExtractor;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IWatchdog _watchdog;
 
+        private readonly IQueueWrapper _senderQueue;
+
         public RobotConnectionFacade(IStreamResource streamResource)
         {
             _streamResource = streamResource;
+            _watchdog = new Watchdog(250);
+            _watchdog.TimeoutOccured += (sender, args) => _logger.Fatal("Communication timeout");
+            
 
             _messageExtractor = new MessageExtractor();
             _messageExtractor.KeepAliveReceived += (sender, args) => _watchdog.ResetWatchdog();
@@ -30,13 +37,21 @@ namespace RobotController.Communication
             _messageExtractor.FeedbackReceived += (sender, args) => FeedbackReceived?.Invoke(sender, args);
 
             _receiverTask = new ReceiverTask(_streamResource);
+            _receiverTask.ErrorOccurred += (sender, args) => _logger.Error($"Receiver task error: {args.GetException().Message}");
             _receiverTask.DataReceived += (sender, args) => _messageExtractor.TryGetMessage(args.Data);
             _receiverTask.Start();
-            _logger.Info("Starting receiver task");
 
-            _watchdog = new Watchdog(250);
-            _watchdog.TimeoutOccured += (sender, args) => _logger.Fatal("Communication timeout");
+            _senderQueue = new QueueWrapper();
+            _senderTask = new SenderTask(_streamResource, _senderQueue);
+            _senderTask.ErrorOccurred += (sender, args) => _logger.Error($"Sender task error: {args.GetException().Message}");
+            _senderTask.Start();
+
             _watchdog.Start();
+        }
+
+        public void SendCommand(ICommand command, EPriority priority)
+        {
+            _senderQueue.Enqueue(command, priority);
         }
 
         public void Dispose()
@@ -50,8 +65,9 @@ namespace RobotController.Communication
         {
             if (disposing)
             {
-                _watchdog.Stop();
+                _watchdog?.Stop();
                 _receiverTask?.Stop();
+                _senderTask?.Stop();
             }
         }
     }

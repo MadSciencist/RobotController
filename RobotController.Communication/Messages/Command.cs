@@ -3,11 +3,9 @@ using RobotController.Communication.Interfaces;
 
 namespace RobotController.Communication.Messages
 {
-    public class Message : IMessage
+    public class Command : ICommand
     {
-        public EReceiverCommand Command { get; set; }
-        public byte Counter { get; set; }
+        public ESenderCommand CommandType { get; set; }
         public object Payload { get; set; }
-        public ushort Checksum { get; set; }
     }
 }
