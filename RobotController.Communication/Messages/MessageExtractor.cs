@@ -1,14 +1,14 @@
-﻿using RobotController.Communication.Configuration;
+﻿using NLog;
+using RobotController.Communication.Configuration;
 using RobotController.Communication.Enums;
 using RobotController.Communication.Utils;
 using System;
-using System.Diagnostics;
 
 namespace RobotController.Communication.Messages
 {
     public class MessageExtractor : MessageParser
     {
-        //static int messageCount = 0;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public void TryGetMessage(byte[] data, int lentgh)
         {
@@ -17,16 +17,15 @@ namespace RobotController.Communication.Messages
                 if (CheckChecksumMatching(data))
                 {
                     GetMessage(data);
-                   // Debug.WriteLine($"Message parsed, count: {++messageCount}");
                 }
                 else
                 {
-                    Debug.WriteLine("Checksum mismatch, message dropped");
+                    _logger.Fatal("Checksum mismatch, message dropped");
                 }
             }
             else
             {
-                Debug.WriteLine("Framing mismatch, message dropped");
+                _logger.Fatal("Framing mismatch, message dropped");
             }
         }
 

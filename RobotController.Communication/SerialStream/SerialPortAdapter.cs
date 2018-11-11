@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 
 namespace RobotController.Communication.SerialStream
 {
@@ -9,7 +8,6 @@ namespace RobotController.Communication.SerialStream
 
         public SerialPortAdapter(SerialPort serialPort)
         {
-            Debug.Assert(serialPort != null, "Argument serialPort cannot be null.");
             _serialPort = serialPort;
         }
 

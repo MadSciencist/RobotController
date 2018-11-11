@@ -1,8 +1,8 @@
-﻿using RobotController.Communication.Interfaces;
+﻿using NLog;
+using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Communication.ReceivingTask;
 using System;
-using System.Diagnostics;
 
 namespace RobotController.Communication
 {
@@ -10,18 +10,22 @@ namespace RobotController.Communication
     {
         public event EventHandler<MessageParsedEventArgs> FeedbackReceived;
 
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IStreamResource _streamResource;
         private IReceiverTask _receiverTask;
         private readonly MessageExtractor _messageExtractor;
 
         public RobotConnectionFacade(IStreamResource streamResource)
         {
+            _streamResource = streamResource;
+
             _messageExtractor = new MessageExtractor();
             _messageExtractor.FeedbackReceived += (sender, args) => FeedbackReceived?.Invoke(sender, args);
-            _streamResource = streamResource;
+            
             _receiverTask = new ReceiverTask(_streamResource);
             _receiverTask.DataReceived += DataReceived;
             _receiverTask.Start();
+            _logger.Info("Starting receiver task");
         }
 
         private void DataReceived(object sender, RobotDataReceivedEventArgs args)
@@ -31,21 +35,16 @@ namespace RobotController.Communication
 
         public void Dispose()
         {
-            Debug.WriteLine("ROBOT CONN Dispose method public...");
+            _logger.Info("Disposing robot connection...");
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            Debug.WriteLine("ROBOT CONN Dispose method virtual...");
             if (disposing)
             {
-                Debug.WriteLine("ROBOT CONN Disposing...");
-                if (_receiverTask != null)
-                {
-                    _receiverTask.Stop();
-                }
+                _receiverTask?.Stop();
             }
         }
     }

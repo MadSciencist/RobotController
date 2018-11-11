@@ -109,9 +109,9 @@ namespace RobotController.WpfGui
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _logger.Info("Starting connection...");
             if (robotConnection == null)
             {
+                _logger.Info("Starting connection...");
                 serialPort = serialPortFactory.GetPort("COM3");
                 serialPortManager.TryOpen(serialPort);
                 serialPortAdapter = new SerialPortAdapter(serialPort);
@@ -123,11 +123,10 @@ namespace RobotController.WpfGui
 
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            _logger.Info("Stopping connection...");
-
+        {  
             if (robotConnection != null)
             {
+                _logger.Info("Stopping connection...");
                 robotConnection.Dispose();
                 robotConnection = null;
             }
