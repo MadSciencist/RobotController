@@ -1,16 +1,19 @@
 ﻿using NLog;
 using RobotController.Communication.Configuration;
 using RobotController.Communication.Enums;
+using RobotController.Communication.Interfaces;
 using RobotController.Communication.Utils;
 using System;
 
 namespace RobotController.Communication.Messages
 {
-    public class MessageExtractor : MessageParser
+    internal class MessageExtractor : MessageParser
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static int _lostDataCount;
+        private static int _previousCounterValue;
 
-        public void TryGetMessage(byte[] data, int lentgh)
+        public void TryGetMessage(byte[] data)
         {
             if (CheckLengthAndMarkers(data))
             {
@@ -36,18 +39,35 @@ namespace RobotController.Communication.Messages
 
             var message = new Message
             {
-                DeviceAddress = data[Framing.AddressPosition],
+                Counter = data[Framing.AddressPosition],
                 Command = (EReceiverCommand)data[Framing.CommandPosition],
                 Payload = payload,
                 Checksum = GetFrameChecksum(data)
             };
 
+            VerifyCounter(message);
+
             base.Parse(message);
         }
 
-        private bool CheckLengthAndMarkers(byte[] data) => (data[0] == Framing.FrameStart && data[Framing.FrameLength - 1] == Framing.FrameEnd);
-        private bool CheckChecksumMatching(byte[] data) => GetFrameChecksum(data) == CalculateFrameChecksum(data);
-        private ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, Framing.CrcStartByte);
-        private ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, Framing.NumOfBytesToCrcCalculation);
+        private static bool CheckLengthAndMarkers(byte[] data) => (data[0] == Framing.FrameStart && data[Framing.FrameLength - 1] == Framing.FrameEnd);
+        private static bool CheckChecksumMatching(byte[] data) => GetFrameChecksum(data) == CalculateFrameChecksum(data);
+        private static ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, Framing.CrcStartByte);
+        private static ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, Framing.NumOfBytesToCrcCalculation);
+
+        private void VerifyCounter(IMessage message)
+        {
+            //TODO
+            //this might need a little more logic, now I'm just checking if current counter-1 = previous counter
+            //this generates onMessageLost after runing if for first time
+            if (message.Counter - _previousCounterValue > 1)
+            {
+                if (_lostDataCount < int.MaxValue)
+                    _lostDataCount++;
+                base.MessageLostOccured?.Invoke(this, new MessageLostEventArgs() { TotalLostCount = _lostDataCount });
+            }
+
+            _previousCounterValue = message.Counter;
+        }
     }
 }

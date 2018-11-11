@@ -81,7 +81,7 @@ namespace RobotController.Communication.ReceivingTask
             }
 
 
-            DataReceived?.Invoke(this, new RobotDataReceivedEventArgs { Data = data, Length = data.Length });
+            DataReceived?.Invoke(this, new RobotDataReceivedEventArgs { Data = data });
         }
 
         private void ExceptionHandler(Task task)

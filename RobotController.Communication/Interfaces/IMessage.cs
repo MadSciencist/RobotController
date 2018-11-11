@@ -2,10 +2,10 @@
 
 namespace RobotController.Communication.Interfaces
 {
-    public interface IMessage
+    internal interface IMessage
     {
         EReceiverCommand Command { get; set; }
-        byte DeviceAddress { get; set; }
+        byte Counter { get; set; }
         object Payload { get; set; }
         ushort Checksum { get; set; }
     }

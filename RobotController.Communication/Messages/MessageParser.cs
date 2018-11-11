@@ -1,24 +1,24 @@
-﻿using RobotController.Communication.Configuration;
+﻿using NLog;
 using RobotController.Communication.Enums;
-using RobotController.Communication.Exceptions;
 using RobotController.Communication.Interfaces;
 using RobotController.RobotParameters;
 using System;
 
 namespace RobotController.Communication.Messages
 {
-    public class MessageParser 
+    internal class MessageParser
     {
         public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured;
+        public EventHandler<MessageLostEventArgs> MessageLostOccured;
         public EventHandler<MessageParsedEventArgs> KeepAliveReceived;
         public EventHandler<MessageParsedEventArgs> FeedbackReceived;
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public void Parse(IMessage message)
         {
             try
             {
-                VerifyReciepient(message);
-
                 switch (message.Command)
                 {
                     case EReceiverCommand.KeepAlive:
@@ -53,14 +53,9 @@ namespace RobotController.Communication.Messages
             }
             catch (Exception e)
             {
+                _logger.Error(e.Message);
                 ParsingErrorOccured?.Invoke(this, new MessageParsingErrorEventArgs(e));
             }
-        }
-
-        private void VerifyReciepient(IMessage message)
-        {
-            if (message.DeviceAddress == DeviceAddresses.Me)
-                throw new WrongRecipientException();
         }
     }
 }

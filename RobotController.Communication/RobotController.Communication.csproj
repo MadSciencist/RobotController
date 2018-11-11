@@ -53,10 +53,10 @@
     <Compile Include="Configuration\DeviceAddresses.cs" />
     <Compile Include="Configuration\Framing.cs" />
     <Compile Include="Enums\EReceiverCommand.cs" />
-    <Compile Include="Exceptions\WrongRecipientException.cs" />
     <Compile Include="Interfaces\IMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageExtractor.cs" />
+    <Compile Include="Messages\MessageLostEventArgs.cs" />
     <Compile Include="Messages\MessageParsedEventArgs.cs" />
     <Compile Include="Messages\MessageParser.cs" />
     <Compile Include="Messages\MessageParsingErrorEventArgs.cs" />
@@ -75,6 +75,8 @@
     <Compile Include="SerialStream\SerialPortManager.cs" />
     <Compile Include="SerialStream\SerialPortUtils.cs" />
     <Compile Include="Utils\ChecksumUtils.cs" />
+    <Compile Include="Utils\IWatchdog.cs" />
+    <Compile Include="Utils\Watchdog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RobotParameters\RobotController.RobotParameters.csproj">
@@ -84,6 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

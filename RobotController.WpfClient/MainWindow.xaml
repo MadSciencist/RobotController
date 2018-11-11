@@ -49,7 +49,11 @@
             </TabItem>
             <TabItem Header="Logs">
                 <Grid Background="#FFE5E5E5">
-                    <controls:Debug />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="347*"/>
+                        <ColumnDefinition Width="681*"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:Debug Grid.ColumnSpan="2" />
                 </Grid>
             </TabItem>
         </TabControl>
