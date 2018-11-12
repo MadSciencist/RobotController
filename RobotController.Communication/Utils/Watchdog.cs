@@ -1,5 +1,7 @@
-﻿using System;
+﻿using RobotController.Communication.Interfaces;
+using System;
 using System.Timers;
+using RobotController.Communication.Extensions;
 
 namespace RobotController.Communication.Utils
 {
@@ -15,12 +17,7 @@ namespace RobotController.Communication.Utils
             _timer.Start();
         }
 
-        public void ResetWatchdog()
-        {
-            _timer.Stop();
-            _timer.Start();
-        }
-
+        public void ResetWatchdog() => _timer.Reset();
         public void Start() => _timer.Start();
         public void Stop() => _timer.Stop();
 

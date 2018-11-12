@@ -1,9 +1,9 @@
 ﻿using NLog;
 using RobotController.Communication.Configuration;
 using RobotController.Communication.Enums;
-using RobotController.Communication.Interfaces;
 using RobotController.Communication.Utils;
 using System;
+using RobotController.Communication.Interfaces;
 
 namespace RobotController.Communication.Messages
 {
@@ -37,7 +37,7 @@ namespace RobotController.Communication.Messages
             var payload = new byte[Framing.PayloadLength];
             Buffer.BlockCopy(data, Framing.CommandPosition+1, payload, 0, Framing.PayloadLength);
 
-            var message = new Message
+            var message = new ReceiveMessage
             {
                 Counter = data[Framing.AddressPosition],
                 Command = (EReceiverCommand)data[Framing.CommandPosition],
@@ -55,7 +55,7 @@ namespace RobotController.Communication.Messages
         private static ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, Framing.CrcStartByte);
         private static ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, Framing.NumOfBytesToCrcCalculation);
 
-        private void VerifyCounter(IMessage message)
+        private void VerifyCounter(IReceiveMessage message)
         {
             //TODO
             //this might need a little more logic, now I'm just checking if current counter-1 = previous counter

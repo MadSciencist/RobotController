@@ -58,9 +58,10 @@
     <Compile Include="Enums\EPriority.cs" />
     <Compile Include="Enums\EReceiverCommand.cs" />
     <Compile Include="Enums\ESenderCommand.cs" />
-    <Compile Include="Interfaces\ICommand.cs" />
-    <Compile Include="Interfaces\IMessage.cs" />
-    <Compile Include="Messages\Command.cs" />
+    <Compile Include="Extensions\TimerExtensions.cs" />
+    <Compile Include="Interfaces\ISendMessage.cs" />
+    <Compile Include="Interfaces\IReceiveMessage.cs" />
+    <Compile Include="Interfaces\ISendQueueWrapper.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageExtractor.cs" />
     <Compile Include="Messages\MessageGenerator.cs" />
@@ -68,16 +69,17 @@
     <Compile Include="Messages\MessageParsedEventArgs.cs" />
     <Compile Include="Messages\MessageParser.cs" />
     <Compile Include="Messages\MessageParsingErrorEventArgs.cs" />
+    <Compile Include="Messages\ReceiveMessage.cs" />
+    <Compile Include="Messages\SendMessage.cs" />
     <Compile Include="ReceivingTask\RobotDataReceivedEventArgs.cs" />
     <Compile Include="Interfaces\IReceiverTask.cs" />
     <Compile Include="ReceivingTask\ReceiverErrorEventArgs.cs" />
     <Compile Include="ReceivingTask\ReceiverTask.cs" />
     <Compile Include="RobotConnectionFacade.cs" />
     <Compile Include="Interfaces\ISenderTask.cs" />
-    <Compile Include="Interfaces\IQueueWrapper.cs" />
-    <Compile Include="SendingTask\QueueWrapper.cs" />
     <Compile Include="SendingTask\SenderErrorEventArgs.cs" />
     <Compile Include="SendingTask\SenderTask.cs" />
+    <Compile Include="SendingTask\SendQueueWrapper.cs" />
     <Compile Include="SerialStream\ConnectionEventArgs.cs" />
     <Compile Include="Interfaces\IStreamResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,7 +90,7 @@
     <Compile Include="SerialStream\SerialPortManager.cs" />
     <Compile Include="SerialStream\SerialPortUtils.cs" />
     <Compile Include="Utils\ChecksumUtils.cs" />
-    <Compile Include="Utils\IWatchdog.cs" />
+    <Compile Include="Interfaces\IWatchdog.cs" />
     <Compile Include="Utils\Watchdog.cs" />
   </ItemGroup>
   <ItemGroup>

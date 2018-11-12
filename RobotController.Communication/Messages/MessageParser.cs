@@ -15,7 +15,7 @@ namespace RobotController.Communication.Messages
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public void Parse(IMessage message)
+        public void Parse(IReceiveMessage message)
         {
             try
             {

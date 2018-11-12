@@ -8,17 +8,25 @@ namespace RobotController.Communication.SerialStream
         public EventHandler<ConnectionEventArgs> ConnectionChanged;
         public EventHandler<SerialPortEventArgs> ErrorOccured;
 
-        public void TryOpen(SerialPort serialPort)
+        private readonly SerialPort _serialPort;
+
+        public SerialPortManager(SerialPort serialPort)
         {
-            if (serialPort.IsOpen) return;
+            _serialPort = serialPort;
+        }
+
+        public void TryOpen()
+        {
+            if (_serialPort.IsOpen) return;
 
             try
             {
-                serialPort.Open();
+                _serialPort.Open();
 
-                if (!serialPort.IsOpen) return;
-                serialPort.DiscardInBuffer();
-                ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = true, PortName = serialPort.PortName });
+                DiscardInBuffer();
+                DiscardOutBuffer();
+
+                ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = true, PortName = _serialPort.PortName });
             }
             catch (Exception e)
             {
@@ -26,12 +34,31 @@ namespace RobotController.Communication.SerialStream
             }
         }
 
-        public void Close(SerialPort serialPort)
+        public void Close()
         {
-            if (!serialPort.IsOpen) return;
-            serialPort.DiscardInBuffer();
-            serialPort.Close();
+            if (!_serialPort.IsOpen) return;
+
+            DiscardInBuffer();
+            DiscardOutBuffer();
+            _serialPort.Close();
+
             ConnectionChanged?.Invoke(this, new ConnectionEventArgs { IsConnected = false, PortName = string.Empty });
+        }
+
+        public void DiscardInBuffer()
+        {
+            if(_serialPort != null && _serialPort.IsOpen)
+            {
+                _serialPort.DiscardInBuffer();
+            }
+        }
+
+        public void DiscardOutBuffer()
+        {
+            if (_serialPort != null && _serialPort.IsOpen)
+            {
+                _serialPort.DiscardOutBuffer();
+            }
         }
     }
 }

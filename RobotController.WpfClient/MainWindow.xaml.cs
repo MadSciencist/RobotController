@@ -58,7 +58,6 @@ namespace RobotController.WpfGui
             InitializeComponent();
             _logger.Info("Created GUI instance");
             serialPortFactory = new SerialPortFactory();
-            serialPortManager = new SerialPortManager();
             _chart = new GamepadChart();
             _speedFeedbackChart = new SpeedFeedbackChart();
             config = new SteeringConfig();
@@ -76,8 +75,6 @@ namespace RobotController.WpfGui
             LoadPortNames();
         }
 
-
-        private System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
 
         private void GamepadOnRobotControlChanged(object sender, RobotControlEventArgs e)
         {
@@ -114,7 +111,8 @@ namespace RobotController.WpfGui
             {
                 _logger.Info("Starting connection...");
                 serialPort = serialPortFactory.GetPort("COM3");
-                serialPortManager.TryOpen(serialPort);
+                serialPortManager = new SerialPortManager(serialPort);
+                serialPortManager.TryOpen();
                 serialPortAdapter = new SerialPortAdapter(serialPort);
                 robotConnection = new RobotConnectionFacade(serialPortAdapter);
                 robotConnection.FeedbackReceived += RobotConnectionOnFeedbackReceived;
@@ -134,8 +132,7 @@ namespace RobotController.WpfGui
 
             if (serialPort != null)
             {
-                serialPort.DiscardInBuffer();
-                serialPortManager.Close(serialPort);
+                serialPortManager.Close();
                 serialPort.Dispose();
                 serialPort = null;
             }
@@ -146,21 +143,21 @@ namespace RobotController.WpfGui
             var pi = Math.PI;
             int integer = 25;
 
-            var command = new Command()
+            var command = new SendMessage()
             {
                 CommandType = ESenderCommand.KeepAlive,
                 Node = ENode.Master,
                 Payload = pi
             };
 
-            var command1 = new Command()
+            var command1 = new SendMessage()
             {
                 CommandType = ESenderCommand.KeepAlive,
                 Node = ENode.Driver1,
                 Payload = integer
             };
 
-            var command2 = new Command()
+            var command2 = new SendMessage()
             {
                 CommandType = ESenderCommand.Controls,
                 Node = ENode.Driver2,
@@ -187,8 +184,8 @@ namespace RobotController.WpfGui
 
             if (serialPort != null)
             {
-                serialPort.DiscardInBuffer();
-                serialPortManager.Close(serialPort);
+                if(serialPort.IsOpen) serialPort.DiscardInBuffer();
+                serialPortManager.Close();
                 serialPort.Dispose();
                 serialPort = null;
             }

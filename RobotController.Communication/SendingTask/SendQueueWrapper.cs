@@ -5,21 +5,21 @@ using RobotController.Communication.Interfaces;
 namespace RobotController.Communication.SendingTask
 {
 
-    public class QueueWrapper : IQueueWrapper
+    public class SendQueueWrapper : ISendQueueWrapper
     {
-        private readonly SimplePriorityQueue<ICommand> _queue;
+        private readonly SimplePriorityQueue<ISendMessage> _queue;
 
-        public QueueWrapper()
+        public SendQueueWrapper()
         {
-            _queue = new SimplePriorityQueue<ICommand>();
+            _queue = new SimplePriorityQueue<ISendMessage>();
         }
 
-        public void Enqueue(ICommand message, EPriority priority)
+        public void Enqueue(ISendMessage message, EPriority priority)
         {
             _queue.Enqueue(message, (int)priority);
         }
 
-        public ICommand Dequeue()
+        public ISendMessage Dequeue()
         {
             return _queue.Dequeue();
         }

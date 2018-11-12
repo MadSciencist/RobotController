@@ -1,13 +1,7 @@
-﻿using RobotController.Communication.Enums;
-using RobotController.Communication.Interfaces;
-
-namespace RobotController.Communication.Messages
+﻿namespace RobotController.Communication.Messages
 {
-    public class Message : IMessage
+    public abstract class Message
     {
-        public EReceiverCommand Command { get; set; }
-        public byte Counter { get; set; }
-        public object Payload { get; set; }
-        public ushort Checksum { get; set; }
+        public abstract object Payload { get; set; }
     }
 }

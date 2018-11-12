@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RobotController.Communication.Utils
+namespace RobotController.Communication.Interfaces
 {
     internal interface IWatchdog
     {

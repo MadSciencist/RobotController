@@ -14,12 +14,12 @@ namespace RobotController.Communication.SendingTask
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IStreamResource _streamResource;
-        private readonly IQueueWrapper _queue;
+        private readonly ISendQueueWrapper _queue;
         private readonly MessageGenerator _messageGenerator;
         private Task _task;
         private CancellationTokenSource _source;
 
-        public SenderTask(IStreamResource streamResource, IQueueWrapper queue)
+        public SenderTask(IStreamResource streamResource, ISendQueueWrapper queue)
         {
             _messageGenerator = new MessageGenerator();
             _streamResource = streamResource;

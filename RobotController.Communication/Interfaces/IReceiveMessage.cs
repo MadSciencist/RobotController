@@ -2,10 +2,7 @@
 
 namespace RobotController.Communication.Interfaces
 {
-    /// <summary>
-    /// Receiving message
-    /// </summary>
-    public interface IMessage
+    public interface IReceiveMessage
     {
         EReceiverCommand Command { get; set; }
         byte Counter { get; set; }

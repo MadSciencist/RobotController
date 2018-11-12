@@ -20,8 +20,7 @@ namespace RobotController.Communication
         private readonly MessageExtractor _messageExtractor;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IWatchdog _watchdog;
-
-        private readonly IQueueWrapper _senderQueue;
+        private readonly ISendQueueWrapper _senderQueue;
 
         public RobotConnectionFacade(IStreamResource streamResource)
         {
@@ -41,7 +40,7 @@ namespace RobotController.Communication
             _receiverTask.DataReceived += (sender, args) => _messageExtractor.TryGetMessage(args.Data);
             _receiverTask.Start();
 
-            _senderQueue = new QueueWrapper();
+            _senderQueue = new SendQueueWrapper();
             _senderTask = new SenderTask(_streamResource, _senderQueue);
             _senderTask.ErrorOccurred += (sender, args) => _logger.Error($"Sender task error: {args.GetException().Message}");
             _senderTask.Start();
@@ -49,7 +48,7 @@ namespace RobotController.Communication
             _watchdog.Start();
         }
 
-        public void SendCommand(ICommand command, EPriority priority)
+        public void SendCommand(ISendMessage command, EPriority priority)
         {
             _senderQueue.Enqueue(command, priority);
         }

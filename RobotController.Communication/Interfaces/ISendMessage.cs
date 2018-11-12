@@ -1,12 +1,8 @@
-﻿using System;
-using RobotController.Communication.Enums;
+﻿using RobotController.Communication.Enums;
 
 namespace RobotController.Communication.Interfaces
 {
-    /// <summary>
-    /// Sending message
-    /// </summary>
-    public interface ICommand
+    public interface ISendMessage
     {
         ENode Node { get; set; }
         ESenderCommand CommandType { get; set; }

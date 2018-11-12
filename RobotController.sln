@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J2i.Net.XInputWrapper", "J2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.Gamepad", "RobotController.Gamepad\RobotController.Gamepad.csproj", "{749B171C-9933-48B1-8EB9-C072C0C9092A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.Logger", "RobotController.Logger\RobotController.Logger.csproj", "{82730B71-8DA6-4D96-9835-5B9646782217}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{749B171C-9933-48B1-8EB9-C072C0C9092A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{749B171C-9933-48B1-8EB9-C072C0C9092A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{749B171C-9933-48B1-8EB9-C072C0C9092A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82730B71-8DA6-4D96-9835-5B9646782217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82730B71-8DA6-4D96-9835-5B9646782217}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82730B71-8DA6-4D96-9835-5B9646782217}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82730B71-8DA6-4D96-9835-5B9646782217}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

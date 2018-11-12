@@ -8,9 +8,9 @@ namespace RobotController.Communication.Messages
 {
     public class MessageGenerator
     {
-        public byte[] Generate(ICommand command)
+        public byte[] Generate(ISendMessage command)
         {
-            var payload = GetBytes(command);
+            var payload = GetBytes(command.Payload);
 
             var buffer = new byte[14];
 
@@ -29,40 +29,40 @@ namespace RobotController.Communication.Messages
             return buffer;
         }
 
-        private static byte[] GetBytes(ICommand command)
+        private static byte[] GetBytes(object payload)
         {
-            var payload = new byte[8];
+            var bytes = new byte[8];
 
-            switch (command.Payload)
+            switch (payload)
             {
-                case double data when (command.Payload is double):
-                    payload = BitConverter.GetBytes(data);
+                case double data when (payload is double):
+                    bytes = BitConverter.GetBytes(data);
                     break;
 
-                case short data when (command.Payload is short):
-                    payload = BitConverter.GetBytes(data);
+                case short data when (payload is short):
+                    bytes = BitConverter.GetBytes(data);
                     break;
 
-                case ushort data when (command.Payload is ushort):
-                    payload = BitConverter.GetBytes(data);
+                case ushort data when (payload is ushort):
+                    bytes = BitConverter.GetBytes(data);
                     break;
 
-                case int data when (command.Payload is int):
-                    payload = BitConverter.GetBytes(data);
+                case int data when (payload is int):
+                    bytes = BitConverter.GetBytes(data);
                     break;
 
-                case ControlsModel data when (command.Payload is ControlsModel):
+                case ControlsModel data when (payload is ControlsModel):
                     var left = BitConverter.GetBytes(data.LeftSpeed);
                     var right = BitConverter.GetBytes(data.RightSpeed);
-                    Buffer.BlockCopy(left, 0, payload, 0, 2);
-                    Buffer.BlockCopy(right, 0, payload, 2, 2);
+                    Buffer.BlockCopy(left, 0, bytes, 0, 2);
+                    Buffer.BlockCopy(right, 0, bytes, 2, 2);
                     break;
                     
                 default:
                     throw new NotImplementedException();
             }
 
-            return payload;
+            return bytes;
         }
 
         private static byte[] CalculateCrc(byte[] buffer)
