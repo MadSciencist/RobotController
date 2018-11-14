@@ -29,6 +29,7 @@ using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
 using RobotController.RobotModels;
+using RobotController.WpfGui.BusinessLogic;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ExtendedControls;
 using RobotController.WpfGui.ViewModels;
@@ -199,10 +200,35 @@ namespace RobotController.WpfGui
                 {
                     CommandType = source.ECommand,
                     Node = source.ENode,
-                    Payload = new byte[8]
+                    Payload = (byte)0x00
                 };
 
                 robotConnection?.SendCommand(message, source.EPriority);
+            }
+        }
+
+        private void TextBoxEnterPressed(object sender, KeyEventArgs e)
+        {
+            if (sender is ExtendedTexBbox source)
+            {
+                try
+                {
+                    var message = new SendMessage
+                    {
+                        CommandType = source.ECommand,
+                        Node = source.ENode,
+                        Payload = new TypeCaster(source.Text, source.EType).Cast()
+                    };
+                    robotConnection?.SendCommand(message, source.EPriority);
+                }
+                catch (FormatException ex)
+                {
+                    _logger.Error(ex, "Error while parsing input");
+                }
+                catch (OverflowException ex)
+                {
+                    _logger.Error(ex, "Error while parsing input");
+                }
             }
         }
     }

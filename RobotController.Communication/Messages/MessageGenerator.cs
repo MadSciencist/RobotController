@@ -35,19 +35,43 @@ namespace RobotController.Communication.Messages
 
             switch (payload)
             {
-                case double data when (payload is double):
+                case float data when payload is float:
                     bytes = BitConverter.GetBytes(data);
                     break;
 
-                case short data when (payload is short):
+                case double data when payload is double:
                     bytes = BitConverter.GetBytes(data);
                     break;
 
-                case ushort data when (payload is ushort):
+                case byte data when payload is byte:
                     bytes = BitConverter.GetBytes(data);
                     break;
 
-                case int data when (payload is int):
+                case sbyte data when payload is sbyte:
+                    bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case short data when payload is short:
+                    bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case ushort data when payload is ushort:
+                    bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case int data when payload is int:
+                    bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case uint data when payload is uint:
+                    bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case long data when payload is long:
+                    bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case ulong data when payload is ulong:
                     bytes = BitConverter.GetBytes(data);
                     break;
 
@@ -55,7 +79,7 @@ namespace RobotController.Communication.Messages
                     Buffer.BlockCopy(data, 0, bytes, 0, 8);
                     break;
 
-                case ControlsModel data when (payload is ControlsModel):
+                case ControlsModel data when payload is ControlsModel:
                     var left = BitConverter.GetBytes(data.LeftSpeed);
                     var right = BitConverter.GetBytes(data.RightSpeed);
                     Buffer.BlockCopy(left, 0, bytes, 0, 2);

@@ -5,6 +5,7 @@
 #include "stm32f0xx_hal_uart.h"
 #include "main.h"
 #include "usart.h"
+#include "converters.h"
 #include "Vendor/checksum.h"
 
 #define SIZEOF_RECEIVING_BUFFER 14
@@ -13,6 +14,9 @@
 
 typedef enum {  //data from PC to robot, r means robot
   rRequestAllData = 0,
+  
+  rEepromRead = 5,
+  rEepromWrite = 6,
   
   rAllowMovement = 10,
   rStopMovement,
@@ -29,7 +33,7 @@ typedef enum {  //data from PC to robot, r means robot
 
 void start_receiver();
 
-static void parse_data(const uint8_t* rec_buff);
+static void parse_data(uint8_t addr, uint8_t cmd, uint8_t* payload);
 
 #define _MSG_REC_H_
 #endif

@@ -15,16 +15,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
        uint16_t calculated_crc = crc_modbus(&raw_received[1], 10);
        
        if(frame_crc == calculated_crc){
-         parse_data(&raw_received[0]);
+         parse_data(raw_received[1], raw_received[2], &raw_received[3]);
        }
      }
 }
 
-void parse_data(const uint8_t* buff)
+ int32_t test = 0;
+   
+static void parse_data(uint8_t addr, uint8_t cmd, uint8_t* payload)
 {
-  switch (buff[2])
+  switch (cmd)
   {
   case rAllowMovement:
+    test = get_int32(payload, 0, LITTLE_ENDIAN);
     int a = 0;
     break;
     
