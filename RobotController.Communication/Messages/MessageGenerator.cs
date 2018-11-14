@@ -2,7 +2,7 @@
 using RobotController.Communication.Configuration;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Utils;
-using RobotModels;
+using RobotController.RobotModels;
 
 namespace RobotController.Communication.Messages
 {
@@ -49,6 +49,10 @@ namespace RobotController.Communication.Messages
 
                 case int data when (payload is int):
                     bytes = BitConverter.GetBytes(data);
+                    break;
+
+                case byte[] data when (payload is byte[]):
+                    Buffer.BlockCopy(data, 0, bytes, 0, 8);
                     break;
 
                 case ControlsModel data when (payload is ControlsModel):

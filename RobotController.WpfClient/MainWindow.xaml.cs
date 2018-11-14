@@ -28,10 +28,10 @@ using RobotController.Communication.Messages;
 using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
+using RobotController.RobotModels;
 using RobotController.WpfGui.Charts;
+using RobotController.WpfGui.ExtendedControls;
 using RobotController.WpfGui.ViewModels;
-using RobotModels;
-using Console = System.Console;
 
 namespace RobotController.WpfGui
 {
@@ -188,6 +188,21 @@ namespace RobotController.WpfGui
                 serialPortManager.Close();
                 serialPort.Dispose();
                 serialPort = null;
+            }
+        }
+
+        private void OnButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is ExtendedButton source)
+            {
+                var message = new SendMessage
+                {
+                    CommandType = source.ECommand,
+                    Node = source.ENode,
+                    Payload = new byte[8]
+                };
+
+                robotConnection?.SendCommand(message, source.EPriority);
             }
         }
     }

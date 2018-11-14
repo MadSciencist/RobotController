@@ -1,4 +1,4 @@
-﻿namespace RobotModels
+﻿namespace RobotController.RobotModels
 {
     public class ControlsModel
     {

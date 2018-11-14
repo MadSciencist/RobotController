@@ -85,6 +85,7 @@
       <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="ExtendedControls\ExtendedButton.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ControlSettingsViewModel.cs" />
     <Compile Include="ViewModels\FeedbackChartViewModel.cs" />

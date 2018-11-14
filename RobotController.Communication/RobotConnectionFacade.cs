@@ -30,7 +30,7 @@ namespace RobotController.Communication
             _watchdog.TimeoutOccured += (sender, args) => TimeoutOccured?.Invoke(sender, args);
             
 
-            //TODO unifity the error event args, so we can use one common event handler
+            //TODO unifiy the error event args, so we can use one common event handler
             _messageExtractor = new MessageExtractor();
             _messageExtractor.KeepAliveReceived += (sender, args) => _watchdog.ResetWatchdog();
             _messageExtractor.MessageLostOccured +=
