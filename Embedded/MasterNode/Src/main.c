@@ -46,6 +46,7 @@
 /* USER CODE BEGIN Includes */
 #include "send_queue_manager.h"
 #include "msg_gen.h"
+#include "msg_rec.h"
 #include <stdlib.h>
 #include <math.h>
 /* USER CODE END Includes */
@@ -55,7 +56,7 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 float sinusArg = 0.0, argInc = 0.15;
-uint8_t Received[14];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,7 +104,7 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-   HAL_UART_Receive_DMA(&huart1, Received, 14); 
+  start_receiver();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -131,14 +132,6 @@ int main(void)
     
   }
   /* USER CODE END 3 */
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  static int cnt = 0;
-  cnt++;
-  
-  int b = 0;
 }
 
 /**

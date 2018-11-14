@@ -13,6 +13,7 @@ namespace RobotController.Communication
     public class RobotConnectionFacade : IDisposable
     {
         public event EventHandler<MessageParsedEventArgs> FeedbackReceived;
+        public event EventHandler<EventArgs> TimeoutOccured; 
 
         private readonly IStreamResource _streamResource;
         private readonly IReceiverTask _receiverTask;
@@ -26,9 +27,10 @@ namespace RobotController.Communication
         {
             _streamResource = streamResource;
             _watchdog = new Watchdog(250);
-            _watchdog.TimeoutOccured += (sender, args) => _logger.Fatal("Communication timeout");
+            _watchdog.TimeoutOccured += (sender, args) => TimeoutOccured?.Invoke(sender, args);
             
 
+            //TODO unifity the error event args, so we can use one common event handler
             _messageExtractor = new MessageExtractor();
             _messageExtractor.KeepAliveReceived += (sender, args) => _watchdog.ResetWatchdog();
             _messageExtractor.MessageLostOccured +=
