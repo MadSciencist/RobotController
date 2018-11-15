@@ -44,7 +44,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Robot settings">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <controls:RobotSettings Grid.Row="0" Grid.Column="0" />
+                </Grid>
             </TabItem>
             <TabItem Header="Logs">
                 <Grid Background="#FFE5E5E5">

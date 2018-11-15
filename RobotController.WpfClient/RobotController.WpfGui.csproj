@@ -82,6 +82,18 @@
     <Compile Include="Controls\Debug.xaml.cs">
       <DependentUpon>Debug.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RobotSettings.xaml.cs">
+      <DependentUpon>RobotSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RobotSettingsAlarms.xaml.cs">
+      <DependentUpon>RobotSettingsAlarms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RobotSettingsControllers.xaml.cs">
+      <DependentUpon>RobotSettingsControllers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RobotSettingsFeedback.xaml.cs">
+      <DependentUpon>RobotSettingsFeedback.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Status.xaml.cs">
       <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
@@ -102,6 +114,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Debug.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RobotSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RobotSettingsAlarms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RobotSettingsControllers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RobotSettingsFeedback.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
