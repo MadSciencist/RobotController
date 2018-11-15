@@ -19,7 +19,6 @@ static void DequeueAndSend(){
   if(sendQueue.cnt > 0){
     if(huart1.gState != HAL_UART_STATE_BUSY_TX){
       q_pop(&sendQueue, &dequeuedRec);
-      //HAL_Delay(1);
       HAL_UART_Transmit_IT(&huart1, dequeuedRec.buffer, sizeof(dequeuedRec.buffer));
     }
   }

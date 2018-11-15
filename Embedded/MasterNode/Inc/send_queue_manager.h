@@ -16,7 +16,7 @@ typedef struct SendQueueRecord {
 
 //public functions
 void InitSendQueue();
-void UartSendQueued(SendQueueRec_t* rec);
+void UartSendQueued(SendQueueRec_t *rec);
 
 //private
 static void DequeueAndSend();

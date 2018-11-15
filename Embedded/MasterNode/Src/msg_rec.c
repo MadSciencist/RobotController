@@ -20,14 +20,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
      }
 }
 
- int32_t test = 0;
+ double test = 0;
    
 static void parse_data(uint8_t addr, uint8_t cmd, uint8_t* payload)
 {
   switch (cmd)
   {
   case rAllowMovement:
-    test = get_int32(payload, 0, LITTLE_ENDIAN);
+    test = get_double(payload, 0, LITTLE_ENDIAN);
     int a = 0;
     break;
     
