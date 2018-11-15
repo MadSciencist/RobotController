@@ -1,8 +1,18 @@
 #include "driver_model.h"
 
+driver_t *drv1 = NULL, *drv2 = NULL;
 
+void init_drivers(){
+  drv1 = init_driver();
+  drv2 = init_driver();
+}
 
-driver_t *init_driver(){
+void free_drivers(){
+  free_driver(drv1);
+  free_driver(drv2);
+}
+
+static driver_t *init_driver(){
   driver_t *drv = (driver_t*)malloc(sizeof(driver_t));
   drv->kp = 0.0;
   drv->ki = 0.0;
@@ -12,6 +22,6 @@ driver_t *init_driver(){
   return drv;
 }
 
-void free_driver(driver_t *driver){
+static void free_driver(driver_t *driver){
   free(driver);
 }

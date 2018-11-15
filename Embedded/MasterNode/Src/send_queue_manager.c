@@ -24,15 +24,13 @@ static void DequeueAndSend(){
   }
 }
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
   if (huart->Instance == USART1){
     DequeueAndSend();
   }
 }
 
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
-{
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
   if (huart->Instance == USART1){
     static uint8_t error_count = 0;
     error_count++;

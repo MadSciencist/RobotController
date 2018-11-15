@@ -57,7 +57,6 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-driver_t *drv1 = NULL, *drv2 = NULL;
 float sinusArg = 0.0, argInc = 0.15;
 
 /* USER CODE END PV */
@@ -84,8 +83,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
   InitSendQueue();
   
-  drv1 = init_driver();
-  drv2 = init_driver();
+
   
   /* USER CODE END 1 */
   

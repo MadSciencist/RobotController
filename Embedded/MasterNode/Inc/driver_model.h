@@ -10,9 +10,11 @@ typedef struct DriverModel {
   double i_lim;
 } driver_t;
 
+void init_drivers();
+void free_drivers();
 
-driver_t* init_driver();
-void free_driver(driver_t* driver);
+static driver_t* init_driver();
+static void free_driver(driver_t* driver);
 
 #define _DRIVER_MODEL_H
 #endif

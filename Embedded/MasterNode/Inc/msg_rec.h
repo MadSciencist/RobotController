@@ -7,33 +7,36 @@
 #include "usart.h"
 #include "converters.h"
 #include "Vendor/checksum.h"
+#include "driver_model.h"
 
 #define SIZEOF_RECEIVING_BUFFER 14
 #define FRAME_START_CHAR '<'
 #define FRAME_STOP_CHAR '>'
 
 typedef enum {  //data from PC to robot, r means robot
-  rRequestAllData = 0,
+  RequestAllData = 0,
   
-  rEepromRead = 5,
-  rEepromWrite = 6,
+  EepromRead = 5,
+  EepromWrite = 6,
   
-  rAllowMovement = 10,
-  rStopMovement,
+  AllowMovement = 10,
+  StopMovement,
   
-  rMotorP = 100,
-  rMotorI,
-  rMotorILimit,
-  rMotorD,
-  rMotorDType,
-  rMotorMinSpeed,
-  rMotorMaxSpeed,
-  rMotorSpeedOffset,
-}EGui2rob_t;
+  MotorP = 100,
+  MotorI,
+  MotorILimit,
+  MotorD,
+} gui2rob_t;
+
+typedef enum {
+  Master,
+  Driver1,
+  Driver2
+} addresses_t;
 
 void start_receiver();
 
-static void parse_data(uint8_t addr, uint8_t cmd, uint8_t* payload);
+static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload);
 
 #define _MSG_REC_H_
 #endif
