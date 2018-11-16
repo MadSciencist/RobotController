@@ -1,32 +1,10 @@
-﻿using RobotController.Communication;
-using RobotController.Communication.SerialStream;
-using RobotController.Gamepad;
-using System;
-using LiveCharts;
-using LiveCharts.Wpf;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using LiveCharts.Configurations;
-using NLog;
+﻿using NLog;
+using RobotController.Communication;
 using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
+using RobotController.Communication.SerialStream;
+using RobotController.Gamepad;
 using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
@@ -35,6 +13,15 @@ using RobotController.WpfGui.BusinessLogic;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ExtendedControls;
 using RobotController.WpfGui.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO.Ports;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+using RobotController.WpfGui.Controls;
 
 namespace RobotController.WpfGui
 {
@@ -51,12 +38,14 @@ namespace RobotController.WpfGui
         private IGamepadController gamepad;
         private MainViewModel _mainViewModel;
         private SteeringConfig config;
-        private GamepadChart _chart;
+        private GamepadChart _gamepadChart;
         private SpeedFeedbackChart _speedFeedbackChart;
 
         private IList<MeasurementModel> left;
         private IList<MeasurementModel> right;
         private DispatcherTimer dispatcherTimer;
+
+        private Point triggerPosition;
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -65,17 +54,20 @@ namespace RobotController.WpfGui
             InitializeComponent();
             _logger.Info("Created GUI instance");
             serialPortFactory = new SerialPortFactory();
-            _chart = new GamepadChart();
+            _gamepadChart = new GamepadChart();
             _speedFeedbackChart = new SpeedFeedbackChart();
             config = new SteeringConfig();
             _mainViewModel = new MainViewModel();
             gamepad = new GamepadController(config, 0, 25);
             gamepad.GamepadStateChanged += GamepadStateChanged;
             gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
+            gamepad.SteeringPointChanged += GamepadOnSteeringPointChanged;
             gamepad.Start();
 
+            triggerPosition = new Point();
+
             _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart = _speedFeedbackChart;
-            _mainViewModel.GamepadChartViewModel.GamepadChart = _chart;
+            _mainViewModel.GamepadChartViewModel.GamepadChart = _gamepadChart;
             _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
 
             DataContext = _mainViewModel;
@@ -85,24 +77,36 @@ namespace RobotController.WpfGui
             right = new List<MeasurementModel>();
 
             dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(OnDispatcherTimerTick);
+            dispatcherTimer.Tick += OnDispatcherTimerTick;
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
             dispatcherTimer.Start();
         }
 
+        private void GamepadOnSteeringPointChanged(object sender, Point e)
+        {
+            triggerPosition = e;
+        }
+
+        private void FilterSliderChanged(object sender, short e)
+        {
+            config.ExponentialCurveCoefficient = e;
+            var expo = gamepad.UpdateExponentialCurve(e);
+
+            _mainViewModel.GamepadChartViewModel.GamepadChart.UpdateExpoChart(expo);
+        }
+
         private void OnDispatcherTimerTick(object sender, EventArgs e)
         {
-            var watch = new System.Diagnostics.Stopwatch();
-            watch.Start();
+            _mainViewModel.GamepadChartViewModel.GamepadChart.UpdateLivePointChart(triggerPosition);
+
             Application.Current.Dispatcher.Invoke((Action)(() =>
            {
                _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart.AddNewPoints(left, right);
+              
            }));
 
             left.Clear();
             right.Clear();
-
-            Debug.WriteLine(watch.ElapsedMilliseconds);
         }
 
 
@@ -114,15 +118,7 @@ namespace RobotController.WpfGui
         private void GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                _mainViewModel.GamepadChartViewModel.GamepadChart.UpdateLivePointChart(e.GamepadModel.RightTrigger,
-                    e.GamepadModel.RightTrigger);
-            });
         }
-
-
 
         private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
@@ -143,8 +139,6 @@ namespace RobotController.WpfGui
                 robotConnection.FeedbackReceived += RobotConnectionOnFeedbackReceived;
             }
         }
-
-
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -198,24 +192,6 @@ namespace RobotController.WpfGui
             robotConnection?.SendCommand(command2, EPriority.VeryHigh);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (robotConnection != null)
-            {
-                _logger.Info("Stopping connection...");
-                robotConnection.Dispose();
-                robotConnection = null;
-            }
-
-            if (serialPort != null)
-            {
-                if (serialPort.IsOpen) serialPort.DiscardInBuffer();
-                serialPortManager.Close();
-                serialPort.Dispose();
-                serialPort = null;
-            }
-        }
-
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {
             if (sender is ExtendedButton source)
@@ -266,6 +242,26 @@ namespace RobotController.WpfGui
             var observable = new ObservableCollection<string>(ports);
             PortComboBox.ItemsSource = observable;
             PortComboBox.Text = observable[0];
+        }
+
+        private void WindowClose(object sender, CancelEventArgs e)
+        {
+            gamepad.Stop();
+
+            if (robotConnection != null)
+            {
+                _logger.Info("Stopping connection...");
+                robotConnection.Dispose();
+                robotConnection = null;
+            }
+
+            if (serialPort != null)
+            {
+                if (serialPort.IsOpen) serialPort.DiscardInBuffer();
+                serialPortManager.Close();
+                serialPort.Dispose();
+                serialPort = null;
+            }
         }
     }
 }

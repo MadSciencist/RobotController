@@ -1,44 +1,46 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace RobotController.WpfGui.Charts
 {
     public class GamepadChart
     {
-        //observable for the chart 
-        public SeriesCollection SeriesCollection { get; set; }
+        public  ChartValues<ObservablePoint> PointChartValues { get; set; }
+        public ChartValues<ObservablePoint> LineChartValues { get; set; }
+        public ChartValues<short> ExpoChartValues { get; set; }
 
-        //for live point
-        private readonly ChartValues<ObservablePoint> _pointSeries;
-        private ObservablePoint _point;
+        private readonly ObservablePoint _point;
 
         public GamepadChart()
         {
-            var line = new List<ObservablePoint>();
-            line.Add(new ObservablePoint(0, 0));
-            line.Add(new ObservablePoint(255, 255));
-
-
-            //  var lineSeries = new LineSeries(){ Title = "Line series", Values = new ChartValues<int>(line)};
+            var lineChartPoints = new List<ObservablePoint> {new ObservablePoint(0, 0), new ObservablePoint(255, 255)};
+            LineChartValues = new ChartValues<ObservablePoint>();
+            LineChartValues.AddRange(lineChartPoints);
 
             _point = new ObservablePoint(0, 0);
-            _pointSeries = new ChartValues<ObservablePoint> { _point };
+            PointChartValues = new ChartValues<ObservablePoint> { _point };
 
+            ExpoChartValues = new ChartValues<short>();
+        }
 
-
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries() { Title = "Single point", Values = _pointSeries, PointGeometrySize = 20},
-                new LineSeries() { Values = new ChartValues<ObservablePoint>(line)}
-            };
+        public void UpdateExpoChart(IList<short> values)
+        {
+            ExpoChartValues.Clear();
+            ExpoChartValues.AddRange(values);
         }
 
         public void UpdateLivePointChart(double x, double y)
         {
             _point.X = x;
             _point.Y = y;
+        }
+
+        public void UpdateLivePointChart(Point point)
+        {
+            _point.X = point.X;
+            _point.Y = point.Y;
         }
     }
 }

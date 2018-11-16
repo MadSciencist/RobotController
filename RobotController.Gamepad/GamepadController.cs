@@ -4,6 +4,9 @@ using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
 using RobotController.Gamepad.Models;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Timers;
 
 namespace RobotController.Gamepad
@@ -11,8 +14,9 @@ namespace RobotController.Gamepad
     public class GamepadController : IGamepadController, IDisposable
     {
         public event EventHandler<GamepadEventArgs> GamepadStateChanged;
-        public event EventHandler<RobotControlEventArgs> RobotControlChanged; 
-        public event EventHandler<GamepadErrorEventArgs> GamepadErrorOccured;
+        public event EventHandler<RobotControlEventArgs> RobotControlChanged;
+        public event EventHandler<System.Windows.Point> SteeringPointChanged; 
+        public event EventHandler<ErrorEventArgs> GamepadErrorOccured;
 
         private readonly ISteeringConfig _config;
         private readonly GamepadModel _gamepadModel;
@@ -21,8 +25,6 @@ namespace RobotController.Gamepad
 
         public GamepadController(ISteeringConfig config, int controllerIndex, int updateFrequency)
         {
-
-
             if (updateFrequency <= 0) throw new ArgumentException("Update frequency should be positive");
 
             _config = config;
@@ -36,7 +38,6 @@ namespace RobotController.Gamepad
 
             _lowPassFilterTimer = new Timer(10);
             _lowPassFilterTimer.Elapsed += LowPassFilterTimerOnElapsed;
-
         }
 
         public void Start()
@@ -56,7 +57,6 @@ namespace RobotController.Gamepad
             //this method also rises robot controll event
             TryToProcessMixing();
         }
-
 
         public void StateChanged(object sender, XboxControllerStateChangedEventArgs e)
         {
@@ -120,12 +120,19 @@ namespace RobotController.Gamepad
                 var mixer = new OutputMixer(_config);
                 var robotControls = mixer.Process(_gamepadModel);
 
+                SteeringPointChanged?.Invoke(this, new System.Windows.Point(_gamepadModel.RightTrigger, Math.Abs(robotControls.RightSpeed - 255)));;
                 RobotControlChanged?.Invoke(this, new RobotControlEventArgs { RobotControl = robotControls });
             }
             catch (Exception exception)
             {
-                GamepadErrorOccured?.Invoke(this, new GamepadErrorEventArgs(exception)); ;
+                GamepadErrorOccured?.Invoke(this, new ErrorEventArgs(exception));
             }
+        }
+
+        public IList<short> UpdateExponentialCurve(short coefficient)
+        {
+            ExponentialCurve.Update(coefficient);
+            return ExponentialCurve.LookupTable.ToList();
         }
 
         public void Dispose()

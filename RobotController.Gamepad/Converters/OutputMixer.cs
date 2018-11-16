@@ -51,10 +51,10 @@ namespace RobotController.Gamepad.Converters
             checked
             {
                 if (!_config.UseExponentialCurve) return;
-                tempFwd = ExponentialCurve.PerformLookup(tempFwd, _config.ExponentialCurveCoefficient);
-                tempBwd = ExponentialCurve.PerformLookup(tempBwd, _config.ExponentialCurveCoefficient);
-                tempLeft = ExponentialCurve.PerformLookup(tempLeft, _config.ExponentialCurveCoefficient);
-                tempRight = ExponentialCurve.PerformLookup(tempRight, _config.ExponentialCurveCoefficient);
+                tempFwd = ExponentialCurve.PerformLookup(tempFwd);
+                tempBwd = ExponentialCurve.PerformLookup(tempBwd);
+                tempLeft = ExponentialCurve.PerformLookup(tempLeft);
+                tempRight = ExponentialCurve.PerformLookup(tempRight);
             }
         }
 

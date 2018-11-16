@@ -8,7 +8,7 @@
     x:Class="RobotController.WpfGui.MainWindow"
         mc:Ignorable="d"
     ResizeMode="NoResize"
-        Title="Robot Controller" Height="680" Width="1050" Closing="Window_Closing">
+        Title="Robot Controller" Height="680" Width="1050" Closing="WindowClose">
     <Grid>
         <Grid.RowDefinitions >
             <RowDefinition Height="120">
@@ -40,7 +40,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <controls:ControlSettings Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <controls:ControlSettings Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FilterSliderChanged="FilterSliderChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Robot settings">

@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -20,9 +9,16 @@ namespace RobotController.WpfGui.Controls
     /// </summary>
     public partial class ControlSettings : UserControl
     {
+        public event EventHandler<short> FilterSliderChanged;
+
         public ControlSettings()
         {
             InitializeComponent();
+        }
+
+        protected void OnFilterSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            FilterSliderChanged?.Invoke(this, (short)e.NewValue);
         }
     }
 }
