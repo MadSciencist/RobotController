@@ -67,7 +67,7 @@ namespace RobotController.WpfGui
             triggerPosition = new Point();
 
             _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart = _speedFeedbackChart;
-            _mainViewModel.GamepadChartViewModel.GamepadChart = _gamepadChart;
+            _mainViewModel.GamepadChart = _gamepadChart;
             _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
 
             DataContext = _mainViewModel;
@@ -78,7 +78,7 @@ namespace RobotController.WpfGui
 
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += OnDispatcherTimerTick;
-            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
+            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(33);
             dispatcherTimer.Start();
         }
 
@@ -92,12 +92,12 @@ namespace RobotController.WpfGui
             config.ExponentialCurveCoefficient = e;
             var expo = gamepad.UpdateExponentialCurve(e);
 
-            _mainViewModel.GamepadChartViewModel.GamepadChart.UpdateExpoChart(expo);
+            _mainViewModel.GamepadChart.UpdateExpoChart(expo);
         }
 
         private void OnDispatcherTimerTick(object sender, EventArgs e)
         {
-            _mainViewModel.GamepadChartViewModel.GamepadChart.UpdateLivePointChart(triggerPosition);
+            _mainViewModel.GamepadChart.UpdateLivePointChart(triggerPosition);
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
            {
@@ -130,6 +130,13 @@ namespace RobotController.WpfGui
         {
             if (robotConnection == null)
             {
+                var portName = PortComboBox.Text;
+                if (portName == string.Empty)
+                {
+                    _logger.Error("No ports found");
+                    return;;
+                }
+
                 _logger.Info("Starting connection...");
                 serialPort = serialPortFactory.GetPort(PortComboBox.Text);
                 serialPortManager = new SerialPortManager(serialPort);

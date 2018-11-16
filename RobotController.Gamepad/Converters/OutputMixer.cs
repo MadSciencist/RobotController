@@ -90,7 +90,7 @@ namespace RobotController.Gamepad.Converters
              left thumbstick left -> rotate left
              left thumbstik right -> rotate right
              */
-            else //krecenie sie w miejscu
+            else //rotate around point
             {
                 if (tempRight > _config.Deadband)
                 {
