@@ -4,51 +4,42 @@ namespace RobotController.WpfGui.BusinessLogic
 {
     public class TypeCaster
     { 
-        private readonly string _input;
-        private readonly ESendingType _type;
-
-        public TypeCaster(string input, ESendingType type)
-        {
-            _input = input;
-            _type = type;
-        }
-
-        public object Cast()
+        public static object Cast(string input, ESendingType type)
         {
             object data;
 
-            switch (_type)
+            switch (type)
             {
                 case ESendingType.Float:
-                    data = float.Parse(_input);
+                    data = float.Parse(input);
                     break;
 
                 case ESendingType.Double:
-                    data = double.Parse(_input);
+                    data = double.Parse(input);
                     break;
 
                 case ESendingType.Uint8:
-                    data = byte.Parse(_input);
+                    data = byte.Parse(input);
                     break;
 
                 case ESendingType.Uint16:
-                    data = ushort.Parse(_input);
+                    data = ushort.Parse(input);
                     break;
 
                 case ESendingType.Uint32:
-                    data = uint.Parse(_input);
+                    data = uint.Parse(input);
                     break;
 
                 case ESendingType.Int8:
-                    data = sbyte.Parse(_input);
+                    data = sbyte.Parse(input);
                     break;
 
                 case ESendingType.Int16:
-                    data = short.Parse(_input);
+                    data = short.Parse(input);
                     break;
 
                 case ESendingType.Int32:
-                    data = int.Parse(_input);
+                    data = int.Parse(input);
                     break;
 
                 default:

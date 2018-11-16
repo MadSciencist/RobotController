@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using LiveCharts;
 using LiveCharts.Configurations;
 using RobotController.WpfGui.ViewModels;
@@ -63,6 +66,19 @@ namespace RobotController.WpfGui.Charts
             //keep only last X values
             if (MotorLeftValues.Count > 200) MotorLeftValues.RemoveAt(0);
             if (MotorRightValues.Count > 200) MotorRightValues.RemoveAt(0);
+        }
+
+        public void AddNewPoints(IList<MeasurementModel> left, IList<MeasurementModel> right)
+        {
+            MotorLeftValues.AddRange(left);
+            MotorRightValues.AddRange(right);
+
+            SetAxisLimits(DateTime.Now);
+
+            //keep only last X values
+            //TODO PITTY!!! Dispatcher timer does nothing, cause charts dont have remove range method :( waiting for next release to fix this
+            while (MotorLeftValues.Count > 200) MotorLeftValues.RemoveAt(0);
+            while (MotorRightValues.Count > 200) MotorRightValues.RemoveAt(0);
         }
 
         public double AxisMax

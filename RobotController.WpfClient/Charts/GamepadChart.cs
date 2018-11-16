@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Windows.Media;
-using LiveCharts;
-using LiveCharts.Charts;
-using LiveCharts.Configurations;
+﻿using LiveCharts;
 using LiveCharts.Defaults;
-using LiveCharts.Definitions.Series;
-using LiveCharts.Dtos;
-using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using System.Collections.Generic;
 
 namespace RobotController.WpfGui.Charts
 {
@@ -18,15 +10,10 @@ namespace RobotController.WpfGui.Charts
         //observable for the chart 
         public SeriesCollection SeriesCollection { get; set; }
 
-
-        public Func<double, string> DateTimeFormatter { get; set; }
-
         //for live point
         private readonly ChartValues<ObservablePoint> _pointSeries;
         private ObservablePoint _point;
 
-
-        private ChartValues<MeasurementModel> robotChart;
         public GamepadChart()
         {
             var line = new List<ObservablePoint>();
@@ -39,15 +26,6 @@ namespace RobotController.WpfGui.Charts
             _point = new ObservablePoint(0, 0);
             _pointSeries = new ChartValues<ObservablePoint> { _point };
 
-            var mapper = Mappers.Xy<MeasurementModel>()
-                .X(model => model.DateTime.Ticks)   //use DateTime.Ticks as X
-                .Y(model => model.Value);           //use the value property as Y
-
-            //lets save the mapper globally.
-            Charting.For<MeasurementModel>(mapper);
-            robotChart = new ChartValues<MeasurementModel>();
-            //lets set how to display the X Labels
-            DateTimeFormatter = value => new DateTime((long)value).ToString("mm:ss");
 
 
             SeriesCollection = new SeriesCollection
@@ -57,20 +35,10 @@ namespace RobotController.WpfGui.Charts
             };
         }
 
-
         public void UpdateLivePointChart(double x, double y)
         {
             _point.X = x;
             _point.Y = y;
-        }
-
-        public void AddValue(short val)
-        {
-            robotChart.Add(new MeasurementModel
-            {
-                DateTime = DateTime.Now,
-                Value = val
-            });
         }
     }
 }

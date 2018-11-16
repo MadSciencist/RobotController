@@ -14,7 +14,7 @@
     </UserControl.Resources>
     <Canvas HorizontalAlignment="Left" Width="1028" Margin="0">
 
-        <lvc:CartesianChart Series="{Binding FeedbackChartViewModel.GamepadChart.SeriesCollection}" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}"  Height="470" Canvas.Left="260" Canvas.Top="10" Width="757.2">
+        <lvc:CartesianChart Series="{Binding GamepadChartViewModel.GamepadChart.SeriesCollection}" DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}"  Height="470" Canvas.Left="260" Canvas.Top="10" Width="757.2">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Output" DisableAnimations="True"></lvc:Axis>
             </lvc:CartesianChart.AxisY>

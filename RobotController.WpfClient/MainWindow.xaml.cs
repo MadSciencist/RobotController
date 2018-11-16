@@ -6,6 +6,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
@@ -20,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using LiveCharts.Configurations;
 using NLog;
 using RobotController.Communication.Enums;
@@ -52,6 +54,10 @@ namespace RobotController.WpfGui
         private GamepadChart _chart;
         private SpeedFeedbackChart _speedFeedbackChart;
 
+        private IList<MeasurementModel> left;
+        private IList<MeasurementModel> right;
+        private DispatcherTimer dispatcherTimer;
+
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public MainWindow()
@@ -74,36 +80,54 @@ namespace RobotController.WpfGui
 
             DataContext = _mainViewModel;
             LoadPortNames();
+
+            left = new List<MeasurementModel>();
+            right = new List<MeasurementModel>();
+
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(OnDispatcherTimerTick);
+            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
+            dispatcherTimer.Start();
+        }
+
+        private void OnDispatcherTimerTick(object sender, EventArgs e)
+        {
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+           {
+               _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart.AddNewPoints(left, right);
+           }));
+
+            left.Clear();
+            right.Clear();
+
+            Debug.WriteLine(watch.ElapsedMilliseconds);
         }
 
 
         private void GamepadOnRobotControlChanged(object sender, RobotControlEventArgs e)
         {
-            _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
+             _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
         }
 
         private void GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
-        }
 
-        private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
-        { 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart.AddNewPoint(e.LeftMotor.RawSpeed, e.RightMotor.RawSpeed);
+                _mainViewModel.GamepadChartViewModel.GamepadChart.UpdateLivePointChart(e.GamepadModel.RightTrigger,
+                    e.GamepadModel.RightTrigger);
             });
         }
 
-        private void ComboboxPortsOnDropdownOpened(object sender, EventArgs e) => LoadPortNames();
-        private void LoadPortNames()
+
+
+        private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
-            var ports = SerialPortUtils.GetAvailablePorts();
-            if (ports.Length > 0)
-            {
-                var observable = new ObservableCollection<string>(ports);
-                //PortsCombobox.ItemsSource = observable;
-            }
+            left.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.LeftMotor.RawSpeed });
+            right.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.RightMotor.RawSpeed });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -111,7 +135,7 @@ namespace RobotController.WpfGui
             if (robotConnection == null)
             {
                 _logger.Info("Starting connection...");
-                serialPort = serialPortFactory.GetPort("COM3");
+                serialPort = serialPortFactory.GetPort(PortComboBox.Text);
                 serialPortManager = new SerialPortManager(serialPort);
                 serialPortManager.TryOpen();
                 serialPortAdapter = new SerialPortAdapter(serialPort);
@@ -123,7 +147,7 @@ namespace RobotController.WpfGui
 
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
-        {  
+        {
             if (robotConnection != null)
             {
                 _logger.Info("Stopping connection...");
@@ -185,7 +209,7 @@ namespace RobotController.WpfGui
 
             if (serialPort != null)
             {
-                if(serialPort.IsOpen) serialPort.DiscardInBuffer();
+                if (serialPort.IsOpen) serialPort.DiscardInBuffer();
                 serialPortManager.Close();
                 serialPort.Dispose();
                 serialPort = null;
@@ -217,8 +241,9 @@ namespace RobotController.WpfGui
                     {
                         CommandType = source.ECommand,
                         Node = source.ENode,
-                        Payload = new TypeCaster(source.Text, source.EType).Cast()
+                        Payload = TypeCaster.Cast(source.Text, source.EType)
                     };
+
                     robotConnection?.SendCommand(message, source.EPriority);
                 }
                 catch (FormatException ex)
@@ -230,6 +255,17 @@ namespace RobotController.WpfGui
                     _logger.Error(ex, "Error while parsing input");
                 }
             }
+        }
+
+        private void OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();
+
+        private void LoadPortNames()
+        {
+            var ports = SerialPortUtils.GetAvailablePorts();
+            if (ports.Length <= 0) return;
+            var observable = new ObservableCollection<string>(ports);
+            PortComboBox.ItemsSource = observable;
+            PortComboBox.Text = observable[0];
         }
     }
 }

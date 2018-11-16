@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllowMovement.cs" />
     <Compile Include="ControlsModel.cs" />
     <Compile Include="SensorData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

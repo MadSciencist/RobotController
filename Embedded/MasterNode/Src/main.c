@@ -121,7 +121,7 @@ int main(void)
     int sinus = (int)(sin(sinusArg) * 50.0);
     int cosinus = (int)(cos(sinusArg) * 50.0);
     HAL_GPIO_TogglePin(LD_GN_GPIO_Port, LD_GN_Pin); 
-    HAL_Delay(100);
+    HAL_Delay(25);
     
     int r = rand() % 5;
     // for(int i = 0; i < 2; i++){
