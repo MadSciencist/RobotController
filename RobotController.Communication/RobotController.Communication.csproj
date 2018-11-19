@@ -75,7 +75,7 @@
     <Compile Include="Interfaces\IReceiverTask.cs" />
     <Compile Include="ReceivingTask\ReceiverErrorEventArgs.cs" />
     <Compile Include="ReceivingTask\ReceiverTask.cs" />
-    <Compile Include="RobotConnectionFacade.cs" />
+    <Compile Include="RobotConnectionService.cs" />
     <Compile Include="Interfaces\ISenderTask.cs" />
     <Compile Include="SendingTask\SenderErrorEventArgs.cs" />
     <Compile Include="SendingTask\SenderTask.cs" />

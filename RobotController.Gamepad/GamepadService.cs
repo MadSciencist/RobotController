@@ -11,7 +11,7 @@ using System.Timers;
 
 namespace RobotController.Gamepad
 {
-    public class GamepadController : IGamepadController, IDisposable
+    public class GamepadService : IGamepadService, IDisposable
     {
         public event EventHandler<GamepadEventArgs> GamepadStateChanged;
         public event EventHandler<RobotControlEventArgs> RobotControlChanged;
@@ -23,7 +23,7 @@ namespace RobotController.Gamepad
         private readonly RangeConverter _rangeConverter;
         private readonly Timer _lowPassFilterTimer;
 
-        public GamepadController(ISteeringConfig config, int controllerIndex, int updateFrequency)
+        public GamepadService(ISteeringConfig config, int controllerIndex, int updateFrequency)
         {
             if (updateFrequency <= 0) throw new ArgumentException("Update frequency should be positive");
 

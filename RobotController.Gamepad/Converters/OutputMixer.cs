@@ -30,6 +30,9 @@ namespace RobotController.Gamepad.Converters
                 //process expo curve
                 ProcessExponentialLookup(ref tempLeft, ref tempRight, ref tempFwd, ref tempBwd);
 
+                //process expo curve (inifinite impulse response filter)
+                ProcessLowPassFilter(ref tempLeft, ref tempRight, ref tempFwd, ref tempBwd);
+
                 //constrain inputs
                 tempLeft = Helpres.ConstrainNonnegative(tempLeft, 255);
                 tempRight = Helpres.ConstrainNonnegative(tempRight, 255);
@@ -46,16 +49,51 @@ namespace RobotController.Gamepad.Converters
             return new RobotControlModel(motorLeft, motorRight);
         }
 
+        private void ProcessLowPassFilter(ref short tempLeft, ref short tempRight, ref short tempFwd, ref short tempBwd)
+        {
+            if (!_config.UseLowPassFilter) return;
+
+            double filteredFwd = tempFwd;
+            double filteredBwd = tempBwd;
+            double filteredLeft = tempLeft;
+            double filteredRight = tempRight;
+
+            //we are accepting coefficient in 0-99 range (int, from slider) and scaling it into double
+            var coefficient = _config.LowPassCoefficient / 100.0;
+            var coefficientFulfillant = (1 - coefficient + 0.001);
+
+            filteredFwd = coefficient * _lastFwd + coefficientFulfillant * filteredFwd; //0.001 is solution to casting loose of resolution
+            _lastFwd = filteredFwd;
+            if (filteredFwd < 5.0) filteredFwd = 0; //fast cutoff
+
+            filteredBwd = coefficient * _lastBwd + coefficientFulfillant * filteredBwd;
+            _lastBwd = filteredBwd;
+            if (filteredBwd < 5.0) filteredBwd = 0;
+
+            filteredLeft = coefficient * _lastLeft + coefficientFulfillant * filteredLeft;
+            _lastLeft = filteredLeft;
+            if (filteredLeft < 8.0) filteredLeft = 0;
+
+            filteredRight = coefficient * _lastRight + coefficientFulfillant * filteredRight;
+            _lastRight = filteredRight;
+            if (filteredRight < 8.0) filteredRight = 0;
+
+            tempFwd = (short)filteredFwd;
+            tempBwd = (short)filteredBwd;
+            tempLeft = (short)filteredLeft;
+            tempRight = (short)filteredRight;
+        }
+
+        private static double _lastFwd, _lastBwd, _lastLeft, _lastRight;
+
         private void ProcessExponentialLookup(ref short tempLeft, ref short tempRight, ref short tempFwd, ref short tempBwd)
         {
-            checked
-            {
-                if (!_config.UseExponentialCurve) return;
-                tempFwd = ExponentialCurve.PerformLookup(tempFwd);
-                tempBwd = ExponentialCurve.PerformLookup(tempBwd);
-                tempLeft = ExponentialCurve.PerformLookup(tempLeft);
-                tempRight = ExponentialCurve.PerformLookup(tempRight);
-            }
+            if (!_config.UseExponentialCurve) return;
+
+            tempFwd = ExponentialCurve.PerformLookup(tempFwd);
+            tempBwd = ExponentialCurve.PerformLookup(tempBwd);
+            tempLeft = ExponentialCurve.PerformLookup(tempLeft);
+            tempRight = ExponentialCurve.PerformLookup(tempRight);
         }
 
         private (short, short) ProcessMixing(GamepadModel gamepadState, short tempFwd, short tempBwd, short tempLeft, short tempRight)

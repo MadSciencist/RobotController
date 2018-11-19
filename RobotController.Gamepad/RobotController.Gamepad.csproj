@@ -53,9 +53,9 @@
     <Compile Include="Converters\LowPassFilter.cs" />
     <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\OutputMixer.cs" />
-    <Compile Include="GamepadController.cs" />
+    <Compile Include="GamepadService.cs" />
     <Compile Include="EventArguments\GamepadEventArgs.cs" />
-    <Compile Include="Interfaces\IGamepadController.cs" />
+    <Compile Include="Interfaces\IGamepadService.cs" />
     <Compile Include="Models\ActionButtonsModel.cs" />
     <Compile Include="Models\CrossModel.cs" />
     <Compile Include="Models\GamepadModel.cs" />

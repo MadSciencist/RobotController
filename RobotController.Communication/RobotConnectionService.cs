@@ -10,7 +10,7 @@ using RobotController.Communication.Enums;
 
 namespace RobotController.Communication
 {
-    public class RobotConnectionFacade : IDisposable
+    public class RobotConnectionService : IDisposable
     {
         public event EventHandler<MessageParsedEventArgs> FeedbackReceived;
         public event EventHandler<EventArgs> TimeoutOccured; 
@@ -23,7 +23,7 @@ namespace RobotController.Communication
         private readonly IWatchdog _watchdog;
         private readonly ISendQueueWrapper _senderQueue;
 
-        public RobotConnectionFacade(IStreamResource streamResource)
+        public RobotConnectionService(IStreamResource streamResource)
         {
             _streamResource = streamResource;
             _watchdog = new Watchdog(250);

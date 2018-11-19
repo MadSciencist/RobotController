@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace RobotController.Gamepad.Interfaces
 {
-    public interface IGamepadController
+    public interface IGamepadService
     {
         event EventHandler<GamepadEventArgs> GamepadStateChanged;
         event EventHandler<RobotControlEventArgs> RobotControlChanged;

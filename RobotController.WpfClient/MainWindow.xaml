@@ -40,7 +40,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <controls:ControlSettings Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FilterSliderChanged="FilterSliderChanged"/>
+                    <controls:ControlSettings Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ExpoSliderChanged="ExpoSliderChanged" LowPassFilterSliderChanged="FilterSliderChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Robot settings">

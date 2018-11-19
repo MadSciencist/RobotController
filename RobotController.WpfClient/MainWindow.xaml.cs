@@ -34,8 +34,8 @@ namespace RobotController.WpfGui
         private IStreamResource serialPortAdapter;
         private ISerialPortFactory serialPortFactory;
         private SerialPortManager serialPortManager;
-        private RobotConnectionFacade robotConnection;
-        private IGamepadController gamepad;
+        private RobotConnectionService robotConnection;
+        private IGamepadService gamepad;
         private MainViewModel _mainViewModel;
         private SteeringConfig config;
         private GamepadChart _gamepadChart;
@@ -58,7 +58,7 @@ namespace RobotController.WpfGui
             _speedFeedbackChart = new SpeedFeedbackChart();
             config = new SteeringConfig();
             _mainViewModel = new MainViewModel();
-            gamepad = new GamepadController(config, 0, 25);
+            gamepad = new GamepadService(config, 0, 25);
             gamepad.GamepadStateChanged += GamepadStateChanged;
             gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
             gamepad.SteeringPointChanged += GamepadOnSteeringPointChanged;
@@ -87,12 +87,17 @@ namespace RobotController.WpfGui
             triggerPosition = e;
         }
 
-        private void FilterSliderChanged(object sender, short e)
+        private void ExpoSliderChanged(object sender, short e)
         {
             config.ExponentialCurveCoefficient = e;
             var expo = gamepad.UpdateExponentialCurve(e);
 
             _mainViewModel.GamepadChart.UpdateExpoChart(expo);
+        }
+
+        private void FilterSliderChanged(object sender, short e)
+        {
+            //config.LowPassCoefficient = e;
         }
 
         private void OnDispatcherTimerTick(object sender, EventArgs e)
@@ -142,7 +147,7 @@ namespace RobotController.WpfGui
                 serialPortManager = new SerialPortManager(serialPort);
                 serialPortManager.TryOpen();
                 serialPortAdapter = new SerialPortAdapter(serialPort);
-                robotConnection = new RobotConnectionFacade(serialPortAdapter);
+                robotConnection = new RobotConnectionService(serialPortAdapter);
                 robotConnection.FeedbackReceived += RobotConnectionOnFeedbackReceived;
             }
         }

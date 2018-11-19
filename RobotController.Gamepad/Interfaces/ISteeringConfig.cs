@@ -9,5 +9,6 @@
         bool UseExponentialCurve { get; set; }
         short ExponentialCurveCoefficient { get; set; }
         bool UseLowPassFilter { get; set; }
+        int LowPassCoefficient { get; set; }
     }
 }
