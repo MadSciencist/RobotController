@@ -58,7 +58,7 @@ namespace RobotController.WpfGui
             _speedFeedbackChart = new SpeedFeedbackChart();
             config = new SteeringConfig();
             _mainViewModel = new MainViewModel();
-            gamepad = new GamepadService(config, 0, 25);
+            gamepad = new GamepadService(config, 0, 40);
             gamepad.GamepadStateChanged += GamepadStateChanged;
             gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
             gamepad.SteeringPointChanged += GamepadOnSteeringPointChanged;
@@ -66,7 +66,7 @@ namespace RobotController.WpfGui
 
             triggerPosition = new Point();
 
-            _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart = _speedFeedbackChart;
+            _mainViewModel.SpeedFeedbackChart = _speedFeedbackChart;
             _mainViewModel.GamepadChart = _gamepadChart;
             _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
 
@@ -78,7 +78,7 @@ namespace RobotController.WpfGui
 
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += OnDispatcherTimerTick;
-            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(33);
+            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
             dispatcherTimer.Start();
         }
 
@@ -95,10 +95,7 @@ namespace RobotController.WpfGui
             _mainViewModel.GamepadChart.UpdateExpoChart(expo);
         }
 
-        private void FilterSliderChanged(object sender, short e)
-        {
-            //config.LowPassCoefficient = e;
-        }
+        private void FilterSliderChanged(object sender, short e){}
 
         private void OnDispatcherTimerTick(object sender, EventArgs e)
         {
@@ -106,7 +103,7 @@ namespace RobotController.WpfGui
 
             Application.Current.Dispatcher.Invoke((Action)(() =>
            {
-               _mainViewModel.FeedbackChartViewModel.SpeedFeedbackChart.AddNewPoints(left, right);
+               _mainViewModel.SpeedFeedbackChart.AddNewPoints(left, right);
               
            }));
 

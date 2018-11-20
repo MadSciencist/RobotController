@@ -278,7 +278,7 @@ namespace J2i.Net.XInputWrapper
             int result = XInput.XInputGetState(_playerIndex, ref gamepadStateCurrent);
             IsConnected = (result == 0);
             
-            UpdateBatteryState();
+            //UpdateBatteryState();
             if (gamepadStateCurrent.PacketNumber!=gamepadStatePrev.PacketNumber)
             {
                 OnStateChanged();
