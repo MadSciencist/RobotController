@@ -168,37 +168,14 @@ namespace RobotController.WpfGui
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var pi = Math.PI;
-            int integer = 25;
-
-            var command = new SendMessage()
-            {
-                CommandType = ESenderCommand.KeepAlive,
-                Node = ENode.Master,
-                Payload = pi
-            };
-
             var command1 = new SendMessage()
             {
                 CommandType = ESenderCommand.KeepAlive,
-                Node = ENode.Driver1,
-                Payload = integer
+                Node = ENode.Left,
+                Payload = 25
             };
 
-            var command2 = new SendMessage()
-            {
-                CommandType = ESenderCommand.Controls,
-                Node = ENode.Driver2,
-                Payload = new ControlsModel()
-                {
-                    LeftSpeed = 10,
-                    RightSpeed = 10
-                }
-            };
-
-            robotConnection?.SendCommand(command, EPriority.Normal);
-            robotConnection?.SendCommand(command1, EPriority.Normal);
-            robotConnection?.SendCommand(command2, EPriority.VeryHigh);
+            robotConnection?.SendCommand(command1, EPriority.VeryHigh);
         }
 
         private void OnButtonClick(object sender, RoutedEventArgs e)
@@ -216,7 +193,8 @@ namespace RobotController.WpfGui
             }
         }
 
-        private void TextBoxEnterPressed(object sender, KeyEventArgs e)
+
+        private void RobotSettings_TextBoxEnterPressed(object sender, KeyEventArgs e)
         {
             if (sender is ExtendedTexBbox source)
             {
@@ -241,6 +219,8 @@ namespace RobotController.WpfGui
                 }
             }
         }
+
+
 
         private void OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();
 

@@ -5,6 +5,7 @@
 #include "stm32f0xx_hal_uart.h"
 #include "main.h"
 #include "usart.h"
+#include "PID.h"
 #include "converters.h"
 #include "Vendor/checksum.h"
 #include "driver_model.h"
@@ -22,16 +23,23 @@ typedef enum {  //data from PC to robot, r means robot
   AllowMovement = 10,
   StopMovement,
   
-  MotorP = 100,
-  MotorI,
-  MotorILimit,
-  MotorD,
+  PidKp = 100,
+  PidKi = 101,
+  PidKd = 102,
+  PidIntegralLimit = 103,
+  PidClamping = 104,
+  PidDeadband = 105,
+  PidPeriod = 106,
+    
 } gui2rob_t;
 
+
+//an artifact after changing architecture from distrbuted RS to signle controller
+//still might be helpful while extending architecture to other controllers
 typedef enum {
-  Master,
-  Driver1,
-  Driver2
+  Master = 0,
+  Left = 10,
+  Right = 20
 } addresses_t;
 
 void start_receiver();

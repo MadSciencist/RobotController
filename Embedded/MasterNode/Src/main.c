@@ -51,12 +51,14 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h> 
+#include "PID.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+PID_Properties_t PidPropsLeft, PidPropsRight;
 float sinusArg = 0.0, argInc = 0.15;
 
 /* USER CODE END PV */
@@ -66,7 +68,7 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+void InitPidProps(PID_Properties_t* props);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -82,7 +84,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   InitSendQueue();
-  
+  InitPidProps(&PidPropsLeft);
 
   
   /* USER CODE END 1 */
@@ -196,6 +198,17 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+void InitPidProps(PID_Properties_t* props){
+  props->kp = 1.0;
+  props->ki = 1.05;
+  props->kd = 1.02;
+  props->period = 10;
+  props->posOutputLimit = 255;
+  props->posIntegralLimit = props->posOutputLimit;
+  props->negOutputLimit = -255;
+  props->negIntegralLimit = props->negOutputLimit;
+  props->integralSum = 0.0;
+}
 /* USER CODE END 4 */
 
 /**

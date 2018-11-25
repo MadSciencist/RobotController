@@ -40,7 +40,7 @@ uint32_t get_int32(uint8_t* buff, uint8_t offset, uint8_t endian){
   else return 0;
 }
 
-//this need some rework...
+//this need some rework - endianess...
 typedef union {  
   float f;  
   uint8_t fBuff[sizeof(float)];  

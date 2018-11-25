@@ -1,7 +1,7 @@
 #include "msg_rec.h"
 
 uint8_t raw_received[14]; //received buffer
-extern driver_t *drv1, *drv2;
+extern PID_Properties_t PidPropsLeft, PidPropsRight;
 
 void start_receiver(){
   HAL_UART_Receive_DMA(&huart1, raw_received, 14); 
@@ -25,32 +25,51 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
   case AllowMovement:
     break;
     
-  case MotorP:
-    if(addr == Driver1)
-      drv1->kp = get_double(payload, 0, LITTLE_ENDIAN);
-    else if (addr == Driver2)
-      drv2->kp = get_double(payload, 0, LITTLE_ENDIAN);
+  case PidKp:
+    if(addr == Left)
+      PidPropsLeft.kp = get_double(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      PidPropsRight.kp = get_double(payload, 0, LITTLE_ENDIAN);
     break;
     
-  case MotorI:
-    if(addr == Driver1)
-      drv1->ki = get_double(payload, 0, LITTLE_ENDIAN);
-    else if (addr == Driver2)
-      drv2->ki = get_double(payload, 0, LITTLE_ENDIAN);
+  case PidKi:
+    if(addr == Left)
+      PidPropsLeft.ki = get_double(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      PidPropsRight.ki = get_double(payload, 0, LITTLE_ENDIAN);
     break;
     
-  case MotorD:
-    if(addr == Driver1)
-      drv1->kd = get_double(payload, 0, LITTLE_ENDIAN);
-    else if (addr == Driver2)
-      drv2->kd = get_double(payload, 0, LITTLE_ENDIAN);
+  case PidKd:
+    if(addr == Left)
+      PidPropsLeft.kd = get_double(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      PidPropsRight.kd = get_double(payload, 0, LITTLE_ENDIAN);
     break;
     
-  case MotorILimit:
-    if(addr == Driver1)
-      drv1->i_lim = get_double(payload, 0, LITTLE_ENDIAN);
-    else if (addr == Driver2)
-      drv2->i_lim = get_double(payload, 0, LITTLE_ENDIAN);
+  case PidIntegralLimit:
+    if(addr == Left){
+      PidPropsLeft.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
+      PidPropsLeft.posOutputLimit = PidPropsLeft.posIntegralLimit;
+      PidPropsLeft.negIntegralLimit = -PidPropsLeft.posIntegralLimit;
+      PidPropsLeft.negOutputLimit = -PidPropsLeft.posOutputLimit;
+    }
+    else if (addr == Right){
+      PidPropsRight.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
+      PidPropsRight.posOutputLimit = PidPropsLeft.posIntegralLimit;
+      PidPropsRight.negIntegralLimit = -PidPropsLeft.posIntegralLimit;
+      PidPropsRight.negOutputLimit = -PidPropsLeft.posOutputLimit;
+    }
+    break;
+    
+  case PidDeadband:
+    //TODO
+    break;
+    
+  case PidPeriod:
+    if(addr == Left)
+      PidPropsLeft.period = get_uint16(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      PidPropsRight.period = get_uint16(payload, 0, LITTLE_ENDIAN);
     break;
     
   default:

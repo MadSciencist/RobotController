@@ -45,7 +45,7 @@
             </TabItem>
             <TabItem Header="Robot settings">
                 <Grid Background="#FFE5E5E5">
-                    <controls:RobotSettings Grid.Row="0" Grid.Column="0" />
+                    <controls:RobotSettings Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" />
                 </Grid>
             </TabItem>
             <TabItem Header="Logs">
@@ -98,7 +98,6 @@
                 </Canvas>
             </Border>
             <Button Content="Button" Grid.Column="3" HorizontalAlignment="Left" Margin="80.8,25,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
-            <extendedControls:ExtendedTexBbox OnEnterPressed="TextBoxEnterPressed" ECommand="AllowMovement" ENode="Driver2" EPriority="Normal" EType="Double" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="85.8,68,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         </Grid>
     </Grid>
 </Window>

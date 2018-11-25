@@ -3,7 +3,7 @@
     public enum ENode : byte
     {
         Master = 0,
-        Driver1 = 10,
-        Driver2 = 20
+        Left = 10,
+        Right = 20
     }
 }
