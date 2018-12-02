@@ -11,7 +11,7 @@
 
 
 typedef struct SendQueueRecord {
-  uint8_t buffer[22];
+  uint8_t buffer[14];
 } SendQueueRec_t;
 
 //public functions

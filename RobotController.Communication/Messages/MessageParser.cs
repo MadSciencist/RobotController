@@ -11,7 +11,8 @@ namespace RobotController.Communication.Messages
         public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured;
         public EventHandler<MessageLostEventArgs> MessageLostOccured;
         public EventHandler<MessageParsedEventArgs> KeepAliveReceived;
-        public EventHandler<MessageParsedEventArgs> FeedbackReceived;
+        public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
+        public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -23,28 +24,42 @@ namespace RobotController.Communication.Messages
                 {
                     case EReceiverCommand.KeepAlive:
                         KeepAliveReceived?.Invoke(this, new MessageParsedEventArgs());
+                        Console.WriteLine("Keep alive recieved");
                         break;
 
-                    case EReceiverCommand.Feedback:
-                        var parsed = new MessageParsedEventArgs
+                    case EReceiverCommand.FeedbackSpeedCurrent:
                         {
-                            LeftMotor = new SensorData
+                            var parsed = new MessageParsedEventArgs
                             {
-                                RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 0),
-                                RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 2),
-                                RawVoltage = BitConverter.ToInt16(message.Payload as byte[], 4),
-                                RawTemperature = BitConverter.ToInt16(message.Payload as byte[], 6)
-                            },
-                            RightMotor = new SensorData
-                            {
-                                RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 8),
-                                RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 10),
-                                RawVoltage = BitConverter.ToInt16(message.Payload as byte[], 12),
-                                RawTemperature = BitConverter.ToInt16(message.Payload as byte[], 14)
-                            }
-                        };
+                                LeftMotor = new SpeedCurrentFeedbackModel
+                                {
+                                    RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 0),
+                                    RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 2),
+                                },
+                                RightMotor = new SpeedCurrentFeedbackModel
+                                {
+                                    RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 4),
+                                    RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 6),
+                                }
+                            };
 
-                        FeedbackReceived?.Invoke(this, parsed);
+                            SpeedCurrentFeedbackReceived?.Invoke(this, parsed);
+                        }
+                        break;
+
+                    case EReceiverCommand.FeedbackVoltageTemperature:
+                        {
+                            var parsed = new MessageParsedEventArgs
+                            {
+                                VoltageTemperatureFeedbackModel = new VoltageTemperatureFeedbackModel()
+                                {
+                                    RawVoltage = BitConverter.ToInt16(message.Payload as byte[], 0),
+                                    RawTemperature = BitConverter.ToInt16(message.Payload as byte[], 2),
+                                }
+                            };
+
+                            VoltageTemperatureFeedbackReceived?.Invoke(this, parsed);
+                        }
                         break;
 
                     default:

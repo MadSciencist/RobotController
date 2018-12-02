@@ -12,7 +12,8 @@ namespace RobotController.Communication
 {
     public class RobotConnectionService : IDisposable
     {
-        public event EventHandler<MessageParsedEventArgs> FeedbackReceived;
+        public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
+        public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
         public event EventHandler<EventArgs> TimeoutOccured; 
 
         private readonly IStreamResource _streamResource;
@@ -26,7 +27,7 @@ namespace RobotController.Communication
         public RobotConnectionService(IStreamResource streamResource)
         {
             _streamResource = streamResource;
-            _watchdog = new Watchdog(250);
+            _watchdog = new Watchdog(550);
             _watchdog.TimeoutOccured += (sender, args) => TimeoutOccured?.Invoke(sender, args);
             
 
@@ -35,7 +36,8 @@ namespace RobotController.Communication
             _messageExtractor.KeepAliveReceived += (sender, args) => _watchdog.ResetWatchdog();
             _messageExtractor.MessageLostOccured +=
                 (sender, args) => _logger.Fatal($"Lost message, total count: {args.TotalLostCount}");
-            _messageExtractor.FeedbackReceived += (sender, args) => FeedbackReceived?.Invoke(sender, args);
+            _messageExtractor.SpeedCurrentFeedbackReceived += (sender, args) => SpeedCurrentFeedbackReceived?.Invoke(sender, args);
+            _messageExtractor.VoltageTemperatureFeedbackReceived += (sender, args) => VoltageTemperatureFeedbackReceived?.Invoke(sender, args);
 
             _receiverTask = new ReceiverTask(_streamResource);
             _receiverTask.ErrorOccurred += (sender, args) => _logger.Error($"Receiver task error: {args.GetException().Message}");

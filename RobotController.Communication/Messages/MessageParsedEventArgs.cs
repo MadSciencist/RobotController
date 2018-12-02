@@ -5,7 +5,8 @@ namespace RobotController.Communication.Messages
 {
     public class MessageParsedEventArgs : EventArgs
     {
-        public SensorData LeftMotor { get; set; }
-        public SensorData RightMotor { get; set; }
+        public SpeedCurrentFeedbackModel LeftMotor { get; set; }
+        public SpeedCurrentFeedbackModel RightMotor { get; set; }
+        public VoltageTemperatureFeedbackModel VoltageTemperatureFeedbackModel { get; set; }
     }
 }

@@ -47,18 +47,19 @@
 #include "send_queue_manager.h"
 #include "msg_gen.h"
 #include "msg_rec.h"
-#include "driver_model.h"
+#include "sender.h"
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h> 
 #include "PID.h"
+#include "robot_params.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-PID_Properties_t PidPropsLeft, PidPropsRight;
+RobotParams_t robotParams;
 float sinusArg = 0.0, argInc = 0.15;
 
 /* USER CODE END PV */
@@ -84,8 +85,10 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   InitSendQueue();
-  InitPidProps(&PidPropsLeft);
-
+  init_params(&robotParams);
+  InitPidProps(&robotParams.driveLeft.pid);
+  InitPidProps(&robotParams.driveRight.pid);
+  
   
   /* USER CODE END 1 */
   
@@ -117,6 +120,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    send_feedback(&robotParams);
+    
     if(sinusArg >= 2*3.14) sinusArg = 0;
     sinusArg += argInc;
     
@@ -126,11 +131,10 @@ int main(void)
     HAL_Delay(25);
     
     int r = rand() % 5;
-    // for(int i = 0; i < 2; i++){
-    uart_write_two_int16(0, sinus, cosinus); //keep alive
-    uart_write_two_int16(1, sinus, cosinus);
-    //uart_write_byte(0, 1, i);
-    //   }
+
+//    uart_write_two_int16(0, sinus, cosinus); //keep alive
+//    uart_write_two_int16(1, sinus, cosinus);
+
     
     /* USER CODE END WHILE */
     

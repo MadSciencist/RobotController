@@ -60,7 +60,7 @@ namespace RobotController.Communication.ReceivingTask
         private void TryReceiveData()
         {
             var numBytesRead = 0;
-            var data = new byte[Framing.FrameLength];
+            var data = new byte[ReceiverFraming.FrameLength];
 
             try
             {
@@ -69,9 +69,9 @@ namespace RobotController.Communication.ReceivingTask
                     Thread.Sleep(CommunicationTasks.ReceivingTaskSleepTime);
                 }
 
-                while (numBytesRead != Framing.FrameLength)
+                while (numBytesRead != ReceiverFraming.FrameLength)
                 {
-                    numBytesRead += _streamResource.Read(data, numBytesRead, Framing.FrameLength - numBytesRead);
+                    numBytesRead += _streamResource.Read(data, numBytesRead, ReceiverFraming.FrameLength - numBytesRead);
                 }
             }
             catch (Exception e)
@@ -79,7 +79,6 @@ namespace RobotController.Communication.ReceivingTask
                 _logger.Error("Receiver task exception: " + e.Message);
                 Stop(); // probably the serial port is not opened or not created, there is no reason to continue this task
             }
-
 
             DataReceived?.Invoke(this, new RobotDataReceivedEventArgs { Data = data });
         }

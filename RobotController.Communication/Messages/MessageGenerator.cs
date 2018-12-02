@@ -14,7 +14,7 @@ namespace RobotController.Communication.Messages
 
             var buffer = new byte[14];
 
-            buffer[0] = (byte)Framing.FrameStart;
+            buffer[0] = (byte)ReceiverFraming.FrameStart;
             buffer[1] = (byte)command.Node;
             buffer[2] = (byte)command.CommandType;
 
@@ -24,7 +24,7 @@ namespace RobotController.Communication.Messages
 
             buffer[11] = crcBytes[0];
             buffer[12] = crcBytes[1];
-            buffer[13] = (byte)Framing.FrameEnd;
+            buffer[13] = (byte)ReceiverFraming.FrameEnd;
 
             return buffer;
         }

@@ -2,7 +2,8 @@
 {
     public enum EReceiverCommand : byte
     {
-        KeepAlive = 0,
-        Feedback = 1
+        KeepAlive = 1,
+        FeedbackSpeedCurrent = 10,
+        FeedbackVoltageTemperature = 11
     }
 }

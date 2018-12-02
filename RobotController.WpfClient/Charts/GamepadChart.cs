@@ -2,28 +2,27 @@
 using LiveCharts.Defaults;
 using System.Collections.Generic;
 using System.Windows;
-using LiveCharts.Geared;
 
 namespace RobotController.WpfGui.Charts
 {
     public class GamepadChart
     {
-        public  GearedValues<ObservablePoint> PointChartValues { get; set; }
-        public GearedValues<ObservablePoint> LineChartValues { get; set; }
-        public GearedValues<short> ExpoChartValues { get; set; }
+        public ChartValues<ObservablePoint> PointChartValues { get; set; }
+        public ChartValues<ObservablePoint> LineChartValues { get; set; }
+        public ChartValues<short> ExpoChartValues { get; set; }
 
         private readonly ObservablePoint _point;
 
         public GamepadChart()
         {
             var lineChartPoints = new List<ObservablePoint> {new ObservablePoint(0, 0), new ObservablePoint(255, 255)};
-            LineChartValues = new GearedValues<ObservablePoint>();
+            LineChartValues = new ChartValues<ObservablePoint>();
             LineChartValues.AddRange(lineChartPoints);
 
             _point = new ObservablePoint(0, 0);
-            PointChartValues = new GearedValues<ObservablePoint> { _point };
+            PointChartValues = new ChartValues<ObservablePoint> { _point };
 
-            ExpoChartValues = new GearedValues<short>();
+            ExpoChartValues = new ChartValues<short>();
         }
 
         public void UpdateExpoChart(IList<short> values)

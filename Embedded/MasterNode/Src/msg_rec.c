@@ -1,7 +1,8 @@
 #include "msg_rec.h"
 
-uint8_t raw_received[14]; //received buffer
-extern PID_Properties_t PidPropsLeft, PidPropsRight;
+extern RobotParams_t robotParams;
+
+static uint8_t raw_received[14]; //received buffer
 
 void start_receiver(){
   HAL_UART_Receive_DMA(&huart1, raw_received, 14); 
@@ -22,42 +23,56 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
   switch ((gui2rob_t)cmd){
+    
   case AllowMovement:
+    robotParams.state.isEnabled = 1;
+    break;
+    
+  case StopMovement:
+    robotParams.state.isEnabled = 0;
+    break;
+    
+  case EepromRead:
+    robotParams.requests.readEeprom = 1;
+    break;
+    
+  case EepromWrite:
+    robotParams.requests.saveEeprom = 1;
     break;
     
   case PidKp:
     if(addr == Left)
-      PidPropsLeft.kp = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveLeft.pid.kp = get_double(payload, 0, LITTLE_ENDIAN);
     else if (addr == Right)
-      PidPropsRight.kp = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveRight.pid.kp = get_double(payload, 0, LITTLE_ENDIAN);
     break;
     
   case PidKi:
     if(addr == Left)
-      PidPropsLeft.ki = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveLeft.pid.ki = get_double(payload, 0, LITTLE_ENDIAN);
     else if (addr == Right)
-      PidPropsRight.ki = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveRight.pid.ki = get_double(payload, 0, LITTLE_ENDIAN);
     break;
     
   case PidKd:
     if(addr == Left)
-      PidPropsLeft.kd = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveLeft.pid.kd = get_double(payload, 0, LITTLE_ENDIAN);
     else if (addr == Right)
-      PidPropsRight.kd = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveRight.pid.kd = get_double(payload, 0, LITTLE_ENDIAN);
     break;
     
   case PidIntegralLimit:
     if(addr == Left){
-      PidPropsLeft.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
-      PidPropsLeft.posOutputLimit = PidPropsLeft.posIntegralLimit;
-      PidPropsLeft.negIntegralLimit = -PidPropsLeft.posIntegralLimit;
-      PidPropsLeft.negOutputLimit = -PidPropsLeft.posOutputLimit;
+      robotParams.driveLeft.pid.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveLeft.pid.posOutputLimit = robotParams.driveLeft.pid.posIntegralLimit;
+      robotParams.driveLeft.pid.negIntegralLimit = -robotParams.driveLeft.pid.posIntegralLimit;
+      robotParams.driveLeft.pid.negOutputLimit = -robotParams.driveLeft.pid.posOutputLimit;
     }
     else if (addr == Right){
-      PidPropsRight.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
-      PidPropsRight.posOutputLimit = PidPropsLeft.posIntegralLimit;
-      PidPropsRight.negIntegralLimit = -PidPropsLeft.posIntegralLimit;
-      PidPropsRight.negOutputLimit = -PidPropsLeft.posOutputLimit;
+      robotParams.driveRight.pid.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveRight.pid.posOutputLimit =  robotParams.driveRight.pid.posIntegralLimit;
+      robotParams.driveRight.pid.negIntegralLimit = - robotParams.driveRight.pid.posIntegralLimit;
+      robotParams.driveRight.pid.negOutputLimit = - robotParams.driveRight.pid.posOutputLimit;
     }
     break;
     
@@ -67,9 +82,9 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     
   case PidPeriod:
     if(addr == Left)
-      PidPropsLeft.period = get_uint16(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveLeft.pid.period = get_uint16(payload, 0, LITTLE_ENDIAN);
     else if (addr == Right)
-      PidPropsRight.period = get_uint16(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveRight.pid.period = get_uint16(payload, 0, LITTLE_ENDIAN);
     break;
     
   default:

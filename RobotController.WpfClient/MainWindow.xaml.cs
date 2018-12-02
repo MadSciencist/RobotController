@@ -122,7 +122,7 @@ namespace RobotController.WpfGui
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
         }
 
-        private void RobotConnectionOnFeedbackReceived(object sender, MessageParsedEventArgs e)
+        private void RobotConnection_CurrentSpeedFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
             left.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.LeftMotor.RawSpeed });
             right.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.RightMotor.RawSpeed });
@@ -136,7 +136,7 @@ namespace RobotController.WpfGui
                 if (portName == string.Empty)
                 {
                     _logger.Error("No ports found");
-                    return;;
+                    return;
                 }
 
                 _logger.Info("Starting connection...");
@@ -145,8 +145,14 @@ namespace RobotController.WpfGui
                 serialPortManager.TryOpen();
                 serialPortAdapter = new SerialPortAdapter(serialPort);
                 robotConnection = new RobotConnectionService(serialPortAdapter);
-                robotConnection.FeedbackReceived += RobotConnectionOnFeedbackReceived;
+                robotConnection.SpeedCurrentFeedbackReceived += RobotConnection_CurrentSpeedFeedbackReceived;
+                robotConnection.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureFeedbackReceived;
             }
+        }
+
+        private void RobotConnection_VoltageTemperatureFeedbackReceived(object sender, MessageParsedEventArgs e)
+        {
+            Console.WriteLine(e.VoltageTemperatureFeedbackModel.RawTemperature);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

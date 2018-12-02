@@ -34,13 +34,13 @@ namespace RobotController.Communication.Messages
 
         private void GetMessage(byte[] data)
         {
-            var payload = new byte[Framing.PayloadLength];
-            Buffer.BlockCopy(data, Framing.CommandPosition+1, payload, 0, Framing.PayloadLength);
+            var payload = new byte[ReceiverFraming.PayloadLength];
+            Buffer.BlockCopy(data, ReceiverFraming.CommandPosition+1, payload, 0, ReceiverFraming.PayloadLength);
 
             var message = new ReceiveMessage
             {
-                Counter = data[Framing.AddressPosition],
-                Command = (EReceiverCommand)data[Framing.CommandPosition],
+                Counter = data[ReceiverFraming.AddressPosition],
+                Command = (EReceiverCommand)data[ReceiverFraming.CommandPosition],
                 Payload = payload,
                 Checksum = GetFrameChecksum(data)
             };
@@ -50,10 +50,10 @@ namespace RobotController.Communication.Messages
             base.Parse(message);
         }
 
-        private static bool CheckLengthAndMarkers(byte[] data) => (data[0] == Framing.FrameStart && data[Framing.FrameLength - 1] == Framing.FrameEnd);
+        private static bool CheckLengthAndMarkers(byte[] data) => (data[0] == ReceiverFraming.FrameStart && data[ReceiverFraming.FrameLength - 1] == ReceiverFraming.FrameEnd);
         private static bool CheckChecksumMatching(byte[] data) => GetFrameChecksum(data) == CalculateFrameChecksum(data);
-        private static ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, Framing.CrcStartByte);
-        private static ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, Framing.NumOfBytesToCrcCalculation);
+        private static ushort GetFrameChecksum(byte[] data) => BitConverter.ToUInt16(data, ReceiverFraming.CrcStartByte);
+        private static ushort CalculateFrameChecksum(byte[] data) => ChecksumUtils.CalculateCrc(data, 1, ReceiverFraming.NumOfBytesToCrcCalculation);
 
         private void VerifyCounter(IReceiveMessage message)
         {

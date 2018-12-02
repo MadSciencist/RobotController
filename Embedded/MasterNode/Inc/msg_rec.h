@@ -8,7 +8,7 @@
 #include "PID.h"
 #include "converters.h"
 #include "Vendor/checksum.h"
-#include "driver_model.h"
+#include "robot_params.h"
 
 #define SIZEOF_RECEIVING_BUFFER 14
 #define FRAME_START_CHAR '<'
@@ -21,7 +21,7 @@ typedef enum {  //data from PC to robot, r means robot
   EepromWrite = 6,
   
   AllowMovement = 10,
-  StopMovement,
+  StopMovement = 11,
   
   PidKp = 100,
   PidKi = 101,
@@ -30,7 +30,7 @@ typedef enum {  //data from PC to robot, r means robot
   PidClamping = 104,
   PidDeadband = 105,
   PidPeriod = 106,
-    
+  
 } gui2rob_t;
 
 

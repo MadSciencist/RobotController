@@ -1,6 +1,5 @@
 ﻿using LiveCharts;
 using LiveCharts.Configurations;
-using LiveCharts.Geared;
 using RobotController.WpfGui.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,8 @@ namespace RobotController.WpfGui.Charts
     public class SpeedFeedbackChart : ObservableEntity
     {
         //public bind models to be consumed by XAML
-        public GearedValues<MeasurementModel> MotorLeftValues { get; set; }
-        public GearedValues<MeasurementModel> MotorRightValues { get; set; }
+        public ChartValues<MeasurementModel> MotorLeftValues { get; set; }
+        public ChartValues<MeasurementModel> MotorRightValues { get; set; }
         public Func<double, string> DateTimeFormatter { get; set; }
         public double AxisStep { get; set; }
         public double AxisUnit { get; set; }
@@ -24,8 +23,8 @@ namespace RobotController.WpfGui.Charts
         public SpeedFeedbackChart()
         {
             //initialize series storage
-            MotorLeftValues = new GearedValues<MeasurementModel>();
-            MotorRightValues = new GearedValues<MeasurementModel>();
+            MotorLeftValues = new ChartValues<MeasurementModel>();
+            MotorRightValues = new ChartValues<MeasurementModel>();
 
             //register and setup current chart model
             var mapper = Mappers.Xy<MeasurementModel>()

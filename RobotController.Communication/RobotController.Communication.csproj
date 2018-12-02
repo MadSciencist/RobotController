@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\CommunicationTasks.cs" />
-    <Compile Include="Configuration\Framing.cs" />
+    <Compile Include="Configuration\ReceiverFraming.cs" />
     <Compile Include="Enums\ENode.cs" />
     <Compile Include="Enums\EPriority.cs" />
     <Compile Include="Enums\EReceiverCommand.cs" />
