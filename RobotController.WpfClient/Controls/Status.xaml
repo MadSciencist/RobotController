@@ -110,8 +110,8 @@
                 <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,-0.4,79.8" Padding="10, 4" TextWrapping="Wrap" Text="Statuses" Foreground="White" Grid.RowSpan="2"/>
                 <Image HorizontalAlignment="Left" Height="55" Margin="2,10.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5" Source="../Assets/Icons/thermometer.png"/>
                 <Image HorizontalAlignment="Left" Height="55" Margin="143,10.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5" Source="../Assets/Icons/battery.png"/>
-                <TextBlock HorizontalAlignment="Left" Margin="62,12.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Left: 38*C" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="203,12.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Left: 24.1 V" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="62,28.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotStatus.Temperature, StringFormat=\{0\} *C}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="203,28.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotStatus.Voltage, StringFormat=\{0\} V}" VerticalAlignment="Top" Width="66"/>
                 <Image HorizontalAlignment="Stretch" Margin="27,0,31.8,0" Grid.Row="4" VerticalAlignment="Stretch" Source="../Assets/Icons/robo_scaled.png"/>
 
                 <Rectangle Fill="#FF3D3D46" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" Stroke="Black" VerticalAlignment="Stretch"/>

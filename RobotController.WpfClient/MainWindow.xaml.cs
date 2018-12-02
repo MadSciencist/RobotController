@@ -1,6 +1,5 @@
 ﻿using NLog;
 using RobotController.Communication;
-using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Communication.SerialStream;
@@ -8,10 +7,10 @@ using RobotController.Gamepad;
 using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
-using RobotController.RobotModels;
 using RobotController.WpfGui.BusinessLogic;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ExtendedControls;
+using RobotController.WpfGui.Models;
 using RobotController.WpfGui.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,6 @@ using System.IO.Ports;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using RobotController.WpfGui.Controls;
 
 namespace RobotController.WpfGui
 {
@@ -59,9 +57,9 @@ namespace RobotController.WpfGui
             config = new SteeringConfig();
             _mainViewModel = new MainViewModel();
             gamepad = new GamepadService(config, 0, 40);
-            gamepad.GamepadStateChanged += GamepadStateChanged;
-            gamepad.RobotControlChanged += GamepadOnRobotControlChanged;
-            gamepad.SteeringPointChanged += GamepadOnSteeringPointChanged;
+            gamepad.GamepadStateChanged += GamepadService_GamepadStateChanged;
+            gamepad.RobotControlChanged += GamepadSerivce_RobotControlChanged;
+            gamepad.SteeringPointChanged += GamepadService_SteeringPointChanged;
             gamepad.Start();
 
             triggerPosition = new Point();
@@ -82,7 +80,7 @@ namespace RobotController.WpfGui
             dispatcherTimer.Start();
         }
 
-        private void GamepadOnSteeringPointChanged(object sender, Point e)
+        private void GamepadService_SteeringPointChanged(object sender, Point e)
         {
             triggerPosition = e;
         }
@@ -112,12 +110,12 @@ namespace RobotController.WpfGui
         }
 
 
-        private void GamepadOnRobotControlChanged(object sender, RobotControlEventArgs e)
+        private void GamepadSerivce_RobotControlChanged(object sender, RobotControlEventArgs e)
         {
              _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
         }
 
-        private void GamepadStateChanged(object sender, GamepadEventArgs e)
+        private void GamepadService_GamepadStateChanged(object sender, GamepadEventArgs e)
         {
             _mainViewModel.GamepadViewModel.GamepadModel = e.GamepadModel;
         }
@@ -128,7 +126,16 @@ namespace RobotController.WpfGui
             right.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.RightMotor.RawSpeed });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RobotConnection_VoltageTemperatureFeedbackReceived(object sender, MessageParsedEventArgs e)
+        {
+            _mainViewModel.RobotControlsViewModel.RobotStatus = new RobotStatusModel
+            {
+                Temperature = e.VoltageTemperatureFeedbackModel.RawTemperature,
+                Voltage = e.VoltageTemperatureFeedbackModel.RawVoltage
+            };
+        }
+
+        private void ConnectButtonClick(object sender, RoutedEventArgs e)
         {
             if (robotConnection == null)
             {
@@ -150,12 +157,7 @@ namespace RobotController.WpfGui
             }
         }
 
-        private void RobotConnection_VoltageTemperatureFeedbackReceived(object sender, MessageParsedEventArgs e)
-        {
-            Console.WriteLine(e.VoltageTemperatureFeedbackModel.RawTemperature);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void DisconnectButtonClick(object sender, RoutedEventArgs e)
         {
             if (robotConnection != null)
             {
@@ -172,17 +174,7 @@ namespace RobotController.WpfGui
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            var command1 = new SendMessage()
-            {
-                CommandType = ESenderCommand.KeepAlive,
-                Node = ENode.Left,
-                Payload = 25
-            };
 
-            robotConnection?.SendCommand(command1, EPriority.VeryHigh);
-        }
 
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {

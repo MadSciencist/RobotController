@@ -102,6 +102,7 @@
     <Compile Include="ESendingType.cs" />
     <Compile Include="ExtendedControls\ExtendedButton.cs" />
     <Compile Include="ExtendedControls\ExtendedTexBbox.cs" />
+    <Compile Include="Models\RobotStatusModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ControlSettingsViewModel.cs" />
     <Compile Include="ViewModels\GamepadViewModel.cs" />

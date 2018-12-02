@@ -1,5 +1,6 @@
 ﻿using RobotController.Gamepad.Models;
 using RobotController.WpfGui.Charts;
+using RobotController.WpfGui.Models;
 
 namespace RobotController.WpfGui.ViewModels
 {
@@ -16,7 +17,7 @@ namespace RobotController.WpfGui.ViewModels
             GamepadChart = new GamepadChart();
             SpeedFeedbackChart = new SpeedFeedbackChart();
             GamepadViewModel = new GamepadViewModel();
-            RobotControlsViewModel = new RobotControlsViewModel();
+            RobotControlsViewModel = new RobotControlsViewModel { RobotStatus = new RobotStatusModel() };
             ControlSettingsViewModel = new ControlSettingsViewModel();
         }
     }

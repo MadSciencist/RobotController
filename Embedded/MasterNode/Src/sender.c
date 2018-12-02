@@ -4,6 +4,7 @@ void send_feedback(RobotParams_t* params){
   static unsigned long keepAliveprevTicks = 0;
   static unsigned long voltageTemperaturePrevTicks = 0;
   static unsigned long speedCurrentPrevTicks = 0;
+  
   unsigned long ticks = HAL_GetTick();
   
   if ((ticks - keepAliveprevTicks) >= params->timing.keepAlivePeriod) {

@@ -75,8 +75,8 @@
                     <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Connection" VerticalAlignment="Top" Width="84.8" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
                     <TextBlock HorizontalAlignment="Left" Height="14.4" Text="Select port:" VerticalAlignment="Top" Width="84.8" Canvas.Left="80.8" Canvas.Top="50.6"/>
                     <ComboBox Name="PortComboBox" Width="84.8" Height="22" Canvas.Left="80.8" Canvas.Top="76" DropDownOpened="OnSerialPortDropDownOpened"/>
-                    <Button Content="Connect" Canvas.Left="193" Canvas.Top="38" Width="80" Height="25" Click="Button_Click"/>
-                    <Button Content="Disconnect" Canvas.Left="193" Canvas.Top="73" Width="80" Height="25" Click="Button_Click_1"/>
+                    <Button Content="Connect" Canvas.Left="193" Canvas.Top="38" Width="80" Height="25" Click="ConnectButtonClick"/>
+                    <Button Content="Disconnect" Canvas.Left="193" Canvas.Top="73" Width="80" Height="25" Click="DisconnectButtonClick"/>
                 </Canvas>
             </Border>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch">
@@ -97,7 +97,6 @@
                     <extendedControls:ExtendedButton Click="OnButtonClick" ECommand="StopMovement" ENode="Master" EPriority="VeryHigh" Content="Stop" Canvas.Left="99.2" Canvas.Top="73" Width="80" Height="25"/>
                 </Canvas>
             </Border>
-            <Button Content="Button" Grid.Column="3" HorizontalAlignment="Left" Margin="80.8,25,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
         </Grid>
     </Grid>
 </Window>
