@@ -9,17 +9,21 @@ namespace RobotController.Communication.Messages
     internal class MessageParser
     {
         public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured;
-        public EventHandler<MessageLostEventArgs> MessageLostOccured;
+        public EventHandler<MessageLostEventArgs> MessageLostOccured;//???
         public EventHandler<MessageParsedEventArgs> KeepAliveReceived;
         public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
         public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
+        public event EventHandler<MessageParsedEventArgs> ParametersReceived;
 
+        private readonly ParametersModel _parameters = ParametersModel.GetParameters();
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public void Parse(IReceiveMessage message)
         {
             try
             {
+                var payload = (byte[]) message.Payload;
+
                 switch (message.Command)
                 {
                     case EReceiverCommand.KeepAlive:
@@ -33,13 +37,13 @@ namespace RobotController.Communication.Messages
                             {
                                 LeftMotor = new SpeedCurrentFeedbackModel
                                 {
-                                    RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 0),
-                                    RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 2),
+                                    RawSpeed = BitConverter.ToInt16(payload, 0),
+                                    RawCurrent = BitConverter.ToInt16(payload, 2),
                                 },
                                 RightMotor = new SpeedCurrentFeedbackModel
                                 {
-                                    RawSpeed = BitConverter.ToInt16(message.Payload as byte[], 4),
-                                    RawCurrent = BitConverter.ToInt16(message.Payload as byte[], 6),
+                                    RawSpeed = BitConverter.ToInt16(payload, 4),
+                                    RawCurrent = BitConverter.ToInt16(payload, 6),
                                 }
                             };
 
@@ -53,14 +57,85 @@ namespace RobotController.Communication.Messages
                             {
                                 VoltageTemperatureFeedbackModel = new VoltageTemperatureFeedbackModel()
                                 {
-                                    RawVoltage = BitConverter.ToInt16(message.Payload as byte[], 0),
-                                    RawTemperature = BitConverter.ToInt16(message.Payload as byte[], 2),
+                                    RawVoltage = BitConverter.ToInt16(payload, 0),
+                                    RawTemperature = BitConverter.ToInt16(payload, 2),
                                 }
                             };
 
                             VoltageTemperatureFeedbackReceived?.Invoke(this, parsed);
                         }
                         break;
+
+                    case EReceiverCommand.PidKp_1:
+                        _parameters.PidLeft.Kp = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidKi_1:
+                        _parameters.PidLeft.Ki = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidKd_1:
+                        _parameters.PidLeft.Kd = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidIntegralLimit_1:
+                        _parameters.PidLeft.IntegralLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidClamping_1:
+                        _parameters.PidLeft.OutputLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidDeadband_1:
+                        _parameters.PidLeft.Deadband = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidPeriod_1:
+                        _parameters.PidLeft.Period = BitConverter.ToUInt16(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidKp_2:
+                        _parameters.PidRight.Kp = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidKi_2:
+                        _parameters.PidRight.Ki = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidKd_2:
+                        _parameters.PidRight.Kd = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidIntegralLimit_2:
+                        _parameters.PidRight.IntegralLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidClamping_2:
+                        _parameters.PidRight.OutputLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidDeadband_2:
+                        _parameters.PidRight.Deadband = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.PidPeriod_2:
+                        _parameters.PidRight.Period = BitConverter.ToUInt16(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
 
                     default:
                         throw new NotImplementedException();

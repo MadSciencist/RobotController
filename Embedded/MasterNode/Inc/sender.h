@@ -6,6 +6,7 @@
 #include "msg_gen.h"
 
 void send_feedback(RobotParams_t* params);
+void process_requests(RobotParams_t* params);
 
 #define _SENDER_H_
 #endif

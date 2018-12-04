@@ -81,6 +81,7 @@ void InitPidProps(PID_Properties_t* props);
 *
 * @retval None
 */
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -121,19 +122,16 @@ int main(void)
   while (1)
   {
     send_feedback(&robotParams);
+    process_requests(&robotParams);
     
     if(sinusArg >= 2*3.14) sinusArg = 0;
     sinusArg += argInc;
     
     int sinus = (int)(sin(sinusArg) * 50.0);
     int cosinus = (int)(cos(sinusArg) * 50.0);
-    HAL_GPIO_TogglePin(LD_GN_GPIO_Port, LD_GN_Pin); 
-    HAL_Delay(25);
-    
-    int r = rand() % 5;
-
-//    uart_write_two_int16(0, sinus, cosinus); //keep alive
-//    uart_write_two_int16(1, sinus, cosinus);
+    robotParams.driveLeft.speed = sinus;
+    robotParams.driveRight.speed = cosinus;
+    //HAL_GPIO_TogglePin(LD_GN_GPIO_Port, LD_GN_Pin); 
 
     
     /* USER CODE END WHILE */

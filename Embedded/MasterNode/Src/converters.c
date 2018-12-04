@@ -1,5 +1,6 @@
 #include "converters.h"
 
+/* byte array to variable converters */
 uint16_t get_int8(uint8_t* buff, uint8_t offset, uint8_t endian){
   return buff[offset];
 }
@@ -46,19 +47,32 @@ typedef union {
   uint8_t fBuff[sizeof(float)];  
 } floatConverter_t;
 
+typedef union {  
+  double d;  
+  uint8_t fBuff[sizeof(double)];  
+} doubleConverter_t;
+
 float get_float(uint8_t* buff, uint8_t offset, uint8_t endian){
     floatConverter_t conv;
     memcpy(&conv.fBuff[0], &buff[offset], sizeof(float));
     return conv.f;
 }
 
-typedef union {  
-  double d;  
-  uint8_t fBuff[sizeof(double)];  
-} doubleConverter_t;
-
 double get_double(uint8_t* buff, uint8_t offset, uint8_t endian){
     doubleConverter_t conv;
     memcpy(&conv.fBuff[0], &buff[offset], sizeof(double));
     return conv.d;
+}
+
+/* variable to byte array converters */
+uint8_t* get_bytes_from_float(float val){
+  static floatConverter_t conv;
+  conv.f = val;
+  return conv.fBuff;
+}
+
+uint8_t* get_bytes_from_double(double val){
+  static doubleConverter_t conv;
+  conv.d = val;
+  return conv.fBuff;
 }

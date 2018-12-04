@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlsModel.cs" />
+    <Compile Include="Drive\PidModel.cs" />
+    <Compile Include="ParametersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpeedCurrentFeedbackModel.cs" />
     <Compile Include="VoltageTemperatureFeedbackModel.cs" />

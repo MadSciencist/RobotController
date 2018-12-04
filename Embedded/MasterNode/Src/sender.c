@@ -29,3 +29,24 @@ void send_feedback(RobotParams_t* params){
                           (int16_t)params->driveRight.current );
   }
 }
+
+void process_requests(RobotParams_t* params){
+  if(params->requests.readEeprom){
+    uart_write_float(PidKp_1, params->driveLeft.pid.kp);
+    uart_write_float(PidKi_1, params->driveLeft.pid.ki);
+    uart_write_float(PidKd_1, params->driveLeft.pid.kd);
+    uart_write_float(PidIntegralLimit_1, params->driveLeft.pid.posIntegralLimit);
+    uart_write_float(PidDeadband_1, params->driveLeft.deadband);
+    uart_write_int16(PidPeriod_1, params->driveLeft.pid.period);
+    
+    uart_write_float(PidKp_2, params->driveRight.pid.kp);
+    uart_write_float(PidKi_2, params->driveRight.pid.ki);
+    uart_write_float(PidKd_2, params->driveRight.pid.kd);
+    uart_write_float(PidIntegralLimit_2, params->driveRight.pid.posIntegralLimit);
+    uart_write_float(PidDeadband_2, params->driveRight.deadband);
+    uart_write_int16(PidPeriod_2, params->driveRight.pid.period);
+    
+    //clear flag as we already processed this request
+    params->requests.readEeprom = 0;
+  }
+}

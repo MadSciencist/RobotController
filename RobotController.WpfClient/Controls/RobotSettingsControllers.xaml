@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RobotController.WpfGui.Controls"
              xmlns:extendedControls="clr-namespace:RobotController.WpfGui.ExtendedControls"
+             xmlns:viewModels="clr-namespace:RobotController.WpfGui.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="482" d:DesignWidth="1000">
     <Grid>
@@ -23,36 +24,36 @@
                 <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="179.572"/>
                     <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Driver left - PID" VerticalAlignment="Top" Width="84.8" Canvas.Left="6.6" Canvas.Top="6" Foreground="White" Margin="0"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKp" ENode="Left" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKp" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidLeft.Kp, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
                     <Label Content="Kp" Canvas.Left="53.399" Canvas.Top="42.213"/>
                     <Label Content="Ki" Canvas.Left="56.089" Canvas.Top="70.213"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKi" ENode="Left" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="73.173" Width="70"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKd" ENode="Left" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="102.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKi" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidLeft.Ki, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="73.173" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKd" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidLeft.Kd, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="102.093" Width="70"/>
                     <Label Content="Kd" Canvas.Left="53.542" Canvas.Top="99.133"/>
                     <Label Content="Integral limit" Canvas.Left="3.499" Canvas.Top="127.133" Width="76.99" Height="25.96"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidIntegralLimit" ENode="Left" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="130.093" Width="70"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidDeadband" ENode="Left" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="158.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidIntegralLimit" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidLeft.IntegralLimit, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="130.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidDeadband" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidLeft.Deadband, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="158.093" Width="70"/>
                     <Label Content="Deadband" Canvas.Left="14.533" Canvas.Top="158.093" Width="65.956" Height="25.96"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidPeriod" ENode="Left" EPriority="Normal" EType="Uint16" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidPeriod" ENode="Left" EPriority="Normal" EType="Uint16" Text="{Binding ParametersViewModel.ParametersModel.PidLeft.Period, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
                     <Label Content="Period [ms]" Canvas.Left="10" Canvas.Top="183.133" Width="70.489" Height="25.96"/>
                     <CheckBox Content="Use derivative" Canvas.Left="14.533" Canvas.Top="223.917"/>
                 </Canvas>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Height="257.2" Canvas.Left="201.8" Canvas.Top="166.682" Width="181.572">
+            <Border BorderBrush="Black" BorderThickness="1" Height="257" Canvas.Left="202" Canvas.Top="167" Width="181">
                 <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="179.572"/>
-                    <TextBlock HorizontalAlignment="Left" Height="15" TextWrapping="Wrap" Text="Driver right - PID" VerticalAlignment="Top" Width="103" Canvas.Left="6" Canvas.Top="6" Foreground="White" Margin="0"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKp" ENode="Right" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
+                    <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Driver lright - PID" VerticalAlignment="Top" Width="84.8" Canvas.Left="6.6" Canvas.Top="6" Foreground="White" Margin="0"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKp" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidRight.Kp, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
                     <Label Content="Kp" Canvas.Left="53.399" Canvas.Top="42.213"/>
                     <Label Content="Ki" Canvas.Left="56.089" Canvas.Top="70.213"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKi" ENode="Right" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="73.173" Width="70"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKd" ENode="Right" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="102.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKi" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidRight.Ki, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="73.173" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidKd" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidRight.Kd, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="102.093" Width="70"/>
                     <Label Content="Kd" Canvas.Left="53.542" Canvas.Top="99.133"/>
                     <Label Content="Integral limit" Canvas.Left="3.499" Canvas.Top="127.133" Width="76.99" Height="25.96"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidIntegralLimit" ENode="Right" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="130.093" Width="70"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidDeadband" ENode="Right" EPriority="Normal" EType="Double" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="158.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidIntegralLimit" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidRight.IntegralLimit, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="130.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidDeadband" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding ParametersViewModel.ParametersModel.PidRight.Deadband, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="158.093" Width="70"/>
                     <Label Content="Deadband" Canvas.Left="14.533" Canvas.Top="158.093" Width="65.956" Height="25.96"/>
-                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidPeriod" ENode="Right" EPriority="Normal" EType="Uint16" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="OnTextBoxEnterPressed" ECommand="PidPeriod" ENode="Left" EPriority="Normal" EType="Uint16" Text="{Binding ParametersViewModel.ParametersModel.PidRight.Period, StringFormat=\{0\}, Mode=OneWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
                     <Label Content="Period [ms]" Canvas.Left="10" Canvas.Top="183.133" Width="70.489" Height="25.96"/>
                     <CheckBox Content="Use derivative" Canvas.Left="14.533" Canvas.Top="223.917"/>
                 </Canvas>

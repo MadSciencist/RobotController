@@ -135,6 +135,11 @@ namespace RobotController.WpfGui
             };
         }
 
+        private void RobotConnection_ParametersReceived(object sender, MessageParsedEventArgs e)
+        {
+            _mainViewModel.ParametersViewModel.ParametersModel = e.Parameters;
+        }
+
         private void ConnectButtonClick(object sender, RoutedEventArgs e)
         {
             if (robotConnection == null)
@@ -154,6 +159,7 @@ namespace RobotController.WpfGui
                 robotConnection = new RobotConnectionService(serialPortAdapter);
                 robotConnection.SpeedCurrentFeedbackReceived += RobotConnection_CurrentSpeedFeedbackReceived;
                 robotConnection.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureFeedbackReceived;
+                robotConnection.ParametersReceived += RobotConnection_ParametersReceived;
             }
         }
 

@@ -4,6 +4,22 @@
     {
         KeepAlive = 1,
         FeedbackSpeedCurrent = 10,
-        FeedbackVoltageTemperature = 11
+        FeedbackVoltageTemperature = 11,
+
+        PidKp_1 = 100,
+        PidKi_1 = 101,
+        PidKd_1 = 102,
+        PidIntegralLimit_1 = 103,
+        PidClamping_1 = 104,
+        PidDeadband_1 = 105,
+        PidPeriod_1 = 106,
+
+        PidKp_2 = 200,
+        PidKi_2 = 201,
+        PidKd_2 = 202,
+        PidIntegralLimit_2 = 203,
+        PidClamping_2 = 204,
+        PidDeadband_2 = 205,
+        PidPeriod_2 = 206,
     }
 }

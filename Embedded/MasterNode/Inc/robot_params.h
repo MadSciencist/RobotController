@@ -16,6 +16,7 @@ typedef struct {
   uint16_t current;
   PID_Properties_t pid;
   EncoderParams_t encoder;
+  float deadband;
 } DriveParams_t;
 
 typedef struct {

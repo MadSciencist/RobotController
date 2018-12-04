@@ -2,21 +2,31 @@
 
 //MSG:   < CMD 8_BYTE_PAYLOAD 2_BYTE_CHECKSUM > 
 
-void uart_write_two_int16( GuiParser_t cmd, int16_t va1, int16_t val2){   
+void uart_write_dummy( GuiParser_t cmd){   
+  uint8_t payload[16];
+  gen_message(cmd, payload);
+}
+void uart_write_int16(GuiParser_t cmd, int16_t va1){   
+  uint8_t payload[] = {va1, va1 >> 8, 0,0, 0, 0, 0, 0};
+  gen_message(cmd, payload);
+}
+
+void uart_write_two_int16(GuiParser_t cmd, int16_t va1, int16_t val2){   
   uint8_t payload[] = {va1, va1 >> 8, val2, val2 >> 8, 0, 0, 0, 0};
   gen_message(cmd, payload);
 }
 
-void uart_write_four_int16( GuiParser_t cmd, int16_t va1, int16_t val2, int16_t val3, int16_t val4){   
+void uart_write_four_int16(GuiParser_t cmd, int16_t va1, int16_t val2, int16_t val3, int16_t val4){   
   uint8_t payload[] = {va1, va1 >> 8, val2, val2 >> 8, val3, val3 >> 8, val4, val4 >> 8};
   gen_message(cmd, payload);
 }
 
-void uart_write_dummy( GuiParser_t cmd)
-{   
-  uint8_t payload[16];
+void uart_write_float(GuiParser_t cmd, float val){
+  uint8_t* payload = get_bytes_from_float(val);
   gen_message(cmd, payload);
 }
+
+
 
 
 static void gen_message(GuiParser_t cmd, uint8_t* payload){

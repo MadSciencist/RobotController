@@ -14,6 +14,7 @@ namespace RobotController.Communication
     {
         public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
         public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
+        public EventHandler<MessageParsedEventArgs> ParametersReceived;
         public event EventHandler<EventArgs> TimeoutOccured; 
 
         private readonly IStreamResource _streamResource;
@@ -38,6 +39,7 @@ namespace RobotController.Communication
                 (sender, args) => _logger.Fatal($"Lost message, total count: {args.TotalLostCount}");
             _messageExtractor.SpeedCurrentFeedbackReceived += (sender, args) => SpeedCurrentFeedbackReceived?.Invoke(sender, args);
             _messageExtractor.VoltageTemperatureFeedbackReceived += (sender, args) => VoltageTemperatureFeedbackReceived?.Invoke(sender, args);
+            _messageExtractor.ParametersReceived += (sender, args) => ParametersReceived?.Invoke(sender, args);
 
             _receiverTask = new ReceiverTask(_streamResource);
             _receiverTask.ErrorOccurred += (sender, args) => _logger.Error($"Receiver task error: {args.GetException().Message}");

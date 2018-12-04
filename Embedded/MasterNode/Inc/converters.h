@@ -22,5 +22,9 @@ uint32_t get_uint32(uint8_t* buff, uint8_t offset, uint8_t endian);
 float get_float(uint8_t* buff, uint8_t offset, uint8_t endian);
 double get_double(uint8_t* buff, uint8_t offset, uint8_t endian);
 
+/* variable to byte array */
+uint8_t* get_bytes_from_float(float val);
+uint8_t* get_bytes_from_double(double val);
+                                
 #define _CONVERTERS_H_
 #endif

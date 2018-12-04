@@ -4,7 +4,7 @@ Queue_t sendQueue;
 SendQueueRec_t dequeuedRec;
 
 void InitSendQueue(){
-  q_init(&sendQueue, sizeof(SendQueueRec_t), 10, FIFO, false);
+  q_init(&sendQueue, sizeof(SendQueueRec_t), 20, FIFO, false);
 };
 
 
