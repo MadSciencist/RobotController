@@ -7,8 +7,8 @@
     <ProjectGuid>{7B48551A-51AB-4381-BA1E-017B6DF7E4AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RobotModels</RootNamespace>
-    <AssemblyName>RobotModels</AssemblyName>
+    <RootNamespace>RobotController.RobotModels</RootNamespace>
+    <AssemblyName>RobotController.RobotModels</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

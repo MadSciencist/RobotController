@@ -209,7 +209,7 @@
       <Project>{749b171c-9933-48b1-8eb9-c072c0c9092a}</Project>
       <Name>RobotController.Gamepad</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RobotParameters\RobotController.RobotModels.csproj">
+    <ProjectReference Include="..\RobotController.RobotParameters\RobotController.RobotModels.csproj">
       <Project>{7B48551A-51AB-4381-BA1E-017B6DF7E4AF}</Project>
       <Name>RobotController.RobotModels</Name>
     </ProjectReference>
