@@ -36,7 +36,15 @@ typedef struct {
   uint16_t feedbackVoltageTemperaturePeriod;
 } Timing_t;
 
+typedef enum {
+  openLoop = 0,
+  closedLoopPID = 1,
+  closedLoopFuzzy = 2
+} controlType_t;
+
 typedef struct{
+  controlType_t controlType;
+  uint8_t useRegenerativeBreaking; //bool
   State_t state;
   Requests_t requests;
   DriveParams_t driveLeft;

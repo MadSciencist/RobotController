@@ -32,6 +32,9 @@ void send_feedback(RobotParams_t* params){
 
 void process_requests(RobotParams_t* params){
   if(params->requests.readEeprom){
+    uart_write_int16(SendControlType, (uint8_t)params->controlType);
+    uart_write_int16(SendRegenerativeBreaking, (uint8_t)params->useRegenerativeBreaking);
+    
     uart_write_float(PidKp_1, params->driveLeft.pid.kp);
     uart_write_float(PidKi_1, params->driveLeft.pid.ki);
     uart_write_float(PidKd_1, params->driveLeft.pid.kd);

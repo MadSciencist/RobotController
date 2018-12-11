@@ -22,6 +22,7 @@ typedef enum {  //data from PC to robot, r means robot
   
   AllowMovement = 10,
   StopMovement = 11,
+  ControlType = 12,
   
   PidKp = 100,
   PidKi = 101,

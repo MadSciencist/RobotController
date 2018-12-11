@@ -45,7 +45,7 @@
             </TabItem>
             <TabItem Header="Robot settings">
                 <Grid Background="#FFE5E5E5">
-                    <controls:RobotSettings Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" />
+                    <controls:RobotSettings Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" RadioButtonChecked="RobotSettings_RadioButtonChecked" />
                 </Grid>
             </TabItem>
             <TabItem Header="Logs">

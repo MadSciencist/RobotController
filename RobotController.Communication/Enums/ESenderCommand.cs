@@ -8,6 +8,8 @@
         EepromWrite = 6,
         AllowMovement = 10,
         StopMovement = 11,
+        ControlType = 12,
+        RegenerativeBreaking = 13,
 
         PidKp = 100,
         PidKi = 101,

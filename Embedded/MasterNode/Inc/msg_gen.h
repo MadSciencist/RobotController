@@ -5,11 +5,12 @@
 #include "vendor/checksum.h"
 #include "converters.h"
 
-typedef enum //robot to PC
-{
+typedef enum{ //robot to PC
   KeepAlive = 1,
   FeedbackSpeedCurrent = 10,
   FeedbackVoltageTemperature = 11,
+  SendControlType = 12,
+  SendRegenerativeBreaking = 13,
   
   PidKp_1 = 100,
   PidKi_1 = 101,

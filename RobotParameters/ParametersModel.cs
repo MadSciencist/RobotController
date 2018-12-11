@@ -24,5 +24,7 @@ namespace RobotController.RobotModels
 
         public PidModel PidLeft { get; set; }
         public PidModel PidRight { get; set; }
+        public byte ControlType { get; set; }
+        public bool UseRegenerativeBreaking { get; set; }
     }
 }

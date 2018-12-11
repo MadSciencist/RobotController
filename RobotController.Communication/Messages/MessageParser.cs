@@ -66,6 +66,16 @@ namespace RobotController.Communication.Messages
                         }
                         break;
 
+                    case EReceiverCommand.ControlType:
+                        _parameters.ControlType = payload[0];
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.RegenerativeBreaking:
+                        _parameters.UseRegenerativeBreaking = payload[0] != 0;
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
                     case EReceiverCommand.PidKp_1:
                         _parameters.PidLeft.Kp = BitConverter.ToSingle(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });

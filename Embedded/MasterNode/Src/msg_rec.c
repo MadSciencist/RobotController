@@ -40,6 +40,10 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     robotParams.requests.saveEeprom = 1;
     break;
     
+      case ControlType:
+    robotParams.controlType = (controlType_t)get_uint8(payload, 0, LITTLE_ENDIAN);
+    break;
+    
   case PidKp:
     if(addr == Left)
       robotParams.driveLeft.pid.kp = get_double(payload, 0, LITTLE_ENDIAN);

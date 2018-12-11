@@ -10,7 +10,7 @@
         <TabControl HorizontalAlignment="Stretch" Margin="3" VerticalAlignment="Stretch">
             <TabItem Header="Controllers">
                 <Grid Background="#FFE5E5E5">
-                    <local:RobotSettingsControllers Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="OnTextBoxEnterPressed" />
+                    <local:RobotSettingsControllers Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="OnTextBoxEnterPressed" RadioButtonChecked="OnChecked"  />
                 </Grid>
             </TabItem>
             <TabItem Header="Feedback">

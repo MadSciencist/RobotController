@@ -224,6 +224,21 @@ namespace RobotController.WpfGui
             }
         }
 
+        private void RobotSettings_RadioButtonChecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ExtentedRadioButton source)
+            {
+                var message = new SendMessage
+                {
+                    CommandType = source.ESenderCommand,
+                    Node = source.ENode,
+                    Payload = source.State
+                };
+
+                robotConnection?.SendCommand(message, source.EPriority);
+            }
+        }
+
 
 
         private void OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();

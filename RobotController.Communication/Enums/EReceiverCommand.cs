@@ -5,6 +5,8 @@
         KeepAlive = 1,
         FeedbackSpeedCurrent = 10,
         FeedbackVoltageTemperature = 11,
+        ControlType = 12,
+        RegenerativeBreaking = 13,
 
         PidKp_1 = 100,
         PidKi_1 = 101,

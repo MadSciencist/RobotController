@@ -99,9 +99,12 @@
       <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\RadioButtonConverter.cs" />
     <Compile Include="ESendingType.cs" />
     <Compile Include="ExtendedControls\ExtendedButton.cs" />
     <Compile Include="ExtendedControls\ExtendedTexBbox.cs" />
+    <Compile Include="ExtendedControls\ExtentedCheckBox.cs" />
+    <Compile Include="ExtendedControls\ExtentedRadioButton.cs" />
     <Compile Include="Models\RobotStatusModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ControlSettingsViewModel.cs" />

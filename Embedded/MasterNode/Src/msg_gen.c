@@ -7,12 +7,13 @@ void uart_write_dummy( GuiParser_t cmd){
   gen_message(cmd, payload);
 }
 void uart_write_int16(GuiParser_t cmd, int16_t va1){   
-  uint8_t payload[] = {va1, va1 >> 8, 0,0, 0, 0, 0, 0};
-  gen_message(cmd, payload);
+  gen_message(cmd, get_bytes_from_uint16(va1, LITTLE_ENDIAN));
 }
 
-void uart_write_two_int16(GuiParser_t cmd, int16_t va1, int16_t val2){   
-  uint8_t payload[] = {va1, va1 >> 8, val2, val2 >> 8, 0, 0, 0, 0};
+void uart_write_two_int16(GuiParser_t cmd, int16_t va1, int16_t val2){  
+  uint8_t payload[8];
+  memcpy(&payload[0], get_bytes_from_int16(va1, LITTLE_ENDIAN), sizeof(int16_t));
+  memcpy(&payload[2], get_bytes_from_int16(val2, LITTLE_ENDIAN), sizeof(int16_t));
   gen_message(cmd, payload);
 }
 
@@ -22,11 +23,9 @@ void uart_write_four_int16(GuiParser_t cmd, int16_t va1, int16_t val2, int16_t v
 }
 
 void uart_write_float(GuiParser_t cmd, float val){
-  uint8_t* payload = get_bytes_from_float(val);
+  uint8_t* payload = get_bytes_from_float(val, LITTLE_ENDIAN);
   gen_message(cmd, payload);
 }
-
-
 
 
 static void gen_message(GuiParser_t cmd, uint8_t* payload){
