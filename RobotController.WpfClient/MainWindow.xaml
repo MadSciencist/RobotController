@@ -40,12 +40,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <controls:ControlSettings Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ExpoSliderChanged="ExpoSliderChanged" LowPassFilterSliderChanged="FilterSliderChanged"/>
+                    <controls:ControlSettings Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                                              ExpoSliderChanged="ControlSettings_OnExpoSliderChanged" 
+                                              LowPassFilterSliderChanged="FilterSliderChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Robot settings">
                 <Grid Background="#FFE5E5E5">
-                    <controls:RobotSettings Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" RadioButtonChecked="RobotSettings_RadioButtonChecked" />
+                    <controls:RobotSettings Grid.Row="0" Grid.Column="0"
+                                            TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" 
+                                            RadioButtonChecked="RobotSettings_RadioButtonChecked"
+                                            CheckboxChanged="RobotSettings_OnCheckboxChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Logs">

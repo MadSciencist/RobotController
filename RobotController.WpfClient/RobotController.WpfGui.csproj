@@ -201,6 +201,10 @@
       <Project>{8d1fd0f1-24fb-4811-9bf4-2849d6c81021}</Project>
       <Name>RobotController.Communication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RobotController.DataLogger\RobotController.DataLogger.csproj">
+      <Project>{045ea4e4-16f3-44ea-bc78-1762fb6d7ff8}</Project>
+      <Name>RobotController.DataLogger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RobotController.Gamepad\RobotController.Gamepad.csproj">
       <Project>{749b171c-9933-48b1-8eb9-c072c0c9092a}</Project>
       <Name>RobotController.Gamepad</Name>

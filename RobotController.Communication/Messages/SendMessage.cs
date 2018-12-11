@@ -1,4 +1,5 @@
-﻿using RobotController.Communication.Enums;
+﻿using System;
+using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 
 namespace RobotController.Communication.Messages

@@ -11,21 +11,27 @@ namespace RobotController.WpfGui.Controls
     public partial class RobotSettingsControllers : UserControl
     {
         public event EventHandler<KeyEventArgs> TextBoxEnterPressed;
-        public event EventHandler<RoutedEventArgs> RadioButtonChecked; 
+        public event EventHandler<RoutedEventArgs> RadioButtonChecked;
+        public event EventHandler<RoutedEventArgs> CheckboxChecked; 
 
         public RobotSettingsControllers()
         {
             InitializeComponent();
         }
 
-        protected void OnTextBoxEnterPressed(object sender, KeyEventArgs e)
+        protected void TextBox_OnEnterPressed(object sender, KeyEventArgs e)
         {
             TextBoxEnterPressed?.Invoke(sender, e);
         }
 
-        private void OnChecked(object sender, RoutedEventArgs e)
+        private void RadioButton_OnChecked(object sender, RoutedEventArgs e)
         {
             RadioButtonChecked?.Invoke(sender, e);
+        }
+
+        private void CheckBox_OnCheckedChanged(object sender, RoutedEventArgs e)
+        {
+            CheckboxChecked?.Invoke(sender, e);
         }
     }
 }

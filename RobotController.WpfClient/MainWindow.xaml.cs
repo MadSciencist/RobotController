@@ -20,6 +20,7 @@ using System.IO.Ports;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using RobotController.DataLogger;
 
 namespace RobotController.WpfGui
 {
@@ -42,6 +43,7 @@ namespace RobotController.WpfGui
         private IList<MeasurementModel> left;
         private IList<MeasurementModel> right;
         private DispatcherTimer dispatcherTimer;
+        private DataLoggerService _dataLoggerService;
 
         private Point triggerPosition;
 
@@ -78,6 +80,7 @@ namespace RobotController.WpfGui
             dispatcherTimer.Tick += OnDispatcherTimerTick;
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
             dispatcherTimer.Start();
+            _dataLoggerService = new DataLoggerService(robotConnection, gamepad, null);
         }
 
         private void GamepadService_SteeringPointChanged(object sender, Point e)
@@ -85,7 +88,7 @@ namespace RobotController.WpfGui
             triggerPosition = e;
         }
 
-        private void ExpoSliderChanged(object sender, short e)
+        private void ControlSettings_OnExpoSliderChanged(object sender, short e)
         {
             config.ExponentialCurveCoefficient = e;
             var expo = gamepad.UpdateExponentialCurve(e);
@@ -239,6 +242,21 @@ namespace RobotController.WpfGui
             }
         }
 
+        private void RobotSettings_OnCheckboxChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is ExtentedCheckBox source)
+            {
+                var message = new SendMessage
+                {
+                    CommandType = source.ECommand,
+                    Node = source.ENode,
+                    Payload = Convert.ToByte(source.IsChecked)
+                };
+
+                Console.WriteLine(message.Payload);
+                robotConnection?.SendCommand(message, source.EPriority);
+            }
+        }
 
 
         private void OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();
