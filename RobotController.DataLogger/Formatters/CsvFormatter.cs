@@ -37,7 +37,7 @@ namespace RobotController.DataLogger.Formatters
 
         public string GetHeader()
         {
-            return $"LEFT SETPOINT, RIGHT SETPOINT, LEFT VEL, RIGHT VEL, LEFT RAW VEL, RIGHT RAW VEL, LEFT CURR, LEFT RAW CURR, RIGHT CURR, RIGHT RAW CURR, VOLT, TEMP";
+            return "LEFT SETPOINT, RIGHT SETPOINT, LEFT VEL, RIGHT VEL, LEFT RAW VEL, RIGHT RAW VEL, LEFT CURR, LEFT RAW CURR, RIGHT CURR, RIGHT RAW CURR, VOLT, TEMP";
         }
     }
 }
