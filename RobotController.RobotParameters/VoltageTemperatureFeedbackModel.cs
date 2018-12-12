@@ -2,7 +2,7 @@
 {
     public class VoltageTemperatureFeedbackModel
     {
-        public short RawVoltage { get; set; }
-        public short RawTemperature { get; set; }
+        public double Voltage { get; set; }
+        public double Temperature { get; set; }
     }
 }

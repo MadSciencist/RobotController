@@ -1,0 +1,29 @@
+﻿<Page
+    x:Class="HardwareEmulatorGui.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HardwareEmulatorGui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="400" Width="600">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Content="Start" Name="StartButton" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Center" Width="151" Click="StartButton_OnClick"/>
+        <Button Grid.Row="0" Content="Stop" Name="StopButton" HorizontalAlignment="Left" Margin="224,0,0,0" VerticalAlignment="Center" Width="151" Click="StopButton_OnClick"/>
+
+        <ComboBox Name="PortNameComboBox" Grid.Row="0" HorizontalAlignment="Left" Margin="435,0,0,0" VerticalAlignment="Center" Width="155" DropDownOpened="ComboBox_OnDropDownOpened"/>
+        <RichTextBlock Name="RichTextBlock" HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Stretch">
+            <Paragraph>
+                <Run Text=""/>
+            </Paragraph>
+        </RichTextBlock>
+    </Grid>
+</Page>

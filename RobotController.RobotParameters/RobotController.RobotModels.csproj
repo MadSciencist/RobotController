@@ -44,6 +44,11 @@
     <Compile Include="ControlsModel.cs" />
     <Compile Include="Drive\PidModel.cs" />
     <Compile Include="ParametersModel.cs" />
+    <Compile Include="PhysicalConverters\Constants.cs" />
+    <Compile Include="PhysicalConverters\CurrentConverter.cs" />
+    <Compile Include="PhysicalConverters\TemperatureConverter.cs" />
+    <Compile Include="PhysicalConverters\VelocityConverter.cs" />
+    <Compile Include="PhysicalConverters\VoltageConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpeedCurrentFeedbackModel.cs" />
     <Compile Include="VoltageTemperatureFeedbackModel.cs" />

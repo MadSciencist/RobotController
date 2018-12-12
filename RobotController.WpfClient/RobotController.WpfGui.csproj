@@ -109,6 +109,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ControlSettingsViewModel.cs" />
     <Compile Include="ViewModels\GamepadViewModel.cs" />
+    <Compile Include="ViewModels\GuiStatusViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ObservableEntity.cs" />
     <Compile Include="ViewModels\RobotControlsViewModel.cs" />

@@ -4,11 +4,15 @@
     {
         public short LeftSetpoint { get; set; }
         public short RightSetpoint { get; set; }
-        public short LeftSpeed { get; set; }
-        public short RightSpeed { get; set; }
+        public double LeftSpeed { get; set; }
+        public short RawLeftSpeed { get; set; }
+        public double RightSpeed { get; set; }
+        public short RawRightSpeed { get; set; }
         public double LeftCurrent { get; set; }
+        public short RawLeftCurrent { get; set; }
         public double RightCurrent { get; set; }
-        public short Voltage { get; set; }
-        public short Temperature { get; set; }
+        public short RawRightCurrent { get; set; }
+        public double Voltage { get; set; }
+        public double Temperature { get; set; }
     }
 }

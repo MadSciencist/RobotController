@@ -3,5 +3,6 @@
     public interface IFormatter
     {
         string Format(DatalogModel log);
+        string GetHeader();
     }
 }

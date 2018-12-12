@@ -1,4 +1,5 @@
 ﻿using RobotController.Gamepad.Models;
+using RobotController.RobotModels;
 using RobotController.WpfGui.Models;
 
 namespace RobotController.WpfGui.ViewModels
@@ -6,8 +7,6 @@ namespace RobotController.WpfGui.ViewModels
     public class RobotControlsViewModel : ObservableEntity
     {
         private RobotControlModel _robotControlModel;
-        private RobotStatusModel _robotStatusModel;
-
         public RobotControlModel RobotControl
         {
             get { return _robotControlModel; }
@@ -18,6 +17,7 @@ namespace RobotController.WpfGui.ViewModels
             }
         }
 
+        private RobotStatusModel _robotStatusModel;
         public RobotStatusModel RobotStatus
         {
             get { return _robotStatusModel; }
@@ -25,6 +25,17 @@ namespace RobotController.WpfGui.ViewModels
             {
                 _robotStatusModel = value;
                 OnPropertyChanged(nameof(RobotStatus));
+            }
+        }
+
+        private ParametersModel _parameters;
+        public ParametersModel ParametersModel
+        {
+            get { return _parameters; }
+            set
+            {
+                _parameters = value;
+                OnPropertyChanged(nameof(ParametersModel));
             }
         }
     }

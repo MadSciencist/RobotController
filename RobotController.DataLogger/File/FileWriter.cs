@@ -1,53 +1,26 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace RobotController.DataLogger.File
 {
-    public class FileWriter : IDisposable, IFileWriter
+    public class FileWriter : IFileWriter
     {
         private readonly ILogConfig _config;
-        private readonly StreamWriter _writer;
 
         public FileWriter(ILogConfig config)
         {
             _config = config;
-            _writer = new StreamWriter(_config.Path);
-
-            WriteHeader();
         }
 
         public void WriteLine(string line)
         {
-            TryWriteLine(line);
-        }
+            var fileName = $"log{DateTime.Now.ToString("yy_MM_dd_hh", System.Globalization.CultureInfo.InvariantCulture)}.csv";
+            var path = Path.Combine(_config.Path, fileName);
 
-        private void TryWriteLine(string line)
-        {
-            try
+            using (var writer = new StreamWriter(path, append: true, encoding: System.Text.Encoding.UTF8))
             {
-                _writer.WriteLine(line);
+                writer.WriteLine(line);
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-
-            }
-            finally
-            {
-                _writer.Flush();
-                _writer.Dispose();
-            }
-        }
-
-        private void WriteHeader()
-        {
-            TryWriteLine($"Date: {DateTime.Now.ToString()}");
-        }
-
-        public void Dispose()
-        {
-            _writer?.Dispose();
         }
     }
 }

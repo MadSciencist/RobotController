@@ -3,6 +3,8 @@ using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.RobotModels;
 using System;
+using System.Diagnostics;
+using RobotController.RobotModels.PhysicalConverters;
 
 namespace RobotController.Communication.Messages
 {
@@ -10,7 +12,7 @@ namespace RobotController.Communication.Messages
     {
         public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured;
         public EventHandler<MessageLostEventArgs> MessageLostOccured;//???
-        public EventHandler<MessageParsedEventArgs> KeepAliveReceived;
+        public EventHandler KeepAliveReceived;
         public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
         public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
         public event EventHandler<MessageParsedEventArgs> ParametersReceived;
@@ -22,28 +24,34 @@ namespace RobotController.Communication.Messages
         {
             try
             {
-                var payload = (byte[]) message.Payload;
+                var payload = (byte[])message.Payload;
 
                 switch (message.Command)
                 {
                     case EReceiverCommand.KeepAlive:
-                        KeepAliveReceived?.Invoke(this, new MessageParsedEventArgs());
-                        Console.WriteLine("Keep alive recieved");
+                        KeepAliveReceived?.Invoke(this, EventArgs.Empty);
+                        Debug.WriteLine("Keep alive recieved");
                         break;
 
                     case EReceiverCommand.FeedbackSpeedCurrent:
                         {
+                            var leftRawCurrent = BitConverter.ToInt16(payload, 2);
+                            var leftRawVelocity = BitConverter.ToInt16(payload, 0);
+                            var rightRawCurrent = BitConverter.ToInt16(payload, 6);
+                            var rightRawVelocity = BitConverter.ToInt16(payload, 4);
+
                             var parsed = new MessageParsedEventArgs
                             {
                                 LeftMotor = new SpeedCurrentFeedbackModel
                                 {
-                                    RawSpeed = BitConverter.ToInt16(payload, 0),
-                                    RawCurrent = BitConverter.ToInt16(payload, 2),
+                                    Velocity = VelocityConverter.GetPhysical(leftRawVelocity),
+                                    Current = CurrentConverter.GetPhysical(leftRawCurrent),
+                                    RawCurrent = leftRawCurrent
                                 },
                                 RightMotor = new SpeedCurrentFeedbackModel
                                 {
-                                    RawSpeed = BitConverter.ToInt16(payload, 4),
-                                    RawCurrent = BitConverter.ToInt16(payload, 6),
+                                    Velocity = VelocityConverter.GetPhysical(rightRawVelocity),
+                                    Current = CurrentConverter.GetPhysical(rightRawCurrent),
                                 }
                             };
 
@@ -57,8 +65,8 @@ namespace RobotController.Communication.Messages
                             {
                                 VoltageTemperatureFeedbackModel = new VoltageTemperatureFeedbackModel()
                                 {
-                                    RawVoltage = BitConverter.ToInt16(payload, 0),
-                                    RawTemperature = BitConverter.ToInt16(payload, 2),
+                                    Voltage = VoltageConverter.GetPhysical(BitConverter.ToInt16(payload, 0)),
+                                    Temperature = TemperatureConverter.GetPhysical(BitConverter.ToInt16(payload, 2)),
                                 }
                             };
 

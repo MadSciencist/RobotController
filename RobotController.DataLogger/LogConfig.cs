@@ -1,7 +1,7 @@
 ﻿namespace RobotController.DataLogger
 {
-    public interface ILogConfig
+    public class LogConfig : ILogConfig
     {
-        string Path { get; set; }
+        public string Path { get; set; }
     }
 }

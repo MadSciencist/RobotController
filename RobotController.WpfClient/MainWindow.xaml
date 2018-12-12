@@ -11,10 +11,9 @@
         Title="Robot Controller" Height="680" Width="1050" Closing="WindowClose">
     <Grid>
         <Grid.RowDefinitions >
-            <RowDefinition Height="120">
-            </RowDefinition>
-            <RowDefinition Height="*">
-            </RowDefinition>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -102,6 +101,48 @@
                     <extendedControls:ExtendedButton Click="OnButtonClick" ECommand="StopMovement" ENode="Master" EPriority="VeryHigh" Content="Stop" Canvas.Left="99.2" Canvas.Top="73" Width="80" Height="25"/>
                 </Canvas>
             </Border>
+            <Button Click="StartLoggingButton_OnClick" Content="Start" Margin="40.8,40,203.2,55" Grid.Column="3"/>
+            <Button Click="StopLoggingButton_OnClick" Content="Stop" Margin="40.8,85,203.2,10" Grid.Column="3"/>
         </Grid>
+        <StatusBar HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Padding="8,0,0,0">
+            <TextBlock Text="{Binding Path=GuiStatusViewModel.ConnectionStatus,Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Width="120"/>
+            <Rectangle  HorizontalAlignment="Center"
+                        Height="12"
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Center"
+                        Width="13" RadiusY="6" RadiusX="5.8" >
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Fill" Value="Red" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=GuiStatusViewModel.IsConnected,UpdateSourceTrigger=PropertyChanged}"
+                                         Value="True">
+                                <Setter Property="Fill"
+                                        Value="Green" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+            <TextBlock Text="{Binding GuiStatusViewModel.LoggingStatus, Mode=OneWay}" Margin="25,0,0,0" VerticalAlignment="Stretch" Width="100"/>
+            <Rectangle  HorizontalAlignment="Center"
+                Height="12"
+                Margin="0,0,0,0"
+                VerticalAlignment="Center"
+                Width="13" RadiusY="6" RadiusX="5.8" >
+                <Rectangle.Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Fill" Value="Red" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding GuiStatusViewModel.IsLogging, UpdateSourceTrigger=PropertyChanged}"
+                                Value="True">
+                                <Setter Property="Fill"
+                                    Value="Green" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+        </StatusBar>
     </Grid>
 </Window>

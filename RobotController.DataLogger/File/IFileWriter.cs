@@ -3,6 +3,5 @@
     public interface IFileWriter
     {
         void WriteLine(string line);
-        void Dispose();
     }
 }

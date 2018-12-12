@@ -80,8 +80,10 @@ namespace RobotController.WpfGui
             dispatcherTimer.Tick += OnDispatcherTimerTick;
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
             dispatcherTimer.Start();
-            _dataLoggerService = new DataLoggerService(robotConnection, gamepad, null);
+
+            CreateDataLogger();
         }
+
 
         private void GamepadService_SteeringPointChanged(object sender, Point e)
         {
@@ -125,22 +127,22 @@ namespace RobotController.WpfGui
 
         private void RobotConnection_CurrentSpeedFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
-            left.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.LeftMotor.RawSpeed });
-            right.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.RightMotor.RawSpeed });
+            left.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.LeftMotor.Velocity });
+            right.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.RightMotor.Velocity });
         }
 
         private void RobotConnection_VoltageTemperatureFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
             _mainViewModel.RobotControlsViewModel.RobotStatus = new RobotStatusModel
             {
-                Temperature = e.VoltageTemperatureFeedbackModel.RawTemperature,
-                Voltage = e.VoltageTemperatureFeedbackModel.RawVoltage
+                Temperature = e.VoltageTemperatureFeedbackModel.Temperature,
+                Voltage = e.VoltageTemperatureFeedbackModel.Voltage
             };
         }
 
         private void RobotConnection_ParametersReceived(object sender, MessageParsedEventArgs e)
         {
-            _mainViewModel.ParametersViewModel.ParametersModel = e.Parameters;
+            _mainViewModel.RobotControlsViewModel.ParametersModel = e.Parameters;
         }
 
         private void ConnectButtonClick(object sender, RoutedEventArgs e)
@@ -155,6 +157,8 @@ namespace RobotController.WpfGui
                 }
 
                 _logger.Info("Starting connection...");
+                _mainViewModel.GuiStatusViewModel.ConnectionStatus = $"Connected to: {portName}";
+                _mainViewModel.GuiStatusViewModel.IsConnected = true;
                 serialPort = serialPortFactory.GetPort(PortComboBox.Text);
                 serialPortManager = new SerialPortManager(serialPort);
                 serialPortManager.TryOpen();
@@ -168,6 +172,9 @@ namespace RobotController.WpfGui
 
         private void DisconnectButtonClick(object sender, RoutedEventArgs e)
         {
+            _mainViewModel.GuiStatusViewModel.ConnectionStatus = "Disconnected";
+            _mainViewModel.GuiStatusViewModel.IsConnected = false;
+
             if (robotConnection != null)
             {
                 _logger.Info("Stopping connection...");
@@ -187,7 +194,7 @@ namespace RobotController.WpfGui
 
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {
-            if (sender is ExtendedButton source)
+           if (sender is ExtendedButton source)
             {
                 var message = new SendMessage
                 {
@@ -288,6 +295,28 @@ namespace RobotController.WpfGui
                 serialPort.Dispose();
                 serialPort = null;
             }
+        }
+
+        private void StartLoggingButton_OnClick(object sender, RoutedEventArgs e) =>
+            _dataLoggerService.SubscribeAndStart(robotConnection, gamepad);
+
+        private void StopLoggingButton_OnClick(object sender, RoutedEventArgs e) =>
+            _dataLoggerService.UnSubscribeAndStop();
+
+        private void CreateDataLogger()
+        {
+            _dataLoggerService = new DataLoggerService(new LogConfig { Path = @".\" });
+            _dataLoggerService.LoggingStarted += (sender, args) =>
+            {
+                _mainViewModel.GuiStatusViewModel.IsLogging = true;
+                _mainViewModel.GuiStatusViewModel.LoggingStatus = "Logging active!";
+            };
+
+            _dataLoggerService.LoggingStopped += (sender, args) =>
+            {
+                _mainViewModel.GuiStatusViewModel.IsLogging = false;
+                _mainViewModel.GuiStatusViewModel.LoggingStatus = "Logging stopped";
+            };
         }
     }
 }
