@@ -7,8 +7,8 @@
     <ProjectGuid>{C10E8169-79FE-46A0-A18A-6586557AED82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HardwareEmulator</RootNamespace>
-    <AssemblyName>HardwareEmulator</AssemblyName>
+    <RootNamespace>RobotController.HardwareEmulator</RootNamespace>
+    <AssemblyName>RobotController.HardwareEmulator</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

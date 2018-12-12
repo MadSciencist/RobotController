@@ -1,4 +1,4 @@
-﻿namespace HardwareEmulatorGui.cs
+﻿namespace RobotController.HardwareEmulatorGui
 {
     partial class Form1
     {

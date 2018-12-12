@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A7FD8CA2-3ACD-4CB6-A25D-FE3720809219}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>HardwareEmulatorGui.cs</RootNamespace>
-    <AssemblyName>HardwareEmulatorGui.cs</AssemblyName>
+    <RootNamespace>RobotController.HardwareEmulatorGui</RootNamespace>
+    <AssemblyName>RobotController.HardwareEmulatorGui</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -65,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -80,9 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HardwareEmulator\HardwareEmulator.csproj">
+    <ProjectReference Include="..\RobotController.HardwareEmulator\RobotController.HardwareEmulator.csproj">
       <Project>{c10e8169-79fe-46a0-a18a-6586557aed82}</Project>
-      <Name>HardwareEmulator</Name>
+      <Name>RobotController.HardwareEmulator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

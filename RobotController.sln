@@ -25,9 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FakeHardware", "FakeHardware", "{F244ED95-5598-4D2B-94F9-6745CEE6E716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardwareEmulatorGui.cs", "HardwareEmulatorGui.cs\HardwareEmulatorGui.cs.csproj", "{A7FD8CA2-3ACD-4CB6-A25D-FE3720809219}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.HardwareEmulatorGui", "RobotController.HardwareEmulatorGui\RobotController.HardwareEmulatorGui.csproj", "{A7FD8CA2-3ACD-4CB6-A25D-FE3720809219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardwareEmulator", "HardwareEmulator\HardwareEmulator.csproj", "{C10E8169-79FE-46A0-A18A-6586557AED82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotController.HardwareEmulator", "RobotController.HardwareEmulator\RobotController.HardwareEmulator.csproj", "{C10E8169-79FE-46A0-A18A-6586557AED82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

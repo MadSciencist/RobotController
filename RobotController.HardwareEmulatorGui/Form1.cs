@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO.Ports;
+using System.Windows.Forms;
 
-namespace HardwareEmulatorGui.cs
+namespace RobotController.HardwareEmulatorGui
 {
     public partial class Form1 : Form
     {
+		// pretty simple helper - hardware emulator
         private Tests.HardwareEmulator.HardwareEmulator _emulator;
         public Form1()
         {
