@@ -1,6 +1,6 @@
 ﻿namespace RobotController.Gamepad.Converters
 {
-    public static class Helpres
+    public static class Helpers
     {
         public static short ConstrainSymetrical(short input, short constrain)
         {

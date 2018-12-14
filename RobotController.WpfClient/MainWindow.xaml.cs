@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using RobotController.DataLogger;
+using RobotController.WpfGui.Infrastructure;
 
 namespace RobotController.WpfGui
 {
@@ -50,12 +51,12 @@ namespace RobotController.WpfGui
         private DispatcherTimer _dispatcherTimer;
         private DataLoggerService _dataLoggerService;
 
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public MainWindow()
         {
             InitializeComponent();
-            _logger.Info("Created GUI instance");
+            Logger.Info("Created GUI instance");
             _serialPortFactory = new SerialPortFactory();
 
             CreateGamepadService();
@@ -68,7 +69,7 @@ namespace RobotController.WpfGui
 
             LoadPortNames();
             CreateDispatcherTimer();
-            CreateDataLogger();
+            CreateDataLogger(new LogConfig { Path = @".\" });
 
             _gamepadService.Start();
             DataContext = _mainViewModel;
@@ -139,11 +140,11 @@ namespace RobotController.WpfGui
                 var portName = PortComboBox.Text;
                 if (portName == string.Empty)
                 {
-                    _logger.Error("No ports found");
+                    Logger.Error("No ports found");
                     return;
                 }
 
-                _logger.Info("Starting connection...");
+                Logger.Info("Starting connection...");
                 _mainViewModel.GuiStatusViewModel.ConnectionStatus = $"Connected to: {portName}";
                 _mainViewModel.GuiStatusViewModel.IsConnected = true;
                 _serialPort = _serialPortFactory.GetPort(PortComboBox.Text);
@@ -164,7 +165,7 @@ namespace RobotController.WpfGui
 
             if (_robotConnectionService != null)
             {
-                _logger.Info("Stopping connection...");
+                Logger.Info("Stopping connection...");
                 _robotConnectionService.Dispose();
                 _robotConnectionService = null;
             }
@@ -210,11 +211,11 @@ namespace RobotController.WpfGui
                 }
                 catch (FormatException ex)
                 {
-                    _logger.Error(ex, "Error while parsing input");
+                    Logger.Error(ex, "Error while parsing input");
                 }
                 catch (OverflowException ex)
                 {
-                    _logger.Error(ex, "Error while parsing input");
+                    Logger.Error(ex, "Error while parsing input");
                 }
             }
         }
@@ -272,7 +273,7 @@ namespace RobotController.WpfGui
 
             if (_robotConnectionService != null)
             {
-                _logger.Info("Stopping connection...");
+                Logger.Info("Stopping connection...");
                 _robotConnectionService.Dispose();
                 _robotConnectionService = null;
             }
@@ -327,9 +328,9 @@ namespace RobotController.WpfGui
             _dataLoggerService.UnSubscribeAndStop();
 
         //done
-        private void CreateDataLogger()
+        private void CreateDataLogger(ILogConfig config)
         {
-            _dataLoggerService = new DataLoggerService(new LogConfig { Path = @".\" });
+            _dataLoggerService = new DataLoggerService(config);
             _dataLoggerService.LoggingStarted += (sender, args) =>
             {
                 _mainViewModel.GuiStatusViewModel.IsLogging = true;
@@ -341,6 +342,15 @@ namespace RobotController.WpfGui
                 _mainViewModel.GuiStatusViewModel.IsLogging = false;
                 _mainViewModel.GuiStatusViewModel.LoggingStatus = "Logging stopped";
             };
+        }
+
+        //done
+        private void ButtonLogPath_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new DataLogSaveDialog();
+            var path = dialog.SelectDatalogPath();
+            
+            CreateDataLogger(new LogConfig { Path = path });
         }
     }
 }

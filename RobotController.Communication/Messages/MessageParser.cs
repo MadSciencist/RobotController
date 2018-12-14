@@ -18,7 +18,7 @@ namespace RobotController.Communication.Messages
         public event EventHandler<MessageParsedEventArgs> ParametersReceived;
 
         private readonly ParametersModel _parameters = ParametersModel.GetParameters();
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public void Parse(IReceiveMessage message)
         {
@@ -45,13 +45,16 @@ namespace RobotController.Communication.Messages
                                 LeftMotor = new SpeedCurrentFeedbackModel
                                 {
                                     Velocity = VelocityConverter.GetPhysical(leftRawVelocity),
+                                    RawVelocity = leftRawVelocity,
                                     Current = CurrentConverter.GetPhysical(leftRawCurrent),
                                     RawCurrent = leftRawCurrent
                                 },
                                 RightMotor = new SpeedCurrentFeedbackModel
                                 {
                                     Velocity = VelocityConverter.GetPhysical(rightRawVelocity),
+                                    RawVelocity = rightRawVelocity,
                                     Current = CurrentConverter.GetPhysical(rightRawCurrent),
+                                    RawCurrent = rightRawCurrent
                                 }
                             };
 
@@ -161,7 +164,7 @@ namespace RobotController.Communication.Messages
             }
             catch (Exception e)
             {
-                _logger.Error(e.Message);
+                Logger.Error(e.Message);
                 ParsingErrorOccured?.Invoke(this, new MessageParsingErrorEventArgs(e));
             }
         }

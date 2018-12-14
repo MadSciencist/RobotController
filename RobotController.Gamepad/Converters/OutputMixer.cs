@@ -34,16 +34,16 @@ namespace RobotController.Gamepad.Converters
                 ProcessLowPassFilter(ref tempLeft, ref tempRight, ref tempFwd, ref tempBwd);
 
                 //constrain inputs
-                tempLeft = Helpres.ConstrainNonnegative(tempLeft, 255);
-                tempRight = Helpres.ConstrainNonnegative(tempRight, 255);
-                tempFwd = Helpres.ConstrainNonnegative(tempFwd, 255);
-                tempBwd = Helpres.ConstrainNonnegative(tempBwd, 255);
+                tempLeft = Helpers.ConstrainNonnegative(tempLeft, 255);
+                tempRight = Helpers.ConstrainNonnegative(tempRight, 255);
+                tempFwd = Helpers.ConstrainNonnegative(tempFwd, 255);
+                tempBwd = Helpers.ConstrainNonnegative(tempBwd, 255);
 
                 (motorLeft, motorRight) = ProcessMixing(gamepadState, tempFwd, tempBwd, tempLeft, tempRight);
 
                 //clamp values
-                motorLeft = Helpres.ConstrainNonnegative(motorLeft, 510);
-                motorRight = Helpres.ConstrainNonnegative(motorRight, 510);
+                motorLeft = Helpers.ConstrainNonnegative(motorLeft, 510);
+                motorRight = Helpers.ConstrainNonnegative(motorRight, 510);
             }
 
             return new RobotControlModel(motorLeft, motorRight);

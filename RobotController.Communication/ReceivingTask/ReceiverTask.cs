@@ -12,7 +12,7 @@ namespace RobotController.Communication.ReceivingTask
         public event EventHandler<RobotDataReceivedEventArgs> DataReceived;
         public event EventHandler<ReceiverErrorEventArgs> ErrorOccurred;
 
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IStreamResource _streamResource;
         private Task _task;
         private CancellationTokenSource _source;
@@ -28,12 +28,12 @@ namespace RobotController.Communication.ReceivingTask
             _task = Task.Factory.StartNew(TaskRun, _source.Token)
                 .ContinueWith(ExceptionHandler, TaskContinuationOptions.OnlyOnFaulted);
 
-            _logger.Info("Receiver started");
+            Logger.Info("Receiver started");
         }
 
         public void Stop()
         {
-            _logger.Info("Receiver stop request");
+            Logger.Info("Receiver stop request");
             _source.Cancel();
         }
 
@@ -53,7 +53,7 @@ namespace RobotController.Communication.ReceivingTask
             }
             catch (OperationCanceledException)
             {
-                _logger.Info("Receiver task cancellation request");
+                Logger.Info("Receiver task cancellation request");
             }
         }
 
@@ -76,7 +76,7 @@ namespace RobotController.Communication.ReceivingTask
             }
             catch (Exception e)
             {
-                _logger.Error("Receiver task exception: " + e.Message);
+                Logger.Error("Receiver task exception: " + e.Message);
                 Stop(); // probably the serial port is not opened or not created, there is no reason to continue this task
             }
 
@@ -85,7 +85,7 @@ namespace RobotController.Communication.ReceivingTask
 
         private void ExceptionHandler(Task task)
         {
-            _logger.Error("Receiver task exception: " + task.Exception?.Message);
+            Logger.Error("Receiver task exception: " + task.Exception?.Message);
             ErrorOccurred?.Invoke(this, new ReceiverErrorEventArgs(task.Exception));
         }
     }

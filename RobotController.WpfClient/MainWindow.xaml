@@ -83,7 +83,7 @@
                     <Button Content="Disconnect" Canvas.Left="193" Canvas.Top="73" Width="80" Height="25" Click="DisconnectButtonClick"/>
                 </Canvas>
             </Border>
-            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch">
+            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Margin="5"  VerticalAlignment="Stretch">
                 <Canvas>
                     <Image Height="56.467" Width="56.467" Canvas.Left="10" Canvas.Top="41.533" Source="Assets/Icons/memory.png" />
                     <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="198"/>
@@ -101,8 +101,17 @@
                     <extendedControls:ExtendedButton Click="OnButtonClick" ECommand="StopMovement" ENode="Master" EPriority="VeryHigh" Content="Stop" Canvas.Left="99.2" Canvas.Top="73" Width="80" Height="25"/>
                 </Canvas>
             </Border>
-            <Button Click="StartLoggingButton_OnClick" Content="Start" Margin="40.8,40,203.2,55" Grid.Column="3"/>
-            <Button Click="StopLoggingButton_OnClick" Content="Stop" Margin="40.8,85,203.2,10" Grid.Column="3"/>
+            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Margin="47.8,5,10.2,5" VerticalAlignment="Stretch">
+                <Canvas Margin="0.2,0.2,29.2,-0.4">
+                    <Image Height="65" Width="72.467" Canvas.Left="10" Canvas.Top="37.22" Source="Assets/Icons/database.png" />
+                    <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="265"/>
+                    <TextBlock HorizontalAlignment="Left" Height="19" Text="Data logger" VerticalAlignment="Top" Width="97" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
+                    <Button Click="StartLoggingButton_OnClick" Content="Start" Height="25" Canvas.Left="99" Canvas.Top="38" Width="80"/>
+                    <Button Click="StopLoggingButton_OnClick" Content="Stop" Height="25" Canvas.Left="99" Canvas.Top="74" Width="80"/>
+                    <Button Click="ButtonLogPath_OnClick" Content="Path" Height="26" Canvas.Left="200" Canvas.Top="73" Width="50" RenderTransformOrigin="0.008,0.446"/>
+                    <Image Height="31" Width="35" Canvas.Left="205" Canvas.Top="37" Source="Assets/Icons/folder.png" />
+                </Canvas>
+            </Border>
         </Grid>
         <StatusBar HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Padding="8,0,0,0">
             <TextBlock Text="{Binding Path=GuiStatusViewModel.ConnectionStatus,Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Width="120"/>

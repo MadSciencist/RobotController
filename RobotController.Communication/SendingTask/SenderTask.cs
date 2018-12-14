@@ -12,7 +12,7 @@ namespace RobotController.Communication.SendingTask
     {
         public event EventHandler<SenderErrorEventArgs> ErrorOccurred;
 
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IStreamResource _streamResource;
         private readonly ISendQueueWrapper _queue;
         private readonly MessageGenerator _messageGenerator;
@@ -32,12 +32,12 @@ namespace RobotController.Communication.SendingTask
             _task = Task.Factory.StartNew(TaskRun, _source.Token)
                 .ContinueWith(ExceptionHandler, TaskContinuationOptions.OnlyOnFaulted);
 
-            _logger.Info("Sender started");
+            Logger.Info("Sender started");
         }
 
         public void Stop()
         {
-            _logger.Info("Sender stop request");
+            Logger.Info("Sender stop request");
             _source.Cancel();
         }
 
@@ -57,7 +57,7 @@ namespace RobotController.Communication.SendingTask
             }
             catch (OperationCanceledException)
             {
-                _logger.Info("Sender task cancellation request");
+                Logger.Info("Sender task cancellation request");
             }
         }
 
@@ -79,7 +79,7 @@ namespace RobotController.Communication.SendingTask
             }
             catch (Exception e)
             {
-                _logger.Error("Sender task exception: " + e.Message);
+                Logger.Error("Sender task exception: " + e.Message);
                 Stop(); // probably the serial port is not opened or not created, there is no reason to continue this task
             }
 
@@ -87,7 +87,7 @@ namespace RobotController.Communication.SendingTask
 
         private void ExceptionHandler(Task task)
         {
-            _logger.Error("Receiver task exception: " + task.Exception?.Message);
+            Logger.Error("Receiver task exception: " + task.Exception?.Message);
             ErrorOccurred?.Invoke(this, new SenderErrorEventArgs(task.Exception));
         }
     }

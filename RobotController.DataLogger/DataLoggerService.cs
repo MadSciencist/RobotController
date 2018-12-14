@@ -46,7 +46,7 @@ namespace RobotController.DataLogger
             }
             catch (Exception e)
             {
-                _logger.Error($"Cannot subscribe: {e.Message}");
+                _logger.Error($"Cannot subscribe: {e.Message}. Please connect first.");
             }
         }
 
@@ -62,7 +62,7 @@ namespace RobotController.DataLogger
             }
             catch (Exception e)
             {
-                _logger.Error($"Cannot un-subscribe: {e.Message}");
+                _logger.Error($"Cannot un-subscribe: {e.Message}. Please connect first.");
             }
         }
 

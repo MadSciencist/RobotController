@@ -14,10 +14,7 @@ namespace RobotController.DataLogger.File
 
         public void WriteLine(string line)
         {
-            var fileName = $"log{DateTime.Now.ToString("yy_MM_dd_hh", System.Globalization.CultureInfo.InvariantCulture)}.csv";
-            var path = Path.Combine(_config.Path, fileName);
-
-            using (var writer = new StreamWriter(path, append: true, encoding: System.Text.Encoding.UTF8))
+            using (var writer = new StreamWriter(_config.Path, append: true, encoding: System.Text.Encoding.UTF8))
             {
                 writer.WriteLine(line);
             }

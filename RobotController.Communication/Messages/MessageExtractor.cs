@@ -9,7 +9,7 @@ namespace RobotController.Communication.Messages
 {
     internal class MessageExtractor : MessageParser
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static int _lostDataCount;
         private static int _previousCounterValue;
 
@@ -23,12 +23,12 @@ namespace RobotController.Communication.Messages
                 }
                 else
                 {
-                    _logger.Fatal("Checksum mismatch, message dropped");
+                    Logger.Fatal("Checksum mismatch, message dropped");
                 }
             }
             else
             {
-                _logger.Fatal("Framing mismatch, message dropped");
+                Logger.Fatal("Framing mismatch, message dropped");
             }
         }
 
