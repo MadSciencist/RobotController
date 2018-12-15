@@ -83,6 +83,9 @@
     <Compile Include="Controls\Debug.xaml.cs">
       <DependentUpon>Debug.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Navbar.xaml.cs">
+      <DependentUpon>Navbar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RobotSettings.xaml.cs">
       <DependentUpon>RobotSettings.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Debug.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Navbar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

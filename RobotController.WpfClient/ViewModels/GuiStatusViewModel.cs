@@ -1,7 +1,21 @@
-﻿namespace RobotController.WpfGui.ViewModels
+﻿using System.Collections.Generic;
+
+namespace RobotController.WpfGui.ViewModels
 {
     public class GuiStatusViewModel : ObservableEntity
     {
+        private IEnumerable<string> _availablePorts;
+        public IEnumerable<string> AvailablePorts
+        {
+            get { return _availablePorts; }
+            set
+            {
+                _availablePorts = value;
+                OnPropertyChanged(nameof(AvailablePorts));
+            }
+        }
+
+
         private string _connectionStatus = "Disconnected";
         public string ConnectionStatus
         {

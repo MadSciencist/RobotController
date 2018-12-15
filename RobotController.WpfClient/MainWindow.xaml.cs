@@ -17,10 +17,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO.Ports;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using RobotController.DataLogger;
+using RobotController.WpfGui.Controls;
 using RobotController.WpfGui.Infrastructure;
 
 namespace RobotController.WpfGui
@@ -133,51 +136,6 @@ namespace RobotController.WpfGui
         private void RobotConnection_ParametersReceived(object sender, MessageParsedEventArgs e) =>
             _mainViewModel.RobotControlsViewModel.ParametersModel = e.Parameters;
 
-        private void ConnectButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (_robotConnectionService == null)
-            {
-                var portName = PortComboBox.Text;
-                if (portName == string.Empty)
-                {
-                    Logger.Error("No ports found");
-                    return;
-                }
-
-                Logger.Info("Starting connection...");
-                _mainViewModel.GuiStatusViewModel.ConnectionStatus = $"Connected to: {portName}";
-                _mainViewModel.GuiStatusViewModel.IsConnected = true;
-                _serialPort = _serialPortFactory.GetPort(PortComboBox.Text);
-                _serialPortManager = new SerialPortManager(_serialPort);
-                _serialPortManager.TryOpen();
-                _serialPortAdapter = new SerialPortAdapter(_serialPort);
-                _robotConnectionService = new RobotConnectionService(_serialPortAdapter);
-                _robotConnectionService.SpeedCurrentFeedbackReceived += RobotConnection_CurrentSpeedFeedbackReceived;
-                _robotConnectionService.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureFeedbackReceived;
-                _robotConnectionService.ParametersReceived += RobotConnection_ParametersReceived;
-            }
-        }
-
-        private void DisconnectButtonClick(object sender, RoutedEventArgs e)
-        {
-            _mainViewModel.GuiStatusViewModel.ConnectionStatus = "Disconnected";
-            _mainViewModel.GuiStatusViewModel.IsConnected = false;
-
-            if (_robotConnectionService != null)
-            {
-                Logger.Info("Stopping connection...");
-                _robotConnectionService.Dispose();
-                _robotConnectionService = null;
-            }
-
-            if (_serialPort != null)
-            {
-                _serialPortManager.Close();
-                _serialPort.Dispose();
-                _serialPort = null;
-            }
-        }
-
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {
             if (sender is ExtendedButton source)
@@ -254,16 +212,10 @@ namespace RobotController.WpfGui
         }
 
         //done
-        private void OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();
-
-        //done
         private void LoadPortNames()
         {
-            var ports = SerialPortUtils.GetAvailablePorts();
-            if (ports.Length <= 0) return;
-            var observable = new ObservableCollection<string>(ports);
-            PortComboBox.ItemsSource = observable;
-            PortComboBox.Text = observable[0];
+            var ports = SerialPortUtils.GetAvailablePorts().OrderByDescending(x => x);
+            _mainViewModel.GuiStatusViewModel.AvailablePorts = new List<string>(ports);
         }
 
       
@@ -319,13 +271,6 @@ namespace RobotController.WpfGui
             _dispatcherTimer.Start();
         }
 
-        //done
-        private void StartLoggingButton_OnClick(object sender, RoutedEventArgs e) =>
-            _dataLoggerService.SubscribeAndStart(_robotConnectionService, _gamepadService);
-
-        //done
-        private void StopLoggingButton_OnClick(object sender, RoutedEventArgs e) =>
-            _dataLoggerService.UnSubscribeAndStop();
 
         //done
         private void CreateDataLogger(ILogConfig config)
@@ -344,12 +289,67 @@ namespace RobotController.WpfGui
             };
         }
 
-        //done
-        private void ButtonLogPath_OnClick(object sender, RoutedEventArgs e)
+        private void Navbar_OnDisconnectButtonClicked(object sender, RoutedEventArgs e)
+        {
+            _mainViewModel.GuiStatusViewModel.ConnectionStatus = "Disconnected";
+            _mainViewModel.GuiStatusViewModel.IsConnected = false;
+
+            if (_robotConnectionService != null)
+            {
+                Logger.Info("Stopping connection...");
+                _robotConnectionService.Dispose();
+                _robotConnectionService = null;
+            }
+
+            if (_serialPort != null)
+            {
+                _serialPortManager.Close();
+                _serialPort.Dispose();
+                _serialPort = null;
+            }
+        }
+
+        private void Navbar_OnConnectButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (_robotConnectionService == null)
+            {
+                var portName = _selectedPortName;
+                if (portName == string.Empty)
+                {
+                    Logger.Error("No ports found");
+                    return;
+                }
+
+                Logger.Info("Starting connection...");
+                _mainViewModel.GuiStatusViewModel.ConnectionStatus = $"Connected to: {portName}";
+                _mainViewModel.GuiStatusViewModel.IsConnected = true;
+                _serialPort = _serialPortFactory.GetPort(portName);
+                _serialPortManager = new SerialPortManager(_serialPort);
+                _serialPortManager.TryOpen();
+                _serialPortAdapter = new SerialPortAdapter(_serialPort);
+                _robotConnectionService = new RobotConnectionService(_serialPortAdapter);
+                _robotConnectionService.SpeedCurrentFeedbackReceived += RobotConnection_CurrentSpeedFeedbackReceived;
+                _robotConnectionService.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureFeedbackReceived;
+                _robotConnectionService.ParametersReceived += RobotConnection_ParametersReceived;
+            }
+        }
+
+        private void Navbar_OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();
+
+        private string _selectedPortName;
+        private void Navbar_OnSelectedPortChanged(object sender, string e) => _selectedPortName = e;
+
+        private void Navbar_OnStartLoggingClicked(object sender, RoutedEventArgs e) =>
+            _dataLoggerService.SubscribeAndStart(_robotConnectionService, _gamepadService);
+
+        private void Navbar_OnStopLoggingClicked(object sender, RoutedEventArgs e) =>
+            _dataLoggerService.UnSubscribeAndStop();
+
+        private void Navbar_OnLoggingPathChanged(object sender, RoutedEventArgs e)
         {
             var dialog = new DataLogSaveDialog();
             var path = dialog.SelectDatalogPath();
-            
+
             CreateDataLogger(new LogConfig { Path = path });
         }
     }
