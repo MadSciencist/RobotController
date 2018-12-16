@@ -14,6 +14,7 @@ namespace RobotController.RobotModels
         {
             PidLeft = new PidModel();
             PidRight = new PidModel();
+            Alarms = new AlarmModel();
         }
 
         public static ParametersModel GetParameters()
@@ -24,6 +25,7 @@ namespace RobotController.RobotModels
 
         public PidModel PidLeft { get; set; }
         public PidModel PidRight { get; set; }
+        public AlarmModel Alarms { get; set; }
         public byte ControlType { get; set; }
         public bool UseRegenerativeBreaking { get; set; }
     }

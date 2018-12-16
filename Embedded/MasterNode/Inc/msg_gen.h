@@ -12,6 +12,13 @@ typedef enum{ //robot to PC
   SendControlType = 12,
   SendRegenerativeBreaking = 13,
   
+  TX_VoltageAlarm = 20,
+  TX_CriticalVoltageAlarm = 21,
+  TX_TemperatureAlarm = 22,
+  TX_CriticalTemperatureAlarm = 23,
+  TX_CurrentLeftAlarm = 24,
+  TX_CurrentRightAlarm = 25,
+  
   PidKp_1 = 100,
   PidKi_1 = 101,
   PidKd_1 = 102,

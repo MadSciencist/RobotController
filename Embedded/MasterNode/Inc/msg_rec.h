@@ -32,6 +32,12 @@ typedef enum {  //data from PC to robot, r means robot
   PidDeadband = 105,
   PidPeriod = 106,
   
+  VoltageAlarm = 130,
+  CriticalVoltageAlarm = 131,
+  TemperatureAlarm = 132,
+  CriticalTemperatureAlarm = 133,
+  CurrentLeftAlarm = 134,
+  CurrentRightAlarm = 135
 } gui2rob_t;
 
 

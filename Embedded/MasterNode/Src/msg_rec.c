@@ -40,7 +40,7 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     robotParams.requests.saveEeprom = 1;
     break;
     
-      case ControlType:
+  case ControlType:
     robotParams.controlType = (controlType_t)get_uint8(payload, 0, LITTLE_ENDIAN);
     break;
     
@@ -89,6 +89,14 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
       robotParams.driveLeft.pid.period = get_uint16(payload, 0, LITTLE_ENDIAN);
     else if (addr == Right)
       robotParams.driveRight.pid.period = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case VoltageAlarm:
+    robotParams.alarms.voltage = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case CriticalVoltageAlarm:
+    robotParams.alarms.criticalVoltage = get_uint16(payload, 0, LITTLE_ENDIAN);
     break;
     
   default:

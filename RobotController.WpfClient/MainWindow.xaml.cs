@@ -46,8 +46,7 @@ namespace RobotController.WpfGui
         private SpeedFeedbackChart _speedFeedbackChart;
         private SteeringConfig _steeringConfig;
 
-        //these 3 needs to be cleaned up
-        private Point triggerPosition;
+        //these 2 needs to be cleaned up
         private IList<MeasurementModel> left;
         private IList<MeasurementModel> right;
 
@@ -64,7 +63,6 @@ namespace RobotController.WpfGui
 
             CreateGamepadService();
 
-            triggerPosition = new Point();
             left = new List<MeasurementModel>();
             right = new List<MeasurementModel>();
 
@@ -72,16 +70,14 @@ namespace RobotController.WpfGui
 
             LoadPortNames();
             CreateDispatcherTimer();
-            CreateDataLogger(new LogConfig { Path = @".\" });
+            CreateDataLogger(new LogConfig { Path = @".\default_log.csv" });
 
             _gamepadService.Start();
             DataContext = _mainViewModel;
         }
 
-        private void GamepadService_SteeringPointChanged(object sender, Point e)
-        {
-            triggerPosition = e;
-        }
+        private void GamepadService_SteeringPointChanged(object sender, Point point) =>
+            _mainViewModel.GamepadChart.UpdateLivePointChart(point);
 
         private void ControlSettings_OnExpoSliderChanged(object sender, short e)
         {
@@ -91,12 +87,8 @@ namespace RobotController.WpfGui
             _mainViewModel.GamepadChart.UpdateExpoChart(expo);
         }
 
-        private void FilterSliderChanged(object sender, short e) { }
-
         private void Timer_OnDispatcherTimerTick(object sender, EventArgs e)
         {
-            _mainViewModel.GamepadChart.UpdateLivePointChart(triggerPosition);
-
             Application.Current.Dispatcher.Invoke((Action)(() =>
            {
                _mainViewModel.SpeedFeedbackChart.AddNewPoints(left, right);
@@ -178,6 +170,34 @@ namespace RobotController.WpfGui
             }
         }
 
+
+
+        private void RobotSettings_OnTextBoxEnterPressedNew(object sender, SendingTextBoxEventArgs e)
+        {
+            if (sender is ExtendedTexBbox source)
+            {
+                try
+                {
+                    var message = new SendMessage
+                    {
+                        CommandType = source.ECommand,
+                        Node = source.ENode,
+                        Payload = TypeCaster.Cast(e.Value.ToString(), source.EType)
+                    };
+
+                    _robotConnectionService?.SendCommand(message, source.EPriority);
+                }
+                catch (FormatException ex)
+                {
+                    Logger.Error(ex, "Error while parsing input");
+                }
+                catch (OverflowException ex)
+                {
+                    Logger.Error(ex, "Error while parsing input");
+                }
+            }
+        }
+
         //done
         private void RobotSettings_RadioButtonChecked(object sender, RoutedEventArgs e)
         {
@@ -218,7 +238,7 @@ namespace RobotController.WpfGui
             _mainViewModel.GuiStatusViewModel.AvailablePorts = new List<string>(ports);
         }
 
-      
+
         private void WindowClose(object sender, CancelEventArgs e)
         {
             _gamepadService.Stop();
@@ -352,5 +372,10 @@ namespace RobotController.WpfGui
 
             CreateDataLogger(new LogConfig { Path = path });
         }
+
+        private void ControlSettings_OnLowPassFilterSliderChanged(object sender, short e)
+        {
+        }
+
     }
 }

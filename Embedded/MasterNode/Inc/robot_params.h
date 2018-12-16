@@ -42,11 +42,17 @@ typedef enum {
   closedLoopFuzzy = 2
 } controlType_t;
 
+typedef struct {
+  uint16_t voltage;
+  uint16_t criticalVoltage;
+} Alarms_t;
+
 typedef struct{
   controlType_t controlType;
   uint8_t useRegenerativeBreaking; //bool
   State_t state;
   Requests_t requests;
+  Alarms_t alarms;
   DriveParams_t driveLeft;
   DriveParams_t driveRight;
   Timing_t timing;

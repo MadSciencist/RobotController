@@ -8,6 +8,13 @@
         ControlType = 12,
         RegenerativeBreaking = 13,
 
+        VoltageAlarm = 20,
+        CriticalVoltageAlarm = 21,
+        TemperatureAlarm = 22,
+        CriticalTemperatureAlarm = 23,
+        CurrentLeftAlarm = 24,
+        CurrentRightAlarm = 25,
+
         PidKp_1 = 100,
         PidKi_1 = 101,
         PidKd_1 = 102,

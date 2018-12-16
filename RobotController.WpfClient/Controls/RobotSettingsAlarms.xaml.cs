@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using RobotController.RobotModels.PhysicalConverters;
+using RobotController.WpfGui.ExtendedControls;
+using System;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -24,5 +15,25 @@ namespace RobotController.WpfGui.Controls
         {
             InitializeComponent();
         }
+
+        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressedNew;
+
+        private void ExtendedTexBbox_OnEnterPressed(object sender, KeyEventArgs e)
+        {
+            var a = (ExtendedTexBbox)sender;
+            var be = a.GetBindingExpression(TextBox.TextProperty);
+            be.UpdateSource();
+
+            var sendingValue = VoltageConverter.GetBit(Convert.ToDouble(a.Text));
+            Console.WriteLine(sendingValue);
+
+            TextBoxEnterPressedNew?.Invoke(sender, new SendingTextBoxEventArgs {Value = sendingValue});
+        }
+    }
+
+    public class SendingTextBoxEventArgs : EventArgs
+    {
+
+        public object Value { get; set; }
     }
 }

@@ -49,6 +49,9 @@ void process_requests(RobotParams_t* params){
     uart_write_float(PidDeadband_2, params->driveRight.deadband);
     uart_write_int16(PidPeriod_2, params->driveRight.pid.period);
     
+    uart_write_int16(TX_VoltageAlarm, params->alarms.voltage);
+    uart_write_int16(TX_CriticalVoltageAlarm, params->alarms.criticalVoltage);
+    
     //clear flag as we already processed this request
     params->requests.readEeprom = 0;
   }

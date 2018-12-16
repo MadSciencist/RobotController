@@ -37,13 +37,14 @@
             </TabItem>
             <TabItem Header="Control settings">
                 <controls:ControlSettings ExpoSliderChanged="ControlSettings_OnExpoSliderChanged" 
-                                          LowPassFilterSliderChanged="FilterSliderChanged"/>
+                                          LowPassFilterSliderChanged="ControlSettings_OnLowPassFilterSliderChanged"/>
 
             </TabItem>
             <TabItem Header="Robot settings">
                 <controls:RobotSettings TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" 
                                         RadioButtonChecked="RobotSettings_RadioButtonChecked"
-                                        CheckboxChanged="RobotSettings_OnCheckboxChanged"/>
+                                        CheckboxChanged="RobotSettings_OnCheckboxChanged"
+                                        TextBoxEnterPressedNew="RobotSettings_OnTextBoxEnterPressedNew"/>
             </TabItem>
             <TabItem Header="Logs">
                 <controls:Debug />

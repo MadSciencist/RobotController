@@ -17,6 +17,13 @@
         PidIntegralLimit = 103,
         PidClamping = 104,
         PidDeadband = 105,
-        PidPeriod = 106
+        PidPeriod = 106,
+
+        VoltageAlarm = 130,
+        CriticalVoltageAlarm = 131,
+        TemperatureAlarm = 132,
+        CriticalTemperatureAlarm = 133,
+        CurrentLeftAlarm = 134,
+        CurrentRightAlarm = 135
     }
 }

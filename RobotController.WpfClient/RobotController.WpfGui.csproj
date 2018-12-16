@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\RadioButtonConverter.cs" />
+    <Compile Include="Converters\VoltageConverter.cs" />
     <Compile Include="ESendingType.cs" />
     <Compile Include="ExtendedControls\ExtendedButton.cs" />
     <Compile Include="ExtendedControls\ExtendedTexBbox.cs" />
@@ -191,6 +192,11 @@
     </Resource>
     <Resource Include="Assets\Icons\database.png" />
     <Resource Include="Assets\Icons\folder.png" />
+    <Resource Include="Assets\Icons\alarm_current.png" />
+    <Resource Include="Assets\Icons\alarm_crit_temp.png" />
+    <Resource Include="Assets\Icons\alarm_temp.png" />
+    <Resource Include="Assets\Icons\alarm_crit_voltage.png" />
+    <Resource Include="Assets\Icons\alarm_voltage.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

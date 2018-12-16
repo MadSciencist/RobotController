@@ -66,15 +66,26 @@ namespace RobotController.Communication.Messages
                         {
                             var parsed = new MessageParsedEventArgs
                             {
-                                VoltageTemperatureFeedbackModel = new VoltageTemperatureFeedbackModel()
+                                VoltageTemperatureFeedbackModel = new VoltageTemperatureFeedbackModel
                                 {
-                                    Voltage = VoltageConverter.GetPhysical(BitConverter.ToInt16(payload, 0)),
+                                    Voltage = VoltageConverter.GetPhysical(BitConverter.ToUInt16(payload, 0)),
                                     Temperature = TemperatureConverter.GetPhysical(BitConverter.ToInt16(payload, 2)),
                                 }
                             };
 
                             VoltageTemperatureFeedbackReceived?.Invoke(this, parsed);
                         }
+                        break;
+
+
+                    case EReceiverCommand.VoltageAlarm:
+                        _parameters.Alarms.VoltageAlarm = VoltageConverter.GetPhysical(BitConverter.ToUInt16(payload, 0));
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.CriticalVoltageAlarm:
+                        _parameters.Alarms.CriticalVoltageAlarm = VoltageConverter.GetPhysical(BitConverter.ToUInt16(payload, 0));
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
 
                     case EReceiverCommand.ControlType:
