@@ -200,6 +200,9 @@
     <Resource Include="Assets\Icons\alarm_temp.png" />
     <Resource Include="Assets\Icons\alarm_crit_voltage.png" />
     <Resource Include="Assets\Icons\alarm_voltage.png" />
+    <Resource Include="Assets\Icons\export.png" />
+    <Resource Include="Assets\Icons\import.png" />
+    <Resource Include="Assets\Icons\settings_database.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -112,10 +112,14 @@
                 <Image HorizontalAlignment="Left" Height="55" Margin="143,10.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.5,0.5" Source="../Assets/Icons/battery.png"/>
                 <TextBlock HorizontalAlignment="Left" Margin="62,28.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotStatus.Temperature, StringFormat={}{0:#.##} °C}" VerticalAlignment="Top" Width="74"/>
                 <TextBlock HorizontalAlignment="Left" Margin="203,28.2,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotStatus.Voltage, StringFormat={}{0:#.##} V}" VerticalAlignment="Top" Width="66"/>
-                <Image HorizontalAlignment="Stretch" Margin="27,0,31.8,0" Grid.Row="4" VerticalAlignment="Stretch" Source="../Assets/Icons/robo_scaled.png"/>
-
+                <Image HorizontalAlignment="Stretch" Margin="0,119.4,-0.2,1.4" Grid.Row="3" VerticalAlignment="Stretch" Source="../Assets/Icons/robo_scaled.png" Grid.RowSpan="2"/>
                 <Rectangle Fill="#FF3D3D46" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" Stroke="Black" VerticalAlignment="Stretch"/>
-                <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Padding="10, 4" TextWrapping="Wrap" Text="State" Foreground="White"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Padding="10, 4" TextWrapping="Wrap" Text="Robot settings" Foreground="White"/>
+                <Button Content="Export" HorizontalAlignment="Left" Margin="24,19.4,0,0" Grid.Row="3" VerticalAlignment="Top" Width="80" Click="ExportClick" Height="25"/>
+                <Button Content="Import" HorizontalAlignment="Left" Margin="24,69.4,0,0" Grid.Row="3" VerticalAlignment="Top" Width="80" Click="ImportClick" Height="25"/>
+                <Image HorizontalAlignment="Left" Height="82" Margin="194,17.4,0,0" Grid.Row="3" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.5,0.5" Source="/RobotController.WpfGui;component/Assets/Icons/settings_database.png"/>
+                <Image HorizontalAlignment="Left" Height="32" Margin="119,19.4,0,0" Grid.Row="3" VerticalAlignment="Top" Width="36" RenderTransformOrigin="0.5,0.5" Source="/RobotController.WpfGui;component/Assets/Icons/export.png"/>
+                <Image HorizontalAlignment="Left" Height="32" Margin="119,67.4,0,0" Grid.Row="3" VerticalAlignment="Top" Width="36" RenderTransformOrigin="0.5,0.5" Source="/RobotController.WpfGui;component/Assets/Icons/import.png"/>
             </Grid>
         </Border>
     </Grid>

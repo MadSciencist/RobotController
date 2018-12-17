@@ -16,13 +16,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 using RobotController.DataLogger;
+using RobotController.RobotModels;
 using RobotController.WpfGui.Controls;
 using RobotController.WpfGui.Infrastructure;
 
@@ -348,5 +354,22 @@ namespace RobotController.WpfGui
         {
         }
 
+        private void Status_OnExportClicked(object sender, RoutedEventArgs e)
+        {
+            using (var stream = new FileStream("settings.xml", FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                var serializer = new XmlSerializer(typeof(ParametersModel));
+                serializer.Serialize(stream, _mainViewModel.RobotControlsViewModel.ParametersModel);
+            }
+        }
+
+        private void Status_OnImportClicked(object sender, RoutedEventArgs e)
+        {
+            using (var stream = new FileStream("settings.xml", FileMode.Open, FileAccess.Read, FileShare.None))
+            {
+                var serializer = new XmlSerializer(typeof(ParametersModel));
+                _mainViewModel.RobotControlsViewModel.ParametersModel = (ParametersModel)serializer.Deserialize(stream);
+            }
+        }
     }
 }

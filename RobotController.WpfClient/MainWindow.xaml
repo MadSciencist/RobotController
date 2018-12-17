@@ -33,7 +33,7 @@
 
         <TabControl HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Stretch" >
             <TabItem Header="Status">
-                <controls:Status Margin="0"/>
+                <controls:Status Margin="0" ExportClicked="Status_OnExportClicked" ImportClicked="Status_OnImportClicked"/>
             </TabItem>
             <TabItem Header="Control settings">
                 <controls:ControlSettings ExpoSliderChanged="ControlSettings_OnExpoSliderChanged" 

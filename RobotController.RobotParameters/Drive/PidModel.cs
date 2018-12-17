@@ -1,5 +1,8 @@
-﻿namespace RobotController.RobotModels.Drive
+﻿using System;
+
+namespace RobotController.RobotModels.Drive
 {
+    [Serializable]
     public class PidModel
     {
         public float Kp { get; set; }

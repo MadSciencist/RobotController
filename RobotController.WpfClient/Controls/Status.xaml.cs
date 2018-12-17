@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -24,5 +13,11 @@ namespace RobotController.WpfGui.Controls
         {
             InitializeComponent();
         }
+
+        public event EventHandler<RoutedEventArgs> ExportClicked;
+        private void ExportClick(object sender, RoutedEventArgs e) => ExportClicked?.Invoke(sender, e);
+
+        public event EventHandler<RoutedEventArgs> ImportClicked;
+        private void ImportClick(object sender, RoutedEventArgs e) => ImportClicked?.Invoke(sender, e);
     }
 }

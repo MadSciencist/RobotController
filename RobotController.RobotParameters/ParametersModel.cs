@@ -1,4 +1,5 @@
-﻿using RobotController.RobotModels.Drive;
+﻿using System;
+using RobotController.RobotModels.Drive;
 
 namespace RobotController.RobotModels
 {
@@ -7,6 +8,7 @@ namespace RobotController.RobotModels
     /// New parameters are put here once they are recieved from robot
     /// The UI is using this istance for binding
     /// </summary>
+    [Serializable]
     public class ParametersModel
     {
         private static ParametersModel _parameters; //singleton instance

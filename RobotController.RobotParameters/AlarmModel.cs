@@ -1,7 +1,9 @@
-﻿using RobotController.RobotModels.PhysicalConverters;
+﻿using System;
+using RobotController.RobotModels.PhysicalConverters;
 
 namespace RobotController.RobotModels
 {
+    [Serializable]
     public class AlarmModel
     {
         public double VoltageAlarm { get; set; }
