@@ -69,7 +69,7 @@ namespace RobotController.Communication.Messages
                                 VoltageTemperatureFeedbackModel = new VoltageTemperatureFeedbackModel
                                 {
                                     Voltage = VoltageConverter.GetPhysical(BitConverter.ToUInt16(payload, 0)),
-                                    Temperature = TemperatureConverter.GetPhysical(BitConverter.ToInt16(payload, 2)),
+                                    Temperature = TemperatureConverter.GetPhysical(BitConverter.ToUInt16(payload, 2)),
                                 }
                             };
 
@@ -85,6 +85,26 @@ namespace RobotController.Communication.Messages
 
                     case EReceiverCommand.CriticalVoltageAlarm:
                         _parameters.Alarms.CriticalVoltageAlarm = VoltageConverter.GetPhysical(BitConverter.ToUInt16(payload, 0));
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.TemperatureAlarm:
+                        _parameters.Alarms.TemperatureAlarm = TemperatureConverter.GetPhysical(BitConverter.ToUInt16(payload, 0));
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.CriticalTemperatureAlarm:
+                        _parameters.Alarms.CriticalTemperatureAlarm = TemperatureConverter.GetPhysical(BitConverter.ToUInt16(payload, 0));
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.CurrentLeftAlarm:
+                        _parameters.Alarms.LeftCurrentAlarm = CurrentConverter.GetPhysical(BitConverter.ToInt16(payload, 0));
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.CurrentRightAlarm:
+                        _parameters.Alarms.RightCurrentAlarm = CurrentConverter.GetPhysical(BitConverter.ToInt16(payload, 0));
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
 

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using RobotController.WpfGui.BusinessLogic;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -10,11 +10,7 @@ namespace RobotController.WpfGui.Controls
     /// </summary>
     public partial class RobotSettings : UserControl
     {
-        public event EventHandler<KeyEventArgs> TextBoxEnterPressed;
-        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressedNew;
-
-
-
+        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressed;
         public event EventHandler<RoutedEventArgs> RadioButtonChecked;
         public event EventHandler<RoutedEventArgs> CheckboxChanged; 
 
@@ -23,13 +19,9 @@ namespace RobotController.WpfGui.Controls
             InitializeComponent();
         }
 
-        private void OnTextBoxEnterPressed(object sender, KeyEventArgs e)
+        private void OnTextBoxEnterPressed(object sender, SendingTextBoxEventArgs e)
         {
             TextBoxEnterPressed?.Invoke(sender, e);
-        }
-        private void OnTextBoxEnterPressedNew(object sender, SendingTextBoxEventArgs e)
-        {
-            TextBoxEnterPressedNew?.Invoke(sender, e);
         }
 
         private void OnRadioChecked(object sender, RoutedEventArgs e)

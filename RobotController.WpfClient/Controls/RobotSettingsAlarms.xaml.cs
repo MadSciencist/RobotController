@@ -3,6 +3,8 @@ using RobotController.WpfGui.ExtendedControls;
 using System;
 using System.Windows.Controls;
 using System.Windows.Input;
+using RobotController.Communication.Enums;
+using RobotController.WpfGui.BusinessLogic;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -16,24 +18,41 @@ namespace RobotController.WpfGui.Controls
             InitializeComponent();
         }
 
-        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressedNew;
+        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressed;
 
         private void ExtendedTexBbox_OnEnterPressed(object sender, KeyEventArgs e)
         {
-            var a = (ExtendedTexBbox)sender;
-            var be = a.GetBindingExpression(TextBox.TextProperty);
-            be.UpdateSource();
+            var textBox = (ExtendedTexBbox)sender;
 
-            var sendingValue = VoltageConverter.GetBit(Convert.ToDouble(a.Text));
-            Console.WriteLine(sendingValue);
+            //this is needed to force update RAW only view textboxes
+            var binding = textBox.GetBindingExpression(TextBox.TextProperty);
+            binding?.UpdateSource();
 
-            TextBoxEnterPressedNew?.Invoke(sender, new SendingTextBoxEventArgs {Value = sendingValue});
+            object sendingValue;
+
+            switch (textBox.ECommand)
+            {
+                case ESenderCommand.CriticalVoltageAlarm:
+                case ESenderCommand.VoltageAlarm:
+                    sendingValue = VoltageConverter.GetBit(Convert.ToDouble(textBox.Text));
+                    break;
+
+                case ESenderCommand.CurrentLeftAlarm:
+                case ESenderCommand.CurrentRightAlarm:
+                    sendingValue = CurrentConverter.GetBit(Convert.ToDouble(textBox.Text));
+                    break;
+
+                case ESenderCommand.CriticalTemperatureAlarm:
+                case ESenderCommand.TemperatureAlarm:
+                    sendingValue = TemperatureConverter.GetBit(Convert.ToDouble(textBox.Text));
+                    break;
+
+                default:
+                    sendingValue = 0;
+                    break;
+            }
+
+            TextBoxEnterPressed?.Invoke(sender, new SendingTextBoxEventArgs {Value = sendingValue.ToString()});
         }
-    }
-
-    public class SendingTextBoxEventArgs : EventArgs
-    {
-
-        public object Value { get; set; }
     }
 }

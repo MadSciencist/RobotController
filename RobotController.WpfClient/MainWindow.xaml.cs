@@ -143,8 +143,8 @@ namespace RobotController.WpfGui
             }
         }
 
-        //done
-        private void RobotSettings_TextBoxEnterPressed(object sender, KeyEventArgs e)
+        ////done
+        private void RobotSettings_OnTextBoxEnterPressed(object sender, SendingTextBoxEventArgs e)
         {
             if (sender is ExtendedTexBbox source)
             {
@@ -154,35 +154,7 @@ namespace RobotController.WpfGui
                     {
                         CommandType = source.ECommand,
                         Node = source.ENode,
-                        Payload = TypeCaster.Cast(source.Text, source.EType)
-                    };
-
-                    _robotConnectionService?.SendCommand(message, source.EPriority);
-                }
-                catch (FormatException ex)
-                {
-                    Logger.Error(ex, "Error while parsing input");
-                }
-                catch (OverflowException ex)
-                {
-                    Logger.Error(ex, "Error while parsing input");
-                }
-            }
-        }
-
-
-
-        private void RobotSettings_OnTextBoxEnterPressedNew(object sender, SendingTextBoxEventArgs e)
-        {
-            if (sender is ExtendedTexBbox source)
-            {
-                try
-                {
-                    var message = new SendMessage
-                    {
-                        CommandType = source.ECommand,
-                        Node = source.ENode,
-                        Payload = TypeCaster.Cast(e.Value.ToString(), source.EType)
+                        Payload = TypeCaster.Cast(e.Value, source.EType)
                     };
 
                     _robotConnectionService?.SendCommand(message, source.EPriority);
@@ -226,7 +198,6 @@ namespace RobotController.WpfGui
                     Payload = Convert.ToByte(source.IsChecked)
                 };
 
-                Console.WriteLine(message.Payload);
                 _robotConnectionService?.SendCommand(message, source.EPriority);
             }
         }

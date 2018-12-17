@@ -41,10 +41,9 @@
 
             </TabItem>
             <TabItem Header="Robot settings">
-                <controls:RobotSettings TextBoxEnterPressed="RobotSettings_TextBoxEnterPressed" 
+                <controls:RobotSettings TextBoxEnterPressed="RobotSettings_OnTextBoxEnterPressed" 
                                         RadioButtonChecked="RobotSettings_RadioButtonChecked"
-                                        CheckboxChanged="RobotSettings_OnCheckboxChanged"
-                                        TextBoxEnterPressedNew="RobotSettings_OnTextBoxEnterPressedNew"/>
+                                        CheckboxChanged="RobotSettings_OnCheckboxChanged" />
             </TabItem>
             <TabItem Header="Logs">
                 <controls:Debug />

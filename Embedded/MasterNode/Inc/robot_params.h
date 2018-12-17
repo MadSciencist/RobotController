@@ -14,6 +14,7 @@ typedef struct {
   uint8_t isReversed;
   float speed;
   uint16_t current;
+  uint16_t currentLimit;
   PID_Properties_t pid;
   EncoderParams_t encoder;
   float deadband;
@@ -45,6 +46,8 @@ typedef enum {
 typedef struct {
   uint16_t voltage;
   uint16_t criticalVoltage;
+  uint16_t temperature;
+  uint16_t criticalTemperature;
 } Alarms_t;
 
 typedef struct{

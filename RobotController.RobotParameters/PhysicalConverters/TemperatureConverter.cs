@@ -4,7 +4,7 @@ namespace RobotController.RobotModels.PhysicalConverters
 {
     public static class TemperatureConverter
     {
-        public static double GetPhysical(short temp)
+        public static double GetPhysical(ushort temp)
         {
             const double R1 = 10000; //rezystor drugi
             const double Rzero = 10000; //R ntc w 25st
@@ -15,14 +15,14 @@ namespace RobotController.RobotModels.PhysicalConverters
             return (1 / temperature) - 273.15;
         }
 
-        public static short GetBit(double temperature)
+        public static ushort GetBit(double temperature)
         {
             const double R1 = 10000; //rezystor drugi
             const double Rzero = 10000; //R ntc w 25st
             const double Tzero = 298.15;
             const double B = 3950;
             double expa = Math.Exp(B * (1 / (temperature + 273.15) - 1 / Tzero));
-            return (short)(1023 / (expa * Rzero / R1 + 1));
+            return (ushort)(1023 / (expa * Rzero / R1 + 1));
         }
     }
 }

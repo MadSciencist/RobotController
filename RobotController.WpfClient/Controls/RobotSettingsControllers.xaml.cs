@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using RobotController.WpfGui.BusinessLogic;
+using RobotController.WpfGui.ExtendedControls;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -10,7 +12,7 @@ namespace RobotController.WpfGui.Controls
     /// </summary>
     public partial class RobotSettingsControllers : UserControl
     {
-        public event EventHandler<KeyEventArgs> TextBoxEnterPressed;
+        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressed;
         public event EventHandler<RoutedEventArgs> RadioButtonChecked;
         public event EventHandler<RoutedEventArgs> CheckboxChecked; 
 
@@ -21,7 +23,8 @@ namespace RobotController.WpfGui.Controls
 
         protected void TextBox_OnEnterPressed(object sender, KeyEventArgs e)
         {
-            TextBoxEnterPressed?.Invoke(sender, e);
+            var textBox = (ExtendedTexBbox)sender;
+            TextBoxEnterPressed?.Invoke(sender, new SendingTextBoxEventArgs {Value = textBox.Text});
         }
 
         private void RadioButton_OnChecked(object sender, RoutedEventArgs e)

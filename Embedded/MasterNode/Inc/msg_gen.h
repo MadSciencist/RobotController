@@ -38,6 +38,7 @@ typedef enum{ //robot to PC
 
 void uart_write_dummy(GuiParser_t cmd);
 void uart_write_int16(GuiParser_t cmd, int16_t va1);
+void uart_write_uint16(GuiParser_t cmd, int16_t va1);
 void uart_write_two_int16(GuiParser_t cmd, int16_t va1, int16_t val2);
 void uart_write_four_int16(GuiParser_t cmd, int16_t va1, int16_t val2, int16_t val3, int16_t val4);
 

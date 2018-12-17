@@ -99,6 +99,23 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     robotParams.alarms.criticalVoltage = get_uint16(payload, 0, LITTLE_ENDIAN);
     break;
     
+  case TemperatureAlarm:
+    uint16_t test = get_uint16(payload, 0, LITTLE_ENDIAN);
+    robotParams.alarms.temperature = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case CriticalTemperatureAlarm:
+    robotParams.alarms.criticalTemperature = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case CurrentLeftAlarm:
+    robotParams.driveLeft.currentLimit = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case CurrentRightAlarm:
+    robotParams.driveRight.currentLimit = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
   default:
     break;
   }

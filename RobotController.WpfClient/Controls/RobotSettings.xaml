@@ -13,8 +13,7 @@
                     <local:RobotSettingsControllers Grid.Row="0" Grid.Column="0" 
                                                     TextBoxEnterPressed="OnTextBoxEnterPressed"
                                                     RadioButtonChecked="OnRadioChecked"
-                                                    CheckboxChecked="OnCheckboxChecked"
-                                                    />
+                                                    CheckboxChecked="OnCheckboxChecked" />
                 </Grid>
             </TabItem>
             <TabItem Header="Feedback">
@@ -24,7 +23,7 @@
             </TabItem>
             <TabItem Header="Alarms">
                 <Grid Background="#FFE5E5E5">
-                    <local:RobotSettingsAlarms Grid.Row="0" Grid.Column="0" TextBoxEnterPressedNew="OnTextBoxEnterPressedNew"  />
+                    <local:RobotSettingsAlarms Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="OnTextBoxEnterPressed"  />
                 </Grid>
             </TabItem>
         </TabControl>

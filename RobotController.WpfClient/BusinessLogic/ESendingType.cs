@@ -1,4 +1,4 @@
-﻿namespace RobotController.WpfGui
+﻿namespace RobotController.WpfGui.BusinessLogic
 {
     public enum ESendingType
     {

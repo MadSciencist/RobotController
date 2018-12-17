@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BusinessLogic\SendingTextBoxEventArgs.cs" />
     <Compile Include="BusinessLogic\TypeCaster.cs" />
     <Compile Include="Charts\SpeedFeedbackChart.cs" />
     <Compile Include="Charts\GamepadChart.cs" />
@@ -101,10 +102,12 @@
     <Compile Include="Controls\Status.xaml.cs">
       <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CurrentConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\RadioButtonConverter.cs" />
+    <Compile Include="Converters\TemperatureConverter.cs" />
     <Compile Include="Converters\VoltageConverter.cs" />
-    <Compile Include="ESendingType.cs" />
+    <Compile Include="BusinessLogic\ESendingType.cs" />
     <Compile Include="ExtendedControls\ExtendedButton.cs" />
     <Compile Include="ExtendedControls\ExtendedTexBbox.cs" />
     <Compile Include="ExtendedControls\ExtentedCheckBox.cs" />

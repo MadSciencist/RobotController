@@ -6,7 +6,12 @@ void uart_write_dummy( GuiParser_t cmd){
   uint8_t payload[16];
   gen_message(cmd, payload);
 }
+
 void uart_write_int16(GuiParser_t cmd, int16_t va1){   
+  gen_message(cmd, get_bytes_from_uint16(va1, LITTLE_ENDIAN));
+}
+
+void uart_write_uint16(GuiParser_t cmd, int16_t va1){   
   gen_message(cmd, get_bytes_from_uint16(va1, LITTLE_ENDIAN));
 }
 

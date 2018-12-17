@@ -4,13 +4,13 @@ using System.Windows.Data;
 
 namespace RobotController.WpfGui.Converters
 {
-    public class VoltageConverter : IValueConverter
+    public class TemperatureConverter : IValueConverter
     {
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return RobotController.RobotModels.PhysicalConverters.VoltageConverter.GetBit(System.Convert.ToDouble(value));
+            return RobotController.RobotModels.PhysicalConverters.TemperatureConverter.GetBit(System.Convert.ToDouble(value));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
