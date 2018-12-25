@@ -261,3 +261,7 @@ __pycache__/
 *.pyc
 /Embedded/MasterNode/Drivers
 /Embedded/MasterNode/EWARM
+/Embedded/DoubleMotorDriver/Drivers
+/Embedded/DoubleMotorDriver/EWARM/DoubleMotorDriver/Exe
+/Embedded/DoubleMotorDriver/EWARM/DoubleMotorDriver/List
+/Embedded/DoubleMotorDriver/EWARM

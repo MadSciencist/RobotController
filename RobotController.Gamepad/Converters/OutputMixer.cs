@@ -44,6 +44,10 @@ namespace RobotController.Gamepad.Converters
                 //clamp values
                 motorLeft = Helpers.ConstrainNonnegative(motorLeft, 510);
                 motorRight = Helpers.ConstrainNonnegative(motorRight, 510);
+
+                //to -255 - 255 range
+                motorLeft -= 255;
+                motorRight -= 255;
             }
 
             return new RobotControlModel(motorLeft, motorRight);
