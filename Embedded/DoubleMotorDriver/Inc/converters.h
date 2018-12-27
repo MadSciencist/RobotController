@@ -12,13 +12,13 @@ typedef enum{
   LITTLE_ENDIAN = 1
 } endian_t;
 
-uint16_t get_int8(uint8_t* buff, uint8_t offset, uint8_t endian);
+int16_t get_int8(uint8_t* buff, uint8_t offset, uint8_t endian);
 uint16_t get_uint8(uint8_t* buff, uint8_t offset, uint8_t endian);
 
-uint16_t get_int16(uint8_t* buff, uint8_t offset, uint8_t endian);
+int16_t get_int16(uint8_t* buff, uint8_t offset, uint8_t endian);
 uint16_t get_uint16(uint8_t* buff, uint8_t offset, uint8_t endian);
 
-uint32_t get_int32(uint8_t* buff, uint8_t offset, uint8_t endian);
+int32_t get_int32(uint8_t* buff, uint8_t offset, uint8_t endian);
 uint32_t get_uint32(uint8_t* buff, uint8_t offset, uint8_t endian);
 
 float get_float(uint8_t* buff, uint8_t offset, uint8_t endian);

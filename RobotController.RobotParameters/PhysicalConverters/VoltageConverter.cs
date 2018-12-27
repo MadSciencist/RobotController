@@ -4,11 +4,11 @@
     {
         public static double GetPhysical(ushort volt)
         {
-            return (volt * (Constants.Uref / 1023.0)) * Constants.DividerParameter;
+            return (volt * (Constants.Uref / Constants.ConverterBits)) * Constants.VoltageDividerParameter;
         }
         public static ushort GetBit(double voltage)
         {
-            return (ushort)(voltage / Constants.DividerParameter * 1023 / Constants.Uref);
+            return (ushort)(voltage / Constants.VoltageDividerParameter * Constants.ConverterBits / Constants.Uref);
         }
     }
 }

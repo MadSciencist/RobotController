@@ -3,34 +3,30 @@ using RobotController.Communication;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Communication.SerialStream;
+using RobotController.DataLogger;
 using RobotController.Gamepad;
 using RobotController.Gamepad.Config;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
+using RobotController.RobotModels;
 using RobotController.WpfGui.BusinessLogic;
 using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.ExtendedControls;
+using RobotController.WpfGui.Infrastructure;
 using RobotController.WpfGui.Models;
 using RobotController.WpfGui.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Threading;
 using System.Xml.Serialization;
-using RobotController.DataLogger;
-using RobotController.RobotModels;
-using RobotController.WpfGui.Controls;
-using RobotController.WpfGui.Infrastructure;
+using RobotController.Communication.Enums;
+using RobotController.Gamepad.Models;
 
 namespace RobotController.WpfGui
 {
@@ -48,15 +44,8 @@ namespace RobotController.WpfGui
         private IGamepadService _gamepadService;
 
         private MainViewModel _mainViewModel;
-        private GamepadChart _gamepadChart;
-        private SpeedFeedbackChart _speedFeedbackChart;
         private SteeringConfig _steeringConfig;
 
-        //these 2 needs to be cleaned up
-        private IList<MeasurementModel> left;
-        private IList<MeasurementModel> right;
-
-        private DispatcherTimer _dispatcherTimer;
         private DataLoggerService _dataLoggerService;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -68,14 +57,9 @@ namespace RobotController.WpfGui
             _serialPortFactory = new SerialPortFactory();
 
             CreateGamepadService();
-
-            left = new List<MeasurementModel>();
-            right = new List<MeasurementModel>();
-
             CreateMainViewModel();
-
             LoadPortNames();
-            CreateDispatcherTimer();
+
             CreateDataLogger(new LogConfig { Path = @".\default_log.csv" });
 
             _gamepadService.Start();
@@ -93,22 +77,10 @@ namespace RobotController.WpfGui
             _mainViewModel.GamepadChart.UpdateExpoChart(expo);
         }
 
-        private void Timer_OnDispatcherTimerTick(object sender, EventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke((Action)(() =>
-           {
-               _mainViewModel.SpeedFeedbackChart.AddNewPoints(left, right);
-
-           }));
-
-            left.Clear();
-            right.Clear();
-        }
-
-
         private void GamepadSerivce_RobotControlChanged(object sender, RobotControlEventArgs e)
         {
             _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
+            SendRobotControl(e.RobotControl);
         }
 
         private void GamepadService_GamepadStateChanged(object sender, GamepadEventArgs e)
@@ -118,11 +90,21 @@ namespace RobotController.WpfGui
 
         private void RobotConnection_CurrentSpeedFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
-            left.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.LeftMotor.Velocity });
-            right.Add(new MeasurementModel { DateTime = DateTime.Now, Value = e.RightMotor.Velocity });
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                var now = DateTime.Now;
+
+                _mainViewModel.SpeedFeedbackChart.AddNewPoint(
+                    new MeasurementModel { DateTime = now, Value = e.LeftMotor.Velocity }, 
+                    new MeasurementModel { DateTime = now, Value = e.RightMotor.Velocity });
+
+                _mainViewModel.CurrentFeedbackChart.AddNewPoint(
+                    new MeasurementModel {DateTime = now, Value = e.LeftMotor.Current},
+                    new MeasurementModel {DateTime = now, Value = e.RightMotor.Current });
+            }));
         }
 
-        //done
+        // done
         private void RobotConnection_VoltageTemperatureFeedbackReceived(object sender, MessageParsedEventArgs e) =>
             _mainViewModel.RobotControlsViewModel.RobotStatus = new RobotStatusModel
             {
@@ -130,9 +112,21 @@ namespace RobotController.WpfGui
                 Voltage = e.VoltageTemperatureFeedbackModel.Voltage
             };
 
-        //done
+        // done
         private void RobotConnection_ParametersReceived(object sender, MessageParsedEventArgs e) =>
             _mainViewModel.RobotControlsViewModel.ParametersModel = e.Parameters;
+
+        private void SendRobotControl(ControlsModel control)
+        {
+            var message = new SendMessage
+            {
+                CommandType = ESenderCommand.Controls,
+                Node = ENode.Master,
+                Payload = control
+            };
+
+            _robotConnectionService?.SendCommand(message, EPriority.High);
+        }
 
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {
@@ -149,7 +143,7 @@ namespace RobotController.WpfGui
             }
         }
 
-        ////done
+        // done
         private void RobotSettings_OnTextBoxEnterPressed(object sender, SendingTextBoxEventArgs e)
         {
             if (sender is ExtendedTexBbox source)
@@ -239,12 +233,8 @@ namespace RobotController.WpfGui
         //done
         private void CreateMainViewModel()
         {
-            _gamepadChart = new GamepadChart();
-            _speedFeedbackChart = new SpeedFeedbackChart();
             _mainViewModel = new MainViewModel
             {
-                SpeedFeedbackChart = _speedFeedbackChart,
-                GamepadChart = _gamepadChart,
                 ControlSettingsViewModel = { SteeringConfig = _steeringConfig }
             };
         }
@@ -258,16 +248,6 @@ namespace RobotController.WpfGui
             _gamepadService.RobotControlChanged += GamepadSerivce_RobotControlChanged;
             _gamepadService.SteeringPointChanged += GamepadService_SteeringPointChanged;
         }
-
-        //done
-        private void CreateDispatcherTimer()
-        {
-            _dispatcherTimer = new DispatcherTimer();
-            _dispatcherTimer.Tick += Timer_OnDispatcherTimerTick;
-            _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(50);
-            _dispatcherTimer.Start();
-        }
-
 
         //done
         private void CreateDataLogger(ILogConfig config)
@@ -310,7 +290,8 @@ namespace RobotController.WpfGui
         {
             if (_robotConnectionService == null)
             {
-                var portName = _selectedPortName;
+               //var portName = _selectedPortName;
+                var portName = "COM3";
                 if (portName == string.Empty)
                 {
                     Logger.Error("No ports found");

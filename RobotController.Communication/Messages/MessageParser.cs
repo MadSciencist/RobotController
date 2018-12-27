@@ -188,6 +188,10 @@ namespace RobotController.Communication.Messages
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
 
+                    case EReceiverCommand.EepromSaved:
+                        Console.WriteLine("Saved");
+                        break;
+
 
                     default:
                         throw new NotImplementedException();

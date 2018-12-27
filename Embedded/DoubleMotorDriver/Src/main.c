@@ -57,6 +57,10 @@
 #include "robot_params.h"
 #include "encoder.h"
 #include "motor_control.h"
+#include "eeprom_emulator.h"
+#include "alarms.h"
+
+#define ADC_MEASUREMENTS 5
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -64,6 +68,7 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 RobotParams_t robotParams;
+uint16_t ADC_RAW[ADC_MEASUREMENTS];
 int16_t left =0, right = 0;
 float sinusArg = 0.0, argInc = 0.15;
 
@@ -74,13 +79,40 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-void InitPidProps(PID_Properties_t* props);
+void execute_closed_loop_control(){
+  if(robotParams.controlType == openLoop){
+    drive_motor_left((int16_t)robotParams.driveLeft.setpoint);
+    drive_motor_right((int16_t)robotParams.driveRight.setpoint);
+  }else if(robotParams.controlType == closedLoopPID){
+    static float outLeft, outRight;
+    PID(&robotParams.driveLeft.pid,
+        robotParams.driveLeft.setpoint,
+        robotParams.driveLeft.speed,
+        &outLeft,
+        noDerivative,
+        reverse);
+    
+    PID(&robotParams.driveRight.pid,
+        robotParams.driveRight.setpoint,
+        robotParams.driveRight.speed,
+        &outRight,
+        noDerivative,
+        reverse);
+
+    drive_motor_right((int16_t)outRight);
+
+  }else if(robotParams.controlType == closedLoopFuzzy){
+    
+  } 
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if(htim->Instance == TIM10){
     update_slewrate_cnt();
   }else if(htim->Instance == TIM11){ //5 ms IRQ
     get_velocity(&robotParams.driveLeft.speed, &robotParams.driveRight.speed);
+    execute_closed_loop_control();
   }
 }
 /* USER CODE END PFP */
@@ -97,11 +129,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  ReadFromFlash(&robotParams, sizeof(robotParams), SECTOR5_FLASH_BEGINING);
+  
   disable_motors();
   InitSendQueue();
   init_params(&robotParams);
-  InitPidProps(&robotParams.driveLeft.pid);
-  InitPidProps(&robotParams.driveRight.pid);
   /* USER CODE END 1 */
   
   /* MCU Configuration----------------------------------------------------------*/
@@ -133,7 +165,7 @@ int main(void)
   MX_TIM11_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
-  
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC_RAW, ADC_MEASUREMENTS);
   enable_motors();
   start_receiver();
   HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
@@ -149,20 +181,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    robotParams.state.voltage = ADC_RAW[0];
+    robotParams.state.temperature = ADC_RAW[1];
+    robotParams.driveLeft.current = ADC_RAW[2];
+    robotParams.driveRight.current = ADC_RAW[3];
     
-    //HAL_GPIO_TogglePin(GPIOC, LED_Pin);
-    send_feedback(&robotParams);
-    process_requests(&robotParams);
-    
-    drive_motor_left(left);
-    drive_motor_right(right);
-    
-    //    if(sinusArg >= 2*3.14) sinusArg = 0;
-    //    sinusArg += argInc;
-    //    
-    //    int sinus = (int)(sin(sinusArg) * 50.0);
-    //    int cosinus = (int)(cos(sinusArg) * 50.0);
-    
+    send_feedback(&robotParams); //sending feedback 'task'
+    check_monitored_params(&robotParams); // threshold checks for alarms
+    process_alarms(&robotParams); // process alarms timming
+    process_requests(&robotParams, sizeof(robotParams)); 
     /* USER CODE END WHILE */
     
     /* USER CODE BEGIN 3 */
@@ -230,17 +257,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void InitPidProps(PID_Properties_t* props){
-  props->kp = 1.0;
-  props->ki = 1.05;
-  props->kd = 1.02;
-  props->period = 10;
-  props->posOutputLimit = 255;
-  props->posIntegralLimit = props->posOutputLimit;
-  props->negOutputLimit = -255;
-  props->negIntegralLimit = props->negOutputLimit;
-  props->integralSum = 0.0;
-}
+
 /* USER CODE END 4 */
 
 /**

@@ -14,6 +14,8 @@ namespace RobotController.Gamepad.Converters
         public static short[] LookupTable { get; private set; }
 
         private static short _coefficientB;
+
+        private static short _outputRange = 255;
         //private static double _coefficientA;
         //private static double _coefficientC;
 
@@ -41,16 +43,16 @@ namespace RobotController.Gamepad.Converters
 
         private static short[] CalculateLookups()
         {
-            var lut = new short[256];
+            var lut = new short[_outputRange+1];
 
             var coefficientA = -(double)_coefficientB;
-            var coefficientC = (Math.Log((255.0 - coefficientA) / (double)_coefficientB)) / 255.0;
+            var coefficientC = (Math.Log(((double)_outputRange - coefficientA) / (double)_coefficientB)) / ((double)_outputRange);
 
-            for (var i = 0; i < 256; i++)
+            for (var i = 0; i < (_outputRange+1); i++)
             {
                 lut[i] = (short)Math.Ceiling((coefficientA + (double)_coefficientB * Math.Exp(coefficientC * i)));
 
-                lut[i] = Helpers.ConstrainNonnegative(lut[i], 255);
+                lut[i] = Helpers.ConstrainNonnegative(lut[i], _outputRange);
             }
 
             return lut;

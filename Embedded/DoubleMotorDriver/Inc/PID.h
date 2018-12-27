@@ -12,8 +12,6 @@
 #include "stm32f4xx.h"
 #include "math.h"
 
-void calculateSpeed(float* left, float* right);
-
 typedef struct{
   uint16_t period;              //interval between PID computations
   float error;
@@ -45,8 +43,7 @@ typedef enum{
 //compute PID
 //return 0 if null pointers
 //return 1 if ok
-uint8_t PID(PID_Properties_t* PID_Properties, float* pSetpoint, float* pFeedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse);
-uint8_t PD(PID_Properties_t* PID_Properties, float* pSetpoint, float* pFeedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse); //simplified to PD
+uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse);
 
 //set PID tunings
 //return 0 if parameters are invalid (<0) or null pointer

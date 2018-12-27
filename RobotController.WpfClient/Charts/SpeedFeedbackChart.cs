@@ -6,21 +6,21 @@ using System.Collections.Generic;
 
 namespace RobotController.WpfGui.Charts
 {
-    public class SpeedFeedbackChart : ObservableEntity
+    public class FeedbackChart : ObservableEntity
     {
         //public bind models to be consumed by XAML
         public ChartValues<MeasurementModel> MotorLeftValues { get; set; }
         public ChartValues<MeasurementModel> MotorRightValues { get; set; }
         public Func<double, string> DateTimeFormatter { get; set; }
+        public Func<double, string> YAxisFormatter { get; set; }
         public double AxisStep { get; set; }
         public double AxisUnit { get; set; }
 
         private double _axisMax;
         private double _axisMin;
-        private const int historicalSamples = 300;
         private static List<MeasurementModel> historyLeft, historyRight;
 
-        public SpeedFeedbackChart()
+        public FeedbackChart()
         {
             //initialize series storage
             MotorLeftValues = new ChartValues<MeasurementModel>();
@@ -35,6 +35,7 @@ namespace RobotController.WpfGui.Charts
 
             //initialize formatter
             DateTimeFormatter = value => new DateTime((long)value).ToString("mm:ss");
+            YAxisFormatter = value => $"{value:#.##}";
 
             //AxisStep forces the distance between each separator in the X axis
             AxisStep = TimeSpan.FromSeconds(1).Ticks;
@@ -48,8 +49,20 @@ namespace RobotController.WpfGui.Charts
             historyRight = new List<MeasurementModel>();
         }
 
+        public void AddNewPoint(MeasurementModel left, MeasurementModel right)
+        {
+            MotorLeftValues.Add(left);
+            MotorRightValues.Add(right);
+
+            if (MotorLeftValues.Count > 120) MotorLeftValues.RemoveAt(0);
+            if (MotorRightValues.Count > 120) MotorRightValues.RemoveAt(0);
+
+            SetAxisLimits(DateTime.Now);
+        }
         public void AddNewPoints(IList<MeasurementModel> left, IList<MeasurementModel> right)
         {
+            const int historicalSamples = 130;
+
             historyLeft.AddRange(left);
             historyRight.AddRange(right);
 
@@ -87,7 +100,7 @@ namespace RobotController.WpfGui.Charts
         private void SetAxisLimits(DateTime now)
         {
             AxisMax = now.Ticks + TimeSpan.FromSeconds(1).Ticks; // lets force the axis to be 1 second ahead
-            AxisMin = now.Ticks - TimeSpan.FromSeconds(8).Ticks; // and 20 seconds behind
+            AxisMin = now.Ticks - TimeSpan.FromSeconds(10).Ticks; // and 20 seconds behind
         }
     }
 }

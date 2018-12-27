@@ -76,20 +76,20 @@ void drive_motor_right(int16_t value){
 
 static void drive_left_motor_left(uint16_t value){
   if(value > 100) value = 100;
-  TIM2->CCR1 = value;
+  TIM4->CCR3 = value;
 }
 
 static void drive_left_motor_right(uint16_t value){
   if(value > 100) value = 100;
-  TIM2->CCR2 = value;
+  TIM4->CCR4 = value;
 }
 
 static void drive_right_motor_left(uint16_t value){
   if(value > 100) value = 100;
-  TIM4->CCR3 = value;
+  TIM2->CCR1 = value;
 }
 
 static void drive_right_motor_right(uint16_t value){
   if(value > 100) value = 100;
-  TIM4->CCR4 = value;
+  TIM2->CCR2 = value;
 }

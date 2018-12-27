@@ -15,6 +15,8 @@
         CurrentLeftAlarm = 24,
         CurrentRightAlarm = 25,
 
+        EepromSaved = 30,
+
         PidKp_1 = 100,
         PidKi_1 = 101,
         PidKd_1 = 102,

@@ -10,19 +10,19 @@ void send_feedback(RobotParams_t* params){
   if ((ticks - keepAliveprevTicks) >= params->timing.keepAlivePeriod) {
     keepAliveprevTicks = ticks;
     
-    uart_write_dummy( KeepAlive );
+    uart_write_dummy( TX_KeepAlive );
   }
   
   if ((ticks - voltageTemperaturePrevTicks) >= params->timing.feedbackVoltageTemperaturePeriod) {
     voltageTemperaturePrevTicks = ticks;
     
-    uart_write_two_int16( FeedbackVoltageTemperature, params->state.voltage, params->state.temperature );
+    uart_write_two_int16( TX_FeedbackVoltageTemperature, params->state.voltage, params->state.temperature );
   }
   
   if ((ticks - speedCurrentPrevTicks) >= params->timing.feedbackSpeedCurrentPeriod) {
     speedCurrentPrevTicks = ticks;
     
-    uart_write_four_int16( FeedbackSpeedCurrent, 
+    uart_write_four_int16( TX_FeedbackSpeedCurrent, 
                           (int16_t)params->driveLeft.speed, 
                           (int16_t)params->driveLeft.current, 
                           (int16_t)params->driveRight.speed, 
@@ -30,10 +30,12 @@ void send_feedback(RobotParams_t* params){
   }
 }
 
-void process_requests(RobotParams_t* params){
+void process_requests(RobotParams_t* params, uint16_t params_len){
   if(params->requests.readEeprom){
-    uart_write_int16(SendControlType, (uint8_t)params->controlType);
-    uart_write_int16(SendRegenerativeBreaking, (uint8_t)params->useRegenerativeBreaking);
+    ReadFromFlash(params, params_len, SECTOR5_FLASH_BEGINING);
+    
+    uart_write_int16(TX_SendControlType, (uint8_t)params->controlType);
+    uart_write_int16(TX_SendRegenerativeBreaking, (uint8_t)params->useRegenerativeBreaking);
     
     uart_write_float(PidKp_1, params->driveLeft.pid.kp);
     uart_write_float(PidKi_1, params->driveLeft.pid.ki);
@@ -58,5 +60,9 @@ void process_requests(RobotParams_t* params){
     
     //clear flag as we already processed this request
     params->requests.readEeprom = 0;
+  }else if( params->requests.saveEeprom == 1){
+    WriteToFlash(params, params_len, SECTOR5_FLASH_BEGINING, FLASH_SECTOR_5, FLASH_VOLTAGE_RANGE_3);
+    uart_write_int16(TX_EepromSaved, 0);
+    params->requests.saveEeprom = 0;
   }
 }

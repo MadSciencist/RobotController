@@ -13,6 +13,7 @@ typedef struct {
 typedef struct {
   uint8_t isReversed;
   float speed;
+  float setpoint;
   uint16_t current;
   uint16_t currentLimit;
   PID_Properties_t pid;
@@ -48,8 +49,10 @@ typedef struct {
   uint16_t criticalVoltage;
   uint16_t temperature;
   uint16_t criticalTemperature;
+  uint8_t useBuzzer;
 } Alarms_t;
 
+// main struct where we keep the parameters
 typedef struct{
   controlType_t controlType;
   uint8_t useRegenerativeBreaking; //bool

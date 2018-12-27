@@ -6,11 +6,11 @@
 #include "converters.h"
 
 typedef enum{ //robot to PC
-  KeepAlive = 1,
-  FeedbackSpeedCurrent = 10,
-  FeedbackVoltageTemperature = 11,
-  SendControlType = 12,
-  SendRegenerativeBreaking = 13,
+  TX_KeepAlive = 1,
+  TX_FeedbackSpeedCurrent = 10,
+  TX_FeedbackVoltageTemperature = 11,
+  TX_SendControlType = 12,
+  TX_SendRegenerativeBreaking = 13,
   
   TX_VoltageAlarm = 20,
   TX_CriticalVoltageAlarm = 21,
@@ -18,6 +18,8 @@ typedef enum{ //robot to PC
   TX_CriticalTemperatureAlarm = 23,
   TX_CurrentLeftAlarm = 24,
   TX_CurrentRightAlarm = 25,
+  
+  TX_EepromSaved = 30,
   
   PidKp_1 = 100,
   PidKi_1 = 101,

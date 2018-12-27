@@ -9,26 +9,11 @@
 
 #include "PID.h"
 
-void calculateSpeed(float* left, float* right)
-{
-  static volatile int16_t oldEncoderCountLeft = 0, oldEncoderCountRight = 0;
-  volatile int16_t encoderCountLeft = oldEncoderCountLeft;
-  volatile int16_t encoderCountRight = oldEncoderCountRight;
+uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse){
   
-  encoderCountLeft = TIM1->CNT;
-  TIM1->CNT = 0;
-  encoderCountRight = TIM3->CNT;
-  TIM3->CNT = 0;
-  *left = (float)(encoderCountLeft - oldEncoderCountLeft) / 10.0f;
-  *right = (float)(encoderCountRight - oldEncoderCountRight) / 10.0f;
-}
-
-uint8_t PID(PID_Properties_t* PID_Properties, float* pSetpoint, float* pFeedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse){
+  if(PID_Properties == NULL || pOutput == NULL) return 0;
   
-  if(PID_Properties == NULL || pSetpoint == NULL || pFeedback == NULL || pOutput == NULL) return 0;
-  
-  float feedback = *pFeedback; 
-  float error = *pSetpoint - feedback;
+  float error = setpoint - feedback;
   float derivativeOutput = 0.0f;
   float output;
   
@@ -43,11 +28,11 @@ uint8_t PID(PID_Properties_t* PID_Properties, float* pSetpoint, float* pFeedback
   
   //derivative part
   switch(derivativeType){
-  case 1:
+  case derivativeOnFeedback:
     derivativeOutput = PID_Properties->kd * (-1.0f) * (feedback - PID_Properties->lastFeedback);
     break;
     
-  case 2:
+  case derivativeOnError:
     derivativeOutput = PID_Properties->kd * (error - PID_Properties->lastError);
     break;
     
@@ -56,47 +41,6 @@ uint8_t PID(PID_Properties_t* PID_Properties, float* pSetpoint, float* pFeedback
   }
   
   output = proportionalOutput + PID_Properties->integralSum + derivativeOutput;
-  if(pidReverse) output *= -1.0f;
-  
-  //check if output is within bounds
-  if(output > PID_Properties->posOutputLimit) output = PID_Properties->posOutputLimit;
-  else if(output < PID_Properties->negOutputLimit) output = PID_Properties->negOutputLimit;
-  
-  *pOutput = output;
-  
-  PID_Properties->lastFeedback = feedback;
-  PID_Properties->lastError = error;
-  
-  return 1;
-}
-
-uint8_t PD(PID_Properties_t* PID_Properties, float* pSetpoint, float* pFeedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse){
-  
-  if(PID_Properties == NULL || pSetpoint == NULL || pFeedback == NULL || pOutput == NULL) return 0;
-  
-  float feedback = *pFeedback; 
-  float error = *pSetpoint - feedback;
-  float derivativeOutput = 0.0f;
-  float output;
-  
-  //proportional part
-  float proportionalOutput = PID_Properties->kp * error;
-  
-  //derivative part
-  switch(derivativeType){
-  case 1:
-    derivativeOutput = PID_Properties->kd * (error - PID_Properties->lastError);
-    break;
-    
-  case 2:
-    derivativeOutput = PID_Properties->kd * (-1.0f) * (feedback - PID_Properties->lastFeedback);
-    break;
-    
-  default:
-    break;
-  }
-  
-  output = proportionalOutput + derivativeOutput;
   if(pidReverse) output *= -1.0f;
   
   //check if output is within bounds

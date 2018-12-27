@@ -1,10 +1,10 @@
-﻿using RobotController.Gamepad.Models;
+﻿using RobotController.RobotModels;
 
 namespace RobotController.Gamepad.EventArguments
 {
     public class RobotControlEventArgs
     {
-        public RobotControlModel RobotControl { get; set; }
+        public ControlsModel RobotControl { get; set; }
 
     }
 }

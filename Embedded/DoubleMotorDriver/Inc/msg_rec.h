@@ -15,14 +15,14 @@
 #define FRAME_STOP_CHAR '>'
 
 typedef enum {  //data from PC to robot, r means robot
-  RequestAllData = 0,
-  
+  KeepAlive = 0,
+  Controls = 1,
   EepromRead = 5,
   EepromWrite = 6,
-  
   AllowMovement = 10,
   StopMovement = 11,
   ControlType = 12,
+  RegenerativeBreaking = 13,
   
   PidKp = 100,
   PidKi = 101,

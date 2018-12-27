@@ -1,13 +1,12 @@
-﻿using RobotController.Gamepad.Models;
-using RobotController.RobotModels;
+﻿using RobotController.RobotModels;
 using RobotController.WpfGui.Models;
 
 namespace RobotController.WpfGui.ViewModels
 {
     public class RobotControlsViewModel : ObservableEntity
     {
-        private RobotControlModel _robotControlModel;
-        public RobotControlModel RobotControl
+        private ControlsModel _robotControlModel;
+        public ControlsModel RobotControl
         {
             get { return _robotControlModel; }
             set

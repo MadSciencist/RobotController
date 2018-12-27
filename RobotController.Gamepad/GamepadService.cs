@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
+using RobotController.RobotModels;
 
 namespace RobotController.Gamepad
 {
@@ -128,7 +129,7 @@ namespace RobotController.Gamepad
             }
         }
 
-        private System.Windows.Point GetSteeringPoint(RobotControlModel robotControls)
+        private System.Windows.Point GetSteeringPoint(ControlsModel robotControls)
         {
             var point = new System.Windows.Point(0, 0);
             if (_gamepadModel.LeftTrigger != 0) return point;

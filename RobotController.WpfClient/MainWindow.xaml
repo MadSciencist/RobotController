@@ -31,7 +31,7 @@
                              LoggingPathChanged="Navbar_OnLoggingPathChanged"/>
         </DockPanel>
 
-        <TabControl HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Stretch" >
+        <TabControl Name="MainTabControl" HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Stretch" >
             <TabItem Header="Status">
                 <controls:Status Margin="0" ExportClicked="Status_OnExportClicked" ImportClicked="Status_OnImportClicked"/>
             </TabItem>

@@ -87,9 +87,9 @@
                 <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
                     <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" Width="223"/>
                     <TextBlock Height="21.934" Text="Outputs" Width="103.507" Canvas.Left="11.558" Canvas.Top="6.066" Foreground="White"/>
-                    <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.LeftSpeed}" Height="18" Canvas.Left="112.8" Canvas.Top="38.934" Width="100" Minimum="-255" Maximum="255"/>
+                    <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.LeftSpeed}" Height="18" Canvas.Left="112.8" Canvas.Top="38.934" Width="100" Minimum="-100" Maximum="100"/>
                     <TextBlock Height="18" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotControl.LeftSpeed, StringFormat=Motor left: \{0\}}" Canvas.Top="38.934" Width="88.932" Canvas.Left="10"/>
-                    <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.RightSpeed}" Height="18" Canvas.Left="112.8" Canvas.Top="75.201" Width="100" Minimum="-255" Maximum="255"/>
+                    <ProgressBar Value="{Binding RobotControlsViewModel.RobotControl.RightSpeed}" Height="18" Canvas.Left="112.8" Canvas.Top="75.201" Width="100" Minimum="-100" Maximum="100"/>
                     <TextBlock Height="18" TextWrapping="Wrap" Text="{Binding RobotControlsViewModel.RobotControl.RightSpeed, StringFormat=Motor left: \{0\}}" Canvas.Top="75.201" Width="88.932" Canvas.Left="10"/>
                 </Canvas>
             </Border>

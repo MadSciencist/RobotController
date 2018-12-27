@@ -55,19 +55,19 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Velocity [m/s]" DisableAnimations="True"></lvc:Axis>
+                        <lvc:Axis Title="Velocity [m/s]" DisableAnimations="True" LabelFormatter="{Binding SpeedFeedbackChart.YAxisFormatter}"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
                 <lvc:CartesianChart DisableAnimations="True" Hoverable="False" DataTooltip="{x:Null}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10, 0, 0, 0">
                     <lvc:CartesianChart.Series>
-                        <lvc:LineSeries Values="{Binding SpeedFeedbackChart.MotorLeftValues}" 
+                        <lvc:LineSeries Values="{Binding CurrentFeedbackChart.MotorLeftValues}" 
                                     PointGeometry="{x:Null}" 
                                     LineSmoothness="0.25"
                                     StrokeThickness="2" 
                                     Stroke="#F34336"
                                     Fill="Transparent"
                                     />
-                        <lvc:LineSeries Values="{Binding SpeedFeedbackChart.MotorRightValues}" 
+                        <lvc:LineSeries Values="{Binding CurrentFeedbackChart.MotorRightValues}" 
                                     PointGeometry="{x:Null}" 
                                     LineSmoothness="0.25"
                                     StrokeThickness="2" 
@@ -76,13 +76,13 @@
                                     />
                     </lvc:CartesianChart.Series>
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis LabelFormatter="{Binding SpeedFeedbackChart.DateTimeFormatter}" 
-                              MaxValue="{Binding SpeedFeedbackChart.AxisMax}" 
-                              MinValue="{Binding SpeedFeedbackChart.AxisMin}"
-                              Unit="{Binding SpeedFeedbackChart.AxisUnit}"
+                        <lvc:Axis LabelFormatter="{Binding CurrentFeedbackChart.DateTimeFormatter}" 
+                              MaxValue="{Binding CurrentFeedbackChart.AxisMax}" 
+                              MinValue="{Binding CurrentFeedbackChart.AxisMin}"
+                              Unit="{Binding CurrentFeedbackChart.AxisUnit}"
                               DisableAnimations="True">
                             <lvc:Axis.Separator>
-                                <lvc:Separator Step="{Binding SpeedFeedbackChart.AxisStep}" />
+                                <lvc:Separator Step="{Binding CurrentFeedbackChart.AxisStep}" />
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>

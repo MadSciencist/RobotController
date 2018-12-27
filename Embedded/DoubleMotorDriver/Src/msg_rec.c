@@ -24,6 +24,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
   switch ((gui2rob_t)cmd){
     
+  case Controls:
+    robotParams.driveLeft.setpoint = (float)get_int16(payload, 0, LITTLE_ENDIAN);
+    robotParams.driveRight.setpoint = (float)get_int16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
   case AllowMovement:
     robotParams.state.isEnabled = 1;
     break;
@@ -52,10 +57,14 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     break;
     
   case PidKi:
-    if(addr == Left)
-      robotParams.driveLeft.pid.ki = get_double(payload, 0, LITTLE_ENDIAN);
-    else if (addr == Right)
-      robotParams.driveRight.pid.ki = get_double(payload, 0, LITTLE_ENDIAN);
+    if(addr == Left){
+      float value = get_double(payload, 0, LITTLE_ENDIAN);
+      PidSetParams(&robotParams.driveLeft.pid, robotParams.driveLeft.pid.kp, value, robotParams.driveLeft.pid.kd);
+    }
+    else if (addr == Right){
+      float value = get_double(payload, 0, LITTLE_ENDIAN);
+      PidSetParams(&robotParams.driveRight.pid, robotParams.driveRight.pid.kp, value, robotParams.driveRight.pid.kd);
+    }
     break;
     
   case PidKd:
@@ -100,7 +109,6 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     break;
     
   case TemperatureAlarm:
-    uint16_t test = get_uint16(payload, 0, LITTLE_ENDIAN);
     robotParams.alarms.temperature = get_uint16(payload, 0, LITTLE_ENDIAN);
     break;
     

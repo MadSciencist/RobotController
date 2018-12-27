@@ -1,6 +1,7 @@
 ﻿using RobotController.Gamepad.Interfaces;
 using RobotController.Gamepad.Models;
 using System;
+using RobotController.RobotModels;
 
 namespace RobotController.Gamepad.Converters
 {
@@ -13,7 +14,7 @@ namespace RobotController.Gamepad.Converters
             _config = config;
         }
 
-        public RobotControlModel Process(GamepadModel gamepadState)
+        public ControlsModel Process(GamepadModel gamepadState)
         {
             var lr = gamepadState.LeftThumbstick.X; //-255-255 left-right
             var leftTrigger = gamepadState.LeftTrigger; //0-255 back
@@ -48,9 +49,13 @@ namespace RobotController.Gamepad.Converters
                 //to -255 - 255 range
                 motorLeft -= 255;
                 motorRight -= 255;
+
+                //to -100 - 100 range
+                motorLeft = (short) ((float) motorLeft / 2.55f);
+                motorRight = (short)((float) motorRight / 2.55f);
             }
 
-            return new RobotControlModel(motorLeft, motorRight);
+            return new ControlsModel(motorLeft, motorRight);
         }
 
         private void ProcessLowPassFilter(ref short tempLeft, ref short tempRight, ref short tempFwd, ref short tempBwd)
