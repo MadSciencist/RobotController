@@ -35,8 +35,12 @@ void WriteToFlash(void* ptr, uint16_t size, uint32_t addres, uint32_t sector, ui
 void ReadFromFlash(void* ptr, uint16_t size, uint32_t addres){
   uint8_t * p = (uint8_t*) ptr;
 
+    __disable_irq();
+    
   for (int j = 0; j < size; j++)
   {
     *p++ = *(uint8_t *)addres++;
   }
+  
+    __enable_irq();
 }

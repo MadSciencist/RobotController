@@ -18,12 +18,15 @@
             </TabItem>
             <TabItem Header="Feedback">
                 <Grid Background="#FFE5E5E5">
-                    <local:RobotSettingsFeedback Grid.Row="0" Grid.Column="0" />
+                    <local:RobotSettingsFeedback Grid.Row="0" Grid.Column="0" 
+                                                 TextBoxEnterPressed="OnTextBoxEnterPressed"
+                                                 CheckboxChecked="OnCheckboxChecked"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Alarms">
                 <Grid Background="#FFE5E5E5">
-                    <local:RobotSettingsAlarms Grid.Row="0" Grid.Column="0" TextBoxEnterPressed="OnTextBoxEnterPressed"  />
+                    <local:RobotSettingsAlarms Grid.Row="0" Grid.Column="0" 
+                                               TextBoxEnterPressed="OnTextBoxEnterPressed"  />
                 </Grid>
             </TabItem>
         </TabControl>

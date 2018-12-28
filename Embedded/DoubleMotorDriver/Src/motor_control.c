@@ -30,8 +30,8 @@ void motor_right_stop_PWM() {
   HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_4);
 }
 
-static uint8_t slewrate_left_left = SLEWRATE_CNT, slewrate_left_right = SLEWRATE_CNT;
-static uint8_t slewrate_right_left = SLEWRATE_CNT, slewrate_right_right = SLEWRATE_CNT;
+volatile static uint16_t slewrate_left_left = SLEWRATE_CNT, slewrate_left_right = SLEWRATE_CNT;
+volatile static uint16_t slewrate_right_left = SLEWRATE_CNT, slewrate_right_right = SLEWRATE_CNT;
 
 void update_slewrate_cnt(){
   if (slewrate_left_left > 0) slewrate_left_left--; //deadtime

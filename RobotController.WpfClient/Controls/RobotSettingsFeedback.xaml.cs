@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RobotController.WpfGui.BusinessLogic;
+using RobotController.WpfGui.ExtendedControls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RobotController.WpfGui.Controls
 {
@@ -20,9 +12,24 @@ namespace RobotController.WpfGui.Controls
     /// </summary>
     public partial class RobotSettingsFeedback : UserControl
     {
+        public event EventHandler<SendingTextBoxEventArgs> TextBoxEnterPressed;
+        public event EventHandler<RoutedEventArgs> CheckboxChecked;
+
         public RobotSettingsFeedback()
         {
             InitializeComponent();
+        }
+
+        private void ExtendedTexBbox_OnOnEnterPressed(object sender, KeyEventArgs e)
+        {
+            var textBox = (ExtendedTexBbox)sender;
+
+            TextBoxEnterPressed?.Invoke(sender, new SendingTextBoxEventArgs {Value = textBox.Text});
+        }
+
+        private void CheckBox_OnChanged(object sender, RoutedEventArgs e)
+        {
+            CheckboxChecked?.Invoke(sender, e);
         }
     }
 }

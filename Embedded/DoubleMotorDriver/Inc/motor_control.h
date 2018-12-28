@@ -4,7 +4,7 @@
 #include "gpio.h"
 #include "tim.h"
 
-#define SLEWRATE_CNT 10 // if the variable will be incremented each 0.2ms, this gives us 2ms deadband
+#define SLEWRATE_CNT 50 // if the variable will be incremented each 0.2ms, this gives us 2ms deadband (10)
 #define MOTOR_LEFT_DIS           HAL_GPIO_WritePin(GPIOC, DIS1_Pin, GPIO_PIN_SET);
 #define MOTOR_LEFT_ENA           HAL_GPIO_WritePin(GPIOC, DIS1_Pin, GPIO_PIN_RESET);
 #define MOTOR_RIGHT_DIS          HAL_GPIO_WritePin(DIS2_GPIO_Port, DIS2_Pin, GPIO_PIN_SET);

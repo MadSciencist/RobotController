@@ -16,6 +16,8 @@ namespace RobotController.RobotModels
         {
             PidLeft = new PidModel();
             PidRight = new PidModel();
+            EncoderLeft = new EncoderModel();
+            EncoderRight = new EncoderModel();
             Alarms = new AlarmModel();
         }
 
@@ -27,6 +29,8 @@ namespace RobotController.RobotModels
 
         public PidModel PidLeft { get; set; }
         public PidModel PidRight { get; set; }
+        public EncoderModel EncoderLeft { get; set; }
+        public EncoderModel EncoderRight { get; set; }
         public AlarmModel Alarms { get; set; }
         public byte ControlType { get; set; }
         public bool UseRegenerativeBreaking { get; set; }

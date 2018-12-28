@@ -50,6 +50,8 @@ uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, fl
 //return 1 if set went ok
 uint8_t PidSetParams(PID_Properties_t* PID_Properties, float _kp, float _ki, float _kd);
 
+uint8_t ResetIntegrator(PID_Properties_t* PID_Properties);
+
 //helper function to compare two floats withing epsilon accuracy
 //return true if floats are the same
 static uint8_t Compare(float a, float b, float epsilon);

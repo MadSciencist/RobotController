@@ -69,9 +69,6 @@
 /* Private variables ---------------------------------------------------------*/
 RobotParams_t robotParams;
 uint16_t ADC_RAW[ADC_MEASUREMENTS];
-int16_t left =0, right = 0;
-float sinusArg = 0.0, argInc = 0.15;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,12 +76,18 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+void fake_params();
+
 void execute_closed_loop_control(){
-  if(robotParams.controlType == openLoop){
-    drive_motor_left((int16_t)robotParams.driveLeft.setpoint);
-    drive_motor_right((int16_t)robotParams.driveRight.setpoint);
-  }else if(robotParams.controlType == closedLoopPID){
-    static float outLeft, outRight;
+  static float outLeft, outRight;
+  
+  if(robotParams.controlType == openLoop)
+  {
+    outLeft = robotParams.driveLeft.setpoint;
+    outRight = robotParams.driveRight.setpoint;
+  }
+  else if(robotParams.controlType == closedLoopPID)
+  {
     PID(&robotParams.driveLeft.pid,
         robotParams.driveLeft.setpoint,
         robotParams.driveLeft.speed,
@@ -98,21 +101,28 @@ void execute_closed_loop_control(){
         &outRight,
         noDerivative,
         reverse);
-
-    drive_motor_right((int16_t)outRight);
-
-  }else if(robotParams.controlType == closedLoopFuzzy){
+  }
+  else if(robotParams.controlType == closedLoopFuzzy)
+  {
     
   } 
+    drive_motor_left((int16_t)outLeft);
+    drive_motor_right((int16_t)outRight);
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  if(htim->Instance == TIM10){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+  static uint16_t cntr = 0;
+  
+  if(htim->Instance == TIM10){ // each 200us
+    cntr++;
     update_slewrate_cnt();
-  }else if(htim->Instance == TIM11){ //5 ms IRQ
-    get_velocity(&robotParams.driveLeft.speed, &robotParams.driveRight.speed);
-    execute_closed_loop_control();
+    
+    if(cntr == 25){ //each  5ms
+      get_velocity(&robotParams.driveLeft.speed, &robotParams.driveRight.speed);
+      execute_closed_loop_control();
+      
+      cntr = 0;
+    }
   }
 }
 /* USER CODE END PFP */
@@ -130,8 +140,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   ReadFromFlash(&robotParams, sizeof(robotParams), SECTOR5_FLASH_BEGINING);
-  
-  disable_motors();
+  //fake_params();
   InitSendQueue();
   init_params(&robotParams);
   /* USER CODE END 1 */
@@ -162,16 +171,15 @@ int main(void)
   MX_TIM4_Init();
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
-  MX_TIM11_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
   HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC_RAW, ADC_MEASUREMENTS);
-  enable_motors();
+  disable_motors();
+  //enable_motors();
   start_receiver();
   HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
   HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
   HAL_TIM_Base_Start_IT(&htim10); // 200 us IRQ (motor slew-rate limit)
-  HAL_TIM_Base_Start_IT(&htim11); //5ms IRQ (encoder)
   
   motor_left_start_PWM();
   motor_right_start_PWM();
@@ -257,7 +265,15 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void fake_params(){
+  robotParams.requests.readEeprom = 0;
+  robotParams.requests.saveEeprom = 0;
+  robotParams.driveLeft.pid.kp = 1.0;
+  robotParams.timing.feedbackSpeedCurrentPeriod = 100;
+  robotParams.timing.feedbackVoltageTemperaturePeriod = 200;
+  robotParams.timing.keepAlivePeriod = 1000;
+  robotParams.useRegenerativeBreaking = 0;
+}
 /* USER CODE END 4 */
 
 /**

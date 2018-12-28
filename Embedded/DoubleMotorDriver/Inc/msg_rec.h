@@ -37,7 +37,16 @@ typedef enum {  //data from PC to robot, r means robot
   TemperatureAlarm = 132,
   CriticalTemperatureAlarm = 133,
   CurrentLeftAlarm = 134,
-  CurrentRightAlarm = 135
+  CurrentRightAlarm = 135,
+  
+  EncoderLeftFilterCoef = 140,
+  EncoderRightFilterCoef = 141,
+  EncoderLeftIsReversed = 142,
+  EncoderRightIsReversed = 143,
+  EncoderLeftScaleCoef = 144,
+  EncoderRightScaleCoef = 145,
+
+  Hello = 255
 } gui2rob_t;
 
 

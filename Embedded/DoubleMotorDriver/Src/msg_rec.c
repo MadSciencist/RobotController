@@ -9,16 +9,22 @@ void start_receiver(){
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-  if(raw_received[0] == (uint8_t)FRAME_START_CHAR
-     && raw_received[SIZEOF_RECEIVING_BUFFER-1] == (uint8_t)FRAME_STOP_CHAR){
-       
-       uint16_t frame_crc = (raw_received[12] << 8) | raw_received[11];
-       uint16_t calculated_crc = crc_modbus(&raw_received[1], 10);
-       
-       if(frame_crc == calculated_crc){
-         parse_data((addresses_t)raw_received[1], raw_received[2], &raw_received[3]);
+  if(huart->Instance == USART2){    //RS485
+
+  }else if(huart->Instance == USART6){ // radio modem
+    if(raw_received[0] == (uint8_t)FRAME_START_CHAR
+       && raw_received[SIZEOF_RECEIVING_BUFFER-1] == (uint8_t)FRAME_STOP_CHAR){
+         
+         uint16_t frame_crc = (raw_received[12] << 8) | raw_received[11];
+         uint16_t calculated_crc = crc_modbus(&raw_received[1], 10);
+         
+         if(frame_crc == calculated_crc){
+           parse_data((addresses_t)raw_received[1], raw_received[2], &raw_received[3]);
+         }
        }
-     }
+    
+    start_receiver();
+  }
 }
 
 static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
@@ -30,11 +36,17 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     break;
     
   case AllowMovement:
+    robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 1;
     break;
     
   case StopMovement:
+        robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 0;
+    break;
+    
+  case Hello:
+        robotParams.requests.readEeprom = 1;
     break;
     
   case EepromRead:
@@ -122,6 +134,30 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     
   case CurrentRightAlarm:
     robotParams.driveRight.currentLimit = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderLeftFilterCoef:
+    robotParams.driveLeft.encoder.encoderFilterCoef = get_float(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderRightFilterCoef:
+    robotParams.driveRight.encoder.encoderFilterCoef = get_float(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderLeftScaleCoef:
+    robotParams.driveLeft.encoder.scaleCoef = get_float(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderRightScaleCoef:
+    robotParams.driveRight.encoder.scaleCoef = get_float(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderLeftIsReversed:
+    robotParams.driveLeft.encoder.isEncoderReversed = get_uint8(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderRightIsReversed:
+    robotParams.driveRight.encoder.isEncoderReversed = get_uint8(payload, 0, LITTLE_ENDIAN);
     break;
     
   default:

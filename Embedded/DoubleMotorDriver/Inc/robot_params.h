@@ -8,6 +8,7 @@
 typedef struct {
   uint8_t isEncoderReversed; //bool
   float encoderFilterCoef;
+  float scaleCoef;
 } EncoderParams_t;
 
 typedef struct {
@@ -24,6 +25,7 @@ typedef struct {
 typedef struct {
   uint8_t saveEeprom; //bool
   uint8_t readEeprom; //bool
+  uint8_t allowMovementChanged;
 } Requests_t;
 
 typedef struct {

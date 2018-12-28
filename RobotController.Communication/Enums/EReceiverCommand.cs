@@ -25,6 +25,10 @@
         PidDeadband_1 = 105,
         PidPeriod_1 = 106,
 
+        EncoderFilterCoef_1 = 130,
+        EncoderIsReversed_1 = 131,
+        EncoderScaleCoef_1 = 132,
+
         PidKp_2 = 200,
         PidKi_2 = 201,
         PidKd_2 = 202,
@@ -32,5 +36,9 @@
         PidClamping_2 = 204,
         PidDeadband_2 = 205,
         PidPeriod_2 = 206,
+
+        EncoderFilterCoef_2 = 230,
+        EncoderIsReversed_2 = 231,
+        EncoderScaleCoef_2 = 232
     }
 }

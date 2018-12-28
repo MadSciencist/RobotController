@@ -290,8 +290,8 @@ namespace RobotController.WpfGui
         {
             if (_robotConnectionService == null)
             {
-               //var portName = _selectedPortName;
-                var portName = "COM3";
+                var portName = _selectedPortName;
+
                 if (portName == string.Empty)
                 {
                     Logger.Error("No ports found");
@@ -309,7 +309,21 @@ namespace RobotController.WpfGui
                 _robotConnectionService.SpeedCurrentFeedbackReceived += RobotConnection_CurrentSpeedFeedbackReceived;
                 _robotConnectionService.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureFeedbackReceived;
                 _robotConnectionService.ParametersReceived += RobotConnection_ParametersReceived;
+
+                RequestParameters();
             }
+        }
+
+        private void RequestParameters()
+        {
+            var message = new SendMessage
+            {
+                CommandType = ESenderCommand.Hello,
+                Node = ENode.Master,
+                Payload = Convert.ToByte(0)
+            };
+
+            _robotConnectionService?.SendCommand(message, EPriority.High);
         }
 
         private void Navbar_OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();

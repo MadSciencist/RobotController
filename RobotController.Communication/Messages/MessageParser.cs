@@ -5,6 +5,7 @@ using RobotController.RobotModels;
 using System;
 using System.Diagnostics;
 using RobotController.RobotModels.PhysicalConverters;
+using EReceiverCommand = RobotController.Communication.Enums.EReceiverCommand;
 
 namespace RobotController.Communication.Messages
 {
@@ -185,6 +186,36 @@ namespace RobotController.Communication.Messages
 
                     case EReceiverCommand.PidPeriod_2:
                         _parameters.PidRight.Period = BitConverter.ToUInt16(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderFilterCoef_1:
+                        _parameters.EncoderLeft.LowPassFilterCoeff = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderFilterCoef_2:
+                        _parameters.EncoderRight.LowPassFilterCoeff = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderScaleCoef_1:
+                        _parameters.EncoderLeft.ScaleCoeff = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderScaleCoef_2:
+                        _parameters.EncoderRight.ScaleCoeff = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderIsReversed_1:
+                        _parameters.EncoderLeft.IsReversed = BitConverter.ToBoolean(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderIsReversed_2:
+                        _parameters.EncoderRight.IsReversed = BitConverter.ToBoolean(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
 

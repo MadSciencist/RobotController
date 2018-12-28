@@ -55,6 +55,11 @@ uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, fl
   return 1;
 }
 
+uint8_t ResetIntegrator(PID_Properties_t* PID_Properties){
+  PID_Properties->integralSum = 0;
+  return 1;
+}
+
 uint8_t PidSetParams(PID_Properties_t* PID_Properties, float _kp, float _ki, float _kd){
   if(_kp < 0 || _ki < 0 || _kd < 0 || PID_Properties == NULL) return 0;
   
