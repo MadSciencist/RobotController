@@ -1,5 +1,6 @@
 ﻿using NLog;
 using RobotController.Communication;
+using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.Communication.Messages;
 using RobotController.Communication.SerialStream;
@@ -22,11 +23,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
 using System.Xml.Serialization;
-using RobotController.Communication.Enums;
-using RobotController.Gamepad.Models;
 
 namespace RobotController.WpfGui
 {
@@ -40,6 +37,7 @@ namespace RobotController.WpfGui
         private ISerialPortFactory _serialPortFactory;
         private SerialPortManager _serialPortManager;
         private RobotConnectionService _robotConnectionService;
+        private ControlsSender _sender;
 
         private IGamepadService _gamepadService;
 
@@ -80,7 +78,7 @@ namespace RobotController.WpfGui
         private void GamepadSerivce_RobotControlChanged(object sender, RobotControlEventArgs e)
         {
             _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
-            SendRobotControl(e.RobotControl);
+            _sender?.UpdateAndSendControls(e.RobotControl);
         }
 
         private void GamepadService_GamepadStateChanged(object sender, GamepadEventArgs e)
@@ -116,17 +114,6 @@ namespace RobotController.WpfGui
         private void RobotConnection_ParametersReceived(object sender, MessageParsedEventArgs e) =>
             _mainViewModel.RobotControlsViewModel.ParametersModel = e.Parameters;
 
-        private void SendRobotControl(ControlsModel control)
-        {
-            var message = new SendMessage
-            {
-                CommandType = ESenderCommand.Controls,
-                Node = ENode.Master,
-                Payload = control
-            };
-
-            _robotConnectionService?.SendCommand(message, EPriority.High);
-        }
 
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {
@@ -139,7 +126,7 @@ namespace RobotController.WpfGui
                     Payload = (byte)0x00
                 };
 
-                _robotConnectionService?.SendCommand(message, source.EPriority);
+                _sender.SendMessage(message, source.EPriority);
             }
         }
 
@@ -157,7 +144,7 @@ namespace RobotController.WpfGui
                         Payload = TypeCaster.Cast(e.Value, source.EType)
                     };
 
-                    _robotConnectionService?.SendCommand(message, source.EPriority);
+                    _sender.SendMessage(message, source.EPriority);
                 }
                 catch (FormatException ex)
                 {
@@ -182,7 +169,7 @@ namespace RobotController.WpfGui
                     Payload = source.State
                 };
 
-                _robotConnectionService?.SendCommand(message, source.EPriority);
+                _sender.SendMessage(message, source.EPriority);
             }
         }
 
@@ -198,7 +185,7 @@ namespace RobotController.WpfGui
                     Payload = Convert.ToByte(source.IsChecked)
                 };
 
-                _robotConnectionService?.SendCommand(message, source.EPriority);
+                _sender.SendMessage(message, source.EPriority);
             }
         }
 
@@ -309,6 +296,8 @@ namespace RobotController.WpfGui
                 _robotConnectionService.SpeedCurrentFeedbackReceived += RobotConnection_CurrentSpeedFeedbackReceived;
                 _robotConnectionService.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureFeedbackReceived;
                 _robotConnectionService.ParametersReceived += RobotConnection_ParametersReceived;
+
+                _sender = new ControlsSender(_robotConnectionService, 50);
 
                 RequestParameters();
             }

@@ -48,12 +48,16 @@ void drive_motor_left(int16_t value){
     drive_left_motor_left(0);
   }else if((value > 0) && (slewrate_left_left == 0)){
     slewrate_left_right = SLEWRATE_CNT;
+    
+    value = map(value, 0, 100, 5, 100);
     drive_left_motor_right(0);
     drive_left_motor_left(value);
   }else if((value < 0) && (slewrate_left_right == 0)) {
     slewrate_left_left = SLEWRATE_CNT;
+    
+    value = map(-value, 0, 100, 5, 100);
     drive_left_motor_left(0);
-    drive_left_motor_right(-value);
+    drive_left_motor_right(value);
   }
 }
 
@@ -65,12 +69,16 @@ void drive_motor_right(int16_t value){
     drive_right_motor_left(0);
   }else if((value > 0) && (slewrate_right_left == 0)){
     slewrate_right_right = SLEWRATE_CNT;
+    
+    value = map(value, 0, 100, 5, 100); //the min value depends highly on the torque load, needs to be tuned on real robot
     drive_right_motor_right(0);
     drive_right_motor_left(value);
   }else if((value < 0) && (slewrate_right_right == 0)) {
     slewrate_right_left = SLEWRATE_CNT;
+    
+    value = map(-value, 0, 100, 5, 100);
     drive_right_motor_left(0);
-    drive_right_motor_right(-value);
+    drive_right_motor_right(value);
   }
 }
 
@@ -92,4 +100,9 @@ static void drive_right_motor_left(uint16_t value){
 static void drive_right_motor_right(uint16_t value){
   if(value > 100) value = 100;
   TIM2->CCR2 = value;
+}
+
+static int16_t map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }

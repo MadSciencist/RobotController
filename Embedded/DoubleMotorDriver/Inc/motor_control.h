@@ -32,5 +32,8 @@ static void drive_left_motor_right(uint16_t value);
 static void drive_right_motor_left(uint16_t value);
 static void drive_right_motor_right(uint16_t value);
 
+// helper
+static int16_t map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max);
+
 #define _MOTOR_CONTROL_H_
 #endif

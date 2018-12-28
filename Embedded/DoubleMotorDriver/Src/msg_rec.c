@@ -10,7 +10,7 @@ void start_receiver(){
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   if(huart->Instance == USART2){    //RS485
-
+    
   }else if(huart->Instance == USART6){ // radio modem
     if(raw_received[0] == (uint8_t)FRAME_START_CHAR
        && raw_received[SIZEOF_RECEIVING_BUFFER-1] == (uint8_t)FRAME_STOP_CHAR){
@@ -41,12 +41,12 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     break;
     
   case StopMovement:
-        robotParams.requests.allowMovementChanged = 1;
+    robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 0;
     break;
     
   case Hello:
-        robotParams.requests.readEeprom = 1;
+    robotParams.requests.readEeprom = 1;
     break;
     
   case EepromRead:
@@ -102,7 +102,11 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     break;
     
   case PidDeadband:
-    //TODO
+    if(addr == Left){
+      robotParams.driveLeft.pid.deadband = get_double(payload, 0, LITTLE_ENDIAN);
+    }else if(addr == Right){
+      robotParams.driveRight.pid.deadband = get_double(payload, 0, LITTLE_ENDIAN);
+    }
     break;
     
   case PidPeriod:

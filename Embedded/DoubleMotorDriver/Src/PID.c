@@ -9,54 +9,80 @@
 
 #include "PID.h"
 
-uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse){
+uint8_t PID(PID_Properties_t* props, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t reverse){
   
-  if(PID_Properties == NULL || pOutput == NULL) return 0;
+  if(props == NULL || pOutput == NULL) return 0;
   
   float error = setpoint - feedback;
   float derivativeOutput = 0.0f;
   float output;
   
-  //proportional part
-  float proportionalOutput = PID_Properties->kp * error;
   
-  //integral part
-  PID_Properties->integralSum += (PID_Properties->ki * error);
-  //anti wind-up
-  if (PID_Properties->integralSum > PID_Properties->posIntegralLimit) PID_Properties->integralSum = PID_Properties->posIntegralLimit;
-  else if (PID_Properties->integralSum < PID_Properties->negIntegralLimit) PID_Properties->integralSum = PID_Properties->negIntegralLimit;
-  
-  //derivative part
-  switch(derivativeType){
-  case derivativeOnFeedback:
-    derivativeOutput = PID_Properties->kd * (-1.0f) * (feedback - PID_Properties->lastFeedback);
-    break;
+  // if (fabs(error) < props->deadband) {
+  if (fabs(setpoint) > props->deadband) {
+    //proportional part
+    float proportionalOutput = props->kp * error;
     
-  case derivativeOnError:
-    derivativeOutput = PID_Properties->kd * (error - PID_Properties->lastError);
-    break;
+    //integral part
+    props->integralSum += props->ki * error;
+    //anti wind-up
+    if (props->integralSum > props->posIntegralLimit) props->integralSum = props->posIntegralLimit;
+    else if (props->integralSum < props->negIntegralLimit) props->integralSum = props->negIntegralLimit;
     
-  default:
-    break;
+    //derivative part
+    switch(derivativeType){
+    case derivativeOnFeedback:
+      derivativeOutput = props->kd * (-1.0f) * (feedback - props->lastFeedback);
+      break;
+      
+    case derivativeOnError:
+      derivativeOutput = props->kd * (error - props->lastError);
+      break;
+      
+    default:
+      break;
+    }
+    
+    output = proportionalOutput + props->integralSum + derivativeOutput;
+  } else {
+    output = 0;
   }
   
-  output = proportionalOutput + PID_Properties->integralSum + derivativeOutput;
-  if(pidReverse) output *= -1.0f;
+  
+  if(reverse) output *= -1.0f;
   
   //check if output is within bounds
-  if(output > PID_Properties->posOutputLimit) output = PID_Properties->posOutputLimit;
-  else if(output < PID_Properties->negOutputLimit) output = PID_Properties->negOutputLimit;
+  if(output > props->posOutputLimit) output = props->posOutputLimit;
+  else if(output < props->negOutputLimit) output = props->negOutputLimit;
   
   *pOutput = output;
   
-  PID_Properties->lastFeedback = feedback;
-  PID_Properties->lastError = error;
+  props->lastFeedback = feedback;
+  props->lastError = error;
   
   return 1;
 }
 
-uint8_t ResetIntegrator(PID_Properties_t* PID_Properties){
-  PID_Properties->integralSum = 0;
+uint8_t GetKi(PID_Properties_t* props, float* ki){
+  if(props == NULL) return 0;
+  
+  *ki = props->ki / ((float)props->period / 1000.0f);
+  
+  return 1;
+}
+
+uint8_t GetKd(PID_Properties_t* props, float* kd){
+  if(props == NULL) return 0;
+  
+  *kd = props->kd * ((float)props->period / 1000.0f);
+  
+  return 1;
+}
+
+uint8_t ResetIntegrator(PID_Properties_t* props){
+  if(props == NULL) return 0;
+  
+  props->integralSum = 0;
   return 1;
 }
 
@@ -64,18 +90,18 @@ uint8_t PidSetParams(PID_Properties_t* PID_Properties, float _kp, float _ki, flo
   if(_kp < 0 || _ki < 0 || _kd < 0 || PID_Properties == NULL) return 0;
   
   //check if PID_Properties are different
-  if( ! Compare(PID_Properties->kp, _kp, 1E-4)){ 
+  if( ! Compare(PID_Properties->kp, _kp, 1E-5)){ 
     PID_Properties->kp = _kp;
   }
   
-  if( ! Compare(PID_Properties->ki, _ki, 1E-4)){ 
+  if( ! Compare(PID_Properties->ki, _ki, 1E-5)){ 
     PID_Properties->ki = _ki * ((float)PID_Properties->period / 1000.0f);
   }
   
-  if( ! Compare(PID_Properties->kd, _kd, 1E-4)){ 
+  if( ! Compare(PID_Properties->kd, _kd, 1E-5)){ 
     if(PID_Properties->period > 0)
-      // PID_Properties->kd = _kd / ((float)PID_Properties->period / 1000.0f);
-      PID_Properties->kd = _kd;
+      PID_Properties->kd = _kd / ((float)PID_Properties->period / 1000.0f);
+    //PID_Properties->kd = _kd;
   }
   return 1;
 }

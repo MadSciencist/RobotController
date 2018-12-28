@@ -14,6 +14,7 @@
 
 typedef struct{
   uint16_t period;              //interval between PID computations
+  float deadband;
   float error;
   float integralSum;
   float kp;                     //do not change Kp Ki Kd manually, use PidSetParams(); 
@@ -50,7 +51,11 @@ uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, fl
 //return 1 if set went ok
 uint8_t PidSetParams(PID_Properties_t* PID_Properties, float _kp, float _ki, float _kd);
 
-uint8_t ResetIntegrator(PID_Properties_t* PID_Properties);
+//get function that scale the hyperparameters into time-awarness form
+uint8_t GetKi(PID_Properties_t* props, float* ki);
+uint8_t GetKd(PID_Properties_t* props, float* kd);
+
+uint8_t ResetIntegrator(PID_Properties_t* props);
 
 //helper function to compare two floats withing epsilon accuracy
 //return true if floats are the same

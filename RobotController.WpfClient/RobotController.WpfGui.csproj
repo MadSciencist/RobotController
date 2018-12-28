@@ -73,6 +73,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BusinessLogic\ControlsSender.cs" />
+    <Compile Include="BusinessLogic\Sender.cs" />
     <Compile Include="BusinessLogic\SendingTextBoxEventArgs.cs" />
     <Compile Include="BusinessLogic\TypeCaster.cs" />
     <Compile Include="Charts\SpeedFeedbackChart.cs" />
