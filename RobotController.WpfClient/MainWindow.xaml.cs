@@ -24,6 +24,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
+using LiveCharts.Wpf;
 
 namespace RobotController.WpfGui
 {
@@ -62,6 +63,9 @@ namespace RobotController.WpfGui
 
             _gamepadService.Start();
             DataContext = _mainViewModel;
+
+            Status.VelocityChart.Loaded += (o, args) => Console.WriteLine("Loaded");
+            Status.VelocityChart.Unloaded += (o, args) => Console.WriteLine("UNLoaded");
         }
 
         private void GamepadService_SteeringPointChanged(object sender, Point point) =>
@@ -340,11 +344,13 @@ namespace RobotController.WpfGui
 
         private void Status_OnExportClicked(object sender, RoutedEventArgs e)
         {
-            using (var stream = new FileStream("settings.xml", FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                var serializer = new XmlSerializer(typeof(ParametersModel));
-                serializer.Serialize(stream, _mainViewModel.RobotControlsViewModel.ParametersModel);
-            }
+
+            Console.WriteLine($"IsLoaded: {Status.VelocityChart.IsLoaded} Enabled:{Status.VelocityChart.IsEnabled} Focused:{Status.VelocityChart.IsFocused}");
+            //using (var stream = new FileStream("settings.xml", FileMode.Create, FileAccess.Write, FileShare.None))
+            //{
+            //    var serializer = new XmlSerializer(typeof(ParametersModel));
+            //    serializer.Serialize(stream, _mainViewModel.RobotControlsViewModel.ParametersModel);
+            //}
         }
 
         private void Status_OnImportClicked(object sender, RoutedEventArgs e)

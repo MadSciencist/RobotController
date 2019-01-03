@@ -31,7 +31,7 @@ namespace RobotController.Communication.Messages
                 {
                     case EReceiverCommand.KeepAlive:
                         KeepAliveReceived?.Invoke(this, EventArgs.Empty);
-                        Debug.WriteLine("Keep alive recieved");
+                        //Debug.WriteLine("Keep alive recieved");
                         break;
 
                     case EReceiverCommand.FeedbackSpeedCurrent:
