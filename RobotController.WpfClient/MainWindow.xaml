@@ -5,10 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:RobotController.WpfGui.Controls"
     xmlns:extendedControls="clr-namespace:RobotController.WpfGui.ExtendedControls"
+    xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     x:Class="RobotController.WpfGui.MainWindow"
         mc:Ignorable="d"
     ResizeMode="NoResize"
         Title="Robot Controller" Height="705" Width="1050" Closing="WindowClose">
+    <Window.Resources>
+        <!-- Workaround for freezing chart after chaning tabs: 
+        https://stackoverflow.com/questions/9794151/stop-tabcontrol-from-recreating-its-children -->
+        <Style TargetType="{x:Type extendedControls:NonReloadingTabControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid Background="{TemplateBinding Background}" ClipToBounds="True" KeyboardNavigation.TabNavigation="Local" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="ColumnDefinition0" />
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto" />
+                                <RowDefinition x:Name="RowDefinition1" Height="*" />
+                            </Grid.RowDefinitions>
+                            <DockPanel Margin="2,2,0,0" LastChildFill="False">
+                                <TabPanel x:Name="HeaderPanel" Margin="0,0,0,-1" VerticalAlignment="Bottom" Panel.ZIndex="1" DockPanel.Dock="Left"
+                                          IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
+                            </DockPanel>
+                            <Border x:Name="ContentPanel" Grid.Row="1" Grid.Column="0"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                                <Grid x:Name="PART_ItemsHolder" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions >
             <RowDefinition Height="120" />
@@ -31,11 +65,11 @@
                              LoggingPathChanged="Navbar_OnLoggingPathChanged"/>
         </DockPanel>
 
-        <TabControl Name="MainTabControl" HorizontalAlignment="Stretch" Margin="5" Grid.Row="1" VerticalAlignment="Stretch" >
+        <extendedControls:NonReloadingTabControl x:Name="MainTabControl" HorizontalAlignment="Stretch" Margin="5"
+                                                 Grid.Row="1" VerticalAlignment="Stretch">
+
             <TabItem Header="Status">
-                <TabItem.Content>
-                    <controls:Status x:Name="Status" Margin="0" ExportClicked="Status_OnExportClicked" ImportClicked="Status_OnImportClicked"/>
-                </TabItem.Content>
+                <controls:Status x:Name="Status" Margin="0" ExportClicked="Status_OnExportClicked" ImportClicked="Status_OnImportClicked"/>
             </TabItem>
             <TabItem Header="Control settings">
                 <controls:ControlSettings ExpoSliderChanged="ControlSettings_OnExpoSliderChanged" 
@@ -50,7 +84,7 @@
             <TabItem Header="Logs">
                 <controls:Debug />
             </TabItem>
-        </TabControl>
+        </extendedControls:NonReloadingTabControl>
 
         <StatusBar HorizontalAlignment="Stretch" Margin="0" Grid.Row="2" VerticalAlignment="Stretch" Padding="8,0,0,0">
             <TextBlock Text="{Binding Path=GuiStatusViewModel.ConnectionStatus,Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Width="120"/>

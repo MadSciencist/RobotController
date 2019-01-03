@@ -114,6 +114,7 @@
     <Compile Include="ExtendedControls\ExtendedTexBbox.cs" />
     <Compile Include="ExtendedControls\ExtentedCheckBox.cs" />
     <Compile Include="ExtendedControls\ExtentedRadioButton.cs" />
+    <Compile Include="ExtendedControls\NonRealoadingTabControl.cs" />
     <Compile Include="Infrastructure\DataLogSaveDialog.cs" />
     <Compile Include="Models\RobotStatusModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
