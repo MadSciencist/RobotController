@@ -1,5 +1,6 @@
 ﻿using RobotController.Communication.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Timers;
 using RobotController.Communication.Extensions;
 
@@ -23,6 +24,7 @@ namespace RobotController.Communication.Utils
 
         private void OnElapsed(object sender, ElapsedEventArgs e)
         {
+            Debug.WriteLine("Connection timeout: robot is not sending keep alive");
             TimeoutOccured?.Invoke(this, EventArgs.Empty);
         }
     }

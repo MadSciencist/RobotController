@@ -16,7 +16,7 @@ namespace RobotController.Communication.SendingTask
 
         public void Enqueue(ISendMessage message, EPriority priority)
         {
-            _queue.Enqueue(message, (int)priority);
+            _queue.Enqueue(message, (float) priority);
         }
 
         public ISendMessage Dequeue()

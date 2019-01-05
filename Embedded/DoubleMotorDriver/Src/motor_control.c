@@ -43,10 +43,7 @@ void update_slewrate_cnt(){
 void drive_motor_left(int16_t value){
   if(value > 100 || value < -100) return;
   
-  if(value == 0){
-    drive_left_motor_right(0);
-    drive_left_motor_left(0);
-  }else if((value > 0) && (slewrate_left_left == 0)){
+ if((value > 0) && (slewrate_left_left == 0)){
     slewrate_left_right = SLEWRATE_CNT;
     
     value = map(value, 0, 100, 5, 100);
@@ -58,6 +55,9 @@ void drive_motor_left(int16_t value){
     value = map(-value, 0, 100, 5, 100);
     drive_left_motor_left(0);
     drive_left_motor_right(value);
+  }else if(value == 0){
+    drive_left_motor_right(0);
+    drive_left_motor_left(0);
   }
 }
 

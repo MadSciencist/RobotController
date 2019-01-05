@@ -3,6 +3,7 @@
 #include "stm32f4xx.h"
 #include "main.h"
 #include "PID.h"
+#include "fuzzy.h"
 #include <stdio.h>
 
 typedef struct {
@@ -18,6 +19,7 @@ typedef struct {
   uint16_t current;
   uint16_t currentLimit;
   PID_Properties_t pid;
+  Fuzzy_Properties_t fuzzy;
   EncoderParams_t encoder;
 } DriveParams_t;
 

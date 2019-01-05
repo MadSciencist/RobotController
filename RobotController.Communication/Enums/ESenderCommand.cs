@@ -19,6 +19,14 @@
         PidDeadband = 105,
         PidPeriod = 106,
 
+        FuzzyKp = 110,
+        FuzzyKi = 111,
+        FuzzyKd = 112,
+        FuzzyIntegralLimit = 113,
+        FuzzyClamping = 114,
+        FuzzyDeadband = 115,
+        FuzzyPeriod = 116,
+
         VoltageAlarm = 130,
         CriticalVoltageAlarm = 131,
         TemperatureAlarm = 132,

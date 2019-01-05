@@ -46,7 +46,7 @@
             <Border BorderBrush="Black" BorderThickness="1" Height="257" Canvas.Left="202" Canvas.Top="167" Width="181">
                 <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="179.572"/>
-                    <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Driver lright - PID" VerticalAlignment="Top" Width="84.8" Canvas.Left="6.6" Canvas.Top="6" Foreground="White" Margin="0"/>
+                    <TextBlock HorizontalAlignment="Left" Height="16" TextWrapping="Wrap" Text="Driver right - PID" VerticalAlignment="Top" Width="103" Canvas.Left="6" Canvas.Top="6" Foreground="White" Margin="0"/>
                     <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="PidKp" ENode="Right" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.PidRight.Kp, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
                     <Label Content="Kp" Canvas.Left="53.399" Canvas.Top="42.213"/>
                     <Label Content="Ki" Canvas.Left="56.089" Canvas.Top="70.213"/>
@@ -60,6 +60,43 @@
                     <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="PidPeriod" ENode="Right" EPriority="Normal" EType="Uint16" Text="{Binding RobotControlsViewModel.ParametersModel.PidRight.Period, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
                     <Label Content="Period [ms]" Canvas.Left="10" Canvas.Top="183.133" Width="70.489" Height="25.96"/>
                     <CheckBox Content="Use derivative" Canvas.Left="14.533" Canvas.Top="223.917"/>
+                </Canvas>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="1" Height="257" Canvas.Left="445" Canvas.Top="10" Width="182">
+                <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="179.572"/>
+                    <TextBlock HorizontalAlignment="Left" Height="15" TextWrapping="Wrap" Text="Driver left - Fuzzy controller" VerticalAlignment="Top" Width="174" Canvas.Left="6" Canvas.Top="6" Foreground="White" Margin="0"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyKp" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyLeft.Kp, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
+                    <Label Content="Kp" Canvas.Left="53.399" Canvas.Top="42.213"/>
+                    <Label Content="Ki" Canvas.Left="56.089" Canvas.Top="70.213"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyKi" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyLeft.Ki, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="73.173" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyKd" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyLeft.Kd, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="102.093" Width="70"/>
+                    <Label Content="Kd" Canvas.Left="53.542" Canvas.Top="99.133"/>
+                    <Label Content="Integral limit" Canvas.Left="3.499" Canvas.Top="127.133" Width="76.99" Height="25.96"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyIntegralLimit" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyLeft.IntegralLimit, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="130.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyDeadband" ENode="Left" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyLeft.Deadband, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="158.093" Width="70"/>
+                    <Label Content="Deadband" Canvas.Left="14.533" Canvas.Top="158.093" Width="65.956" Height="25.96"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyPeriod" ENode="Left" EPriority="Normal" EType="Uint16" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyLeft.Period, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
+                    <Label Content="Period [ms]" Canvas.Left="10" Canvas.Top="183.133" Width="70.489" Height="25.96"/>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Height="257" Canvas.Left="644" Canvas.Top="10" Width="181">
+                <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="179.572"/>
+                    <TextBlock HorizontalAlignment="Left" Height="16" TextWrapping="Wrap" Text="Driver right- Fuzzy controller" VerticalAlignment="Top" Width="153" Canvas.Left="6" Canvas.Top="6" Foreground="White" Margin="0"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyKp" ENode="Right" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyRight.Kp, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="45.173" Width="70"/>
+                    <Label Content="Kp" Canvas.Left="53.399" Canvas.Top="42.213"/>
+                    <Label Content="Ki" Canvas.Left="56.089" Canvas.Top="70.213"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyKi" ENode="Right" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyRight.Ki, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="73.173" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyKd" ENode="Right" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyRight.Kd, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="Wrap" Canvas.Top="102.093" Width="70"/>
+                    <Label Content="Kd" Canvas.Left="53.542" Canvas.Top="99.133"/>
+                    <Label Content="Integral limit" Canvas.Left="3.499" Canvas.Top="127.133" Width="76.99" Height="25.96"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyIntegralLimit" ENode="Right" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyRight.IntegralLimit, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="130.093" Width="70"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyDeadband" ENode="Right" EPriority="Normal" EType="Double" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyRight.Deadband, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="158.093" Width="70"/>
+                    <Label Content="Deadband" Canvas.Left="14.533" Canvas.Top="158.093" Width="65.956" Height="25.96"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="TextBox_OnEnterPressed" ECommand="FuzzyPeriod" ENode="Right" EPriority="Normal" EType="Uint16" Text="{Binding RobotControlsViewModel.ParametersModel.FuzzyRight.Period, StringFormat=\{0\}, Mode=TwoWay}" Height="23" Canvas.Left="88.59" TextWrapping="NoWrap" Canvas.Top="186.093" Width="70"/>
+                    <Label Content="Period [ms]" Canvas.Left="10" Canvas.Top="183.133" Width="70.489" Height="25.96"/>
                 </Canvas>
             </Border>
         </Canvas>

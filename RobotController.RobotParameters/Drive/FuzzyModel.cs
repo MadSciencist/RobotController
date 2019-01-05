@@ -3,7 +3,7 @@
 namespace RobotController.RobotModels.Drive
 {
     [Serializable]
-    public class PidModel : ClosedLoopControllerModel
+    public class FuzzyModel : ClosedLoopControllerModel
     {
     }
 }

@@ -5,6 +5,7 @@
 #include "stm32f4xx_hal_uart.h"
 #include "main.h"
 #include "usart.h"
+#include "msg_gen.h"
 #include "PID.h"
 #include "converters.h"
 #include "Vendor/checksum.h"
@@ -31,6 +32,14 @@ typedef enum {  //data from PC to robot, r means robot
   PidClamping = 104,
   PidDeadband = 105,
   PidPeriod = 106,
+  
+  FuzzyKp = 110,
+  FuzzyKi = 111,
+  FuzzyKd = 112,
+  FuzzyIntegralLimit = 113,
+  FuzzyClamping = 114,
+  FuzzyDeadband = 115,
+  FuzzyPeriod = 116,
   
   VoltageAlarm = 130,
   CriticalVoltageAlarm = 131,

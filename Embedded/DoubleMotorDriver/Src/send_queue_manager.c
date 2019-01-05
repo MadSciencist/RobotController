@@ -4,11 +4,16 @@ Queue_t sendQueue;
 SendQueueRec_t dequeuedRec;
 
 void InitSendQueue(){
-  q_init(&sendQueue, sizeof(SendQueueRec_t), 30, FIFO, false);
+  q_init(&sendQueue, sizeof(SendQueueRec_t), MAX_QUEUE_LEN, FIFO, false);
 };
 
 
 void UartSendQueued(SendQueueRec_t* rec){
+  if(q_isFull(&sendQueue)){
+    int a = 0;
+    return;
+  }
+  
   q_push(&sendQueue, rec);
   if(huart1.gState != HAL_UART_STATE_BUSY_TX){
     DequeueAndSend();

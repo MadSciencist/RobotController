@@ -16,6 +16,8 @@
         CurrentRightAlarm = 25,
 
         EepromSaved = 30,
+        TX_MovementEnabled = 31,
+        TX_MovementDisabled = 32,
 
         PidKp_1 = 100,
         PidKi_1 = 101,
@@ -24,6 +26,14 @@
         PidClamping_1 = 104,
         PidDeadband_1 = 105,
         PidPeriod_1 = 106,
+
+        FuzzyKp_1 = 110,
+        FuzzyKi_1 = 111,
+        FuzzyKd_1 = 112,
+        FuzzyIntegralLimit_1 = 113,
+        FuzzyClamping_1 = 114,
+        FuzzyDeadband_1 = 115,
+        FuzzyPeriod_1 = 116,
 
         EncoderFilterCoef_1 = 130,
         EncoderIsReversed_1 = 131,
@@ -36,6 +46,14 @@
         PidClamping_2 = 204,
         PidDeadband_2 = 205,
         PidPeriod_2 = 206,
+
+        FuzzyKp_2 = 210,
+        FuzzyKi_2 = 211,
+        FuzzyKd_2 = 212,
+        FuzzyIntegralLimit_2 = 213,
+        FuzzyClamping_2 = 214,
+        FuzzyDeadband_2 = 215,
+        FuzzyPeriod_2 = 216,
 
         EncoderFilterCoef_2 = 230,
         EncoderIsReversed_2 = 231,

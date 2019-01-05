@@ -9,9 +9,9 @@
 
 #include "PID.h"
 
-uint8_t PID(PID_Properties_t* props, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t reverse){
+uint8_t PID(PID_Properties_t* props, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, bool reverse){
   
-  if(props == NULL || pOutput == NULL) return 0;
+  if(props == NULL || pOutput == NULL) return 1;
   
   float error = setpoint - feedback;
   float derivativeOutput = 0.0f;
@@ -49,7 +49,7 @@ uint8_t PID(PID_Properties_t* props, float setpoint, float feedback, float* pOut
   }
   
   
-  if(reverse) output *= -1.0f;
+  if(reverse == true) output *= -1.0f;
   
   //check if output is within bounds
   if(output > props->posOutputLimit) output = props->posOutputLimit;
@@ -60,7 +60,7 @@ uint8_t PID(PID_Properties_t* props, float setpoint, float feedback, float* pOut
   props->lastFeedback = feedback;
   props->lastError = error;
   
-  return 1;
+  return 0;
 }
 
 uint8_t GetKi(PID_Properties_t* props, float* ki){

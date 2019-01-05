@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="AlarmModel.cs" />
     <Compile Include="ControlsModel.cs" />
+    <Compile Include="Drive\ClosedLoopControllerModel.cs" />
     <Compile Include="Drive\EncoderModel.cs" />
+    <Compile Include="Drive\FuzzyModel.cs" />
     <Compile Include="Drive\PidModel.cs" />
     <Compile Include="ParametersModel.cs" />
     <Compile Include="PhysicalConverters\Constants.cs" />

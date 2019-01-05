@@ -10,6 +10,7 @@
 #ifndef _PID_H_
     
 #include "stm32f4xx.h"
+#include <stdbool.h>
 #include "math.h"
 
 typedef struct{
@@ -35,16 +36,11 @@ typedef enum{
   derivativeOnFeedback,
 } derivative_t;
 
-//reverse output of the PID
-typedef enum{
-  noReverse,
-  reverse,
-} PID_Reverse_t;
 
 //compute PID
-//return 0 if null pointers
-//return 1 if ok
-uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, PID_Reverse_t pidReverse);
+//return 1 if null pointers
+//return 0 if ok
+uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, bool pidReverse);
 
 //set PID tunings
 //return 0 if parameters are invalid (<0) or null pointer

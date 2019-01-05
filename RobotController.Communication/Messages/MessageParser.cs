@@ -2,23 +2,27 @@
 using RobotController.Communication.Enums;
 using RobotController.Communication.Interfaces;
 using RobotController.RobotModels;
+using RobotController.RobotModels.PhysicalConverters;
 using System;
 using System.Diagnostics;
-using RobotController.RobotModels.PhysicalConverters;
-using EReceiverCommand = RobotController.Communication.Enums.EReceiverCommand;
 
 namespace RobotController.Communication.Messages
 {
-    internal class MessageParser
+    public class MessageParser
     {
-        public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured;
+        // infrastructure events
+        public EventHandler<MessageParsingErrorEventArgs> ParsingErrorOccured; //when got exception while parsing
         public EventHandler<MessageLostEventArgs> MessageLostOccured;//???
+
+        // actual received & parsed messages
         public EventHandler KeepAliveReceived;
         public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
         public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
         public event EventHandler<MessageParsedEventArgs> ParametersReceived;
 
+        //singleton to keep all parameters in same object, so we can notify UI at once
         private readonly ParametersModel _parameters = ParametersModel.GetParameters();
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public void Parse(IReceiveMessage message)
@@ -31,7 +35,7 @@ namespace RobotController.Communication.Messages
                 {
                     case EReceiverCommand.KeepAlive:
                         KeepAliveReceived?.Invoke(this, EventArgs.Empty);
-                        //Debug.WriteLine("Keep alive recieved");
+                        Debug.WriteLine("Keep alive recieved");
                         break;
 
                     case EReceiverCommand.FeedbackSpeedCurrent:
@@ -78,7 +82,7 @@ namespace RobotController.Communication.Messages
                         }
                         break;
 
-
+                    #region Alarms
                     case EReceiverCommand.VoltageAlarm:
                         _parameters.Alarms.VoltageAlarm = VoltageConverter.GetPhysical(BitConverter.ToUInt16(payload, 0));
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
@@ -108,17 +112,9 @@ namespace RobotController.Communication.Messages
                         _parameters.Alarms.RightCurrentAlarm = CurrentConverter.GetPhysical(BitConverter.ToInt16(payload, 0));
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
+                    #endregion
 
-                    case EReceiverCommand.ControlType:
-                        _parameters.ControlType = payload[0];
-                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
-                        break;
-
-                    case EReceiverCommand.RegenerativeBreaking:
-                        _parameters.UseRegenerativeBreaking = payload[0] != 0;
-                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
-                        break;
-
+                    #region PID parameters
                     case EReceiverCommand.PidKp_1:
                         _parameters.PidLeft.Kp = BitConverter.ToSingle(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
@@ -188,7 +184,81 @@ namespace RobotController.Communication.Messages
                         _parameters.PidRight.Period = BitConverter.ToUInt16(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
+                    #endregion PID parameters
 
+                    #region Fuzzy parameters
+                    case EReceiverCommand.FuzzyKp_1:
+                        _parameters.FuzzyLeft.Kp = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyKi_1:
+                        _parameters.FuzzyLeft.Ki = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyKd_1:
+                        _parameters.FuzzyLeft.Kd = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyIntegralLimit_1:
+                        _parameters.FuzzyLeft.IntegralLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyClamping_1:
+                        _parameters.FuzzyLeft.OutputLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyDeadband_1:
+                        _parameters.FuzzyLeft.Deadband = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyPeriod_1:
+                        _parameters.FuzzyLeft.Period = BitConverter.ToUInt16(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyKp_2:
+                        _parameters.FuzzyRight.Kp = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyKi_2:
+                        _parameters.FuzzyRight.Ki = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyKd_2:
+                        _parameters.FuzzyRight.Kd = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyIntegralLimit_2:
+                        _parameters.FuzzyRight.IntegralLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyClamping_2:
+                        _parameters.FuzzyRight.OutputLimit = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyDeadband_2:
+                        _parameters.FuzzyRight.Deadband = BitConverter.ToSingle(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.FuzzyPeriod_2:
+                        _parameters.FuzzyRight.Period = BitConverter.ToUInt16(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+                    #endregion Fuzzy parameters
+
+                    #region Encoder parameters
                     case EReceiverCommand.EncoderFilterCoef_1:
                         _parameters.EncoderLeft.LowPassFilterCoeff = BitConverter.ToSingle(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
@@ -218,9 +288,28 @@ namespace RobotController.Communication.Messages
                         _parameters.EncoderRight.IsReversed = BitConverter.ToBoolean(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
+                    #endregion Encoder parameters
+
+                    case EReceiverCommand.ControlType:
+                        _parameters.ControlType = payload[0];
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.RegenerativeBreaking:
+                        _parameters.UseRegenerativeBreaking = payload[0] != 0;
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
 
                     case EReceiverCommand.EepromSaved:
-                        Console.WriteLine("Saved");
+                        Debug.WriteLine("Saved");
+                        break;
+
+                    case EReceiverCommand.TX_MovementEnabled:
+                        Debug.WriteLine("Enabled");
+                        break;
+
+                    case EReceiverCommand.TX_MovementDisabled:
+                        Debug.WriteLine("Disabled");
                         break;
 
 

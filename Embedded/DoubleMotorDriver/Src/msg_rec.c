@@ -38,11 +38,13 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
   case AllowMovement:
     robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 1;
+    uart_write_int16(TX_MovementEnabled, 0);
     break;
     
   case StopMovement:
     robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 0;
+    uart_write_int16(TX_MovementDisabled, 0);
     break;
     
   case Hello:
@@ -114,6 +116,58 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
       robotParams.driveLeft.pid.period = get_uint16(payload, 0, LITTLE_ENDIAN);
     else if (addr == Right)
       robotParams.driveRight.pid.period = get_uint16(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case FuzzyKp:
+    if(addr == Left)
+      robotParams.driveLeft.fuzzy.kp = get_double(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      robotParams.driveRight.fuzzy.kp = get_double(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case FuzzyKi:
+    if(addr == Left)
+      robotParams.driveLeft.fuzzy.ki = get_double(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      robotParams.driveRight.fuzzy.ki = get_double(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case FuzzyKd:
+    if(addr == Left)
+      robotParams.driveLeft.fuzzy.kd = get_double(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      robotParams.driveRight.fuzzy.kd = get_double(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+    
+  case FuzzyIntegralLimit:
+    if(addr == Left){
+      robotParams.driveLeft.fuzzy.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveLeft.fuzzy.posOutputLimit = robotParams.driveLeft.pid.posIntegralLimit;
+      robotParams.driveLeft.fuzzy.negIntegralLimit = -robotParams.driveLeft.pid.posIntegralLimit;
+      robotParams.driveLeft.fuzzy.negOutputLimit = -robotParams.driveLeft.pid.posOutputLimit;
+    }
+    else if (addr == Right){
+      robotParams.driveRight.fuzzy.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
+      robotParams.driveRight.fuzzy.posOutputLimit =  robotParams.driveRight.pid.posIntegralLimit;
+      robotParams.driveRight.fuzzy.negIntegralLimit = - robotParams.driveRight.pid.posIntegralLimit;
+      robotParams.driveRight.fuzzy.negOutputLimit = - robotParams.driveRight.pid.posOutputLimit;
+    }
+    break;
+    
+  case FuzzyDeadband:
+    if(addr == Left){
+      robotParams.driveLeft.fuzzy.deadband = get_double(payload, 0, LITTLE_ENDIAN);
+    }else if(addr == Right){
+      robotParams.driveRight.fuzzy.deadband = get_double(payload, 0, LITTLE_ENDIAN);
+    }
+    break;
+    
+  case FuzzyPeriod:
+    if(addr == Left)
+      robotParams.driveLeft.fuzzy.period = get_uint16(payload, 0, LITTLE_ENDIAN);
+    else if (addr == Right)
+      robotParams.driveRight.fuzzy.period = get_uint16(payload, 0, LITTLE_ENDIAN);
     break;
     
   case VoltageAlarm:

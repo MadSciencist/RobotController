@@ -1,6 +1,6 @@
 #ifndef _QUEUE_MANAGER_H
 
-#define SIZEOF_QUEUE_REC 8
+#define MAX_QUEUE_LEN 20 // warning: this cause memory allocation of SendQueueRec_t* len
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"

@@ -20,35 +20,35 @@ namespace RobotController.Communication
         private readonly IStreamResource _streamResource;
         private readonly IReceiverTask _receiverTask;
         private readonly ISenderTask _senderTask;
-        private readonly MessageExtractor _messageExtractor;
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IWatchdog _watchdog;
         private readonly ISendQueueWrapper _senderQueue;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public RobotConnectionService(IStreamResource streamResource)
         {
             _streamResource = streamResource;
-            _watchdog = new Watchdog(550);
+            _watchdog = new Watchdog(1100); //this should be minimum 2x keepAlive sending period
             _watchdog.TimeoutOccured += (sender, args) => TimeoutOccured?.Invoke(sender, args);
             
 
             //TODO unifiy the error event args, so we can use one common event handler
-            _messageExtractor = new MessageExtractor();
-            _messageExtractor.KeepAliveReceived += (sender, args) => _watchdog.ResetWatchdog();
-            _messageExtractor.MessageLostOccured +=
-                (sender, args) => _logger.Fatal($"Lost message, total count: {args.TotalLostCount}");
-            _messageExtractor.SpeedCurrentFeedbackReceived += (sender, args) => SpeedCurrentFeedbackReceived?.Invoke(sender, args);
-            _messageExtractor.VoltageTemperatureFeedbackReceived += (sender, args) => VoltageTemperatureFeedbackReceived?.Invoke(sender, args);
-            _messageExtractor.ParametersReceived += (sender, args) => ParametersReceived?.Invoke(sender, args);
+            var messageExtractor = new MessageExtractor();
+            messageExtractor.KeepAliveReceived += (sender, args) => _watchdog.ResetWatchdog();
+            messageExtractor.MessageLostOccured +=
+                (sender, args) => Logger.Fatal($"Lost message, total count: {args.TotalLostCount}");
+            messageExtractor.SpeedCurrentFeedbackReceived += (sender, args) => SpeedCurrentFeedbackReceived?.Invoke(sender, args);
+            messageExtractor.VoltageTemperatureFeedbackReceived += (sender, args) => VoltageTemperatureFeedbackReceived?.Invoke(sender, args);
+            messageExtractor.ParametersReceived += (sender, args) => ParametersReceived?.Invoke(sender, args);
 
             _receiverTask = new ReceiverTask(_streamResource);
-            _receiverTask.ErrorOccurred += (sender, args) => _logger.Error($"Receiver task error: {args.GetException().Message}");
-            _receiverTask.DataReceived += (sender, args) => _messageExtractor.TryGetMessage(args.Data);
+            _receiverTask.ErrorOccurred += (sender, args) => Logger.Error($"Receiver task error: {args.GetException().Message}");
+            _receiverTask.DataReceived += (sender, args) => messageExtractor.TryGetMessage(args.Data);
             _receiverTask.Start();
 
             _senderQueue = new SendQueueWrapper();
             _senderTask = new SenderTask(_streamResource, _senderQueue);
-            _senderTask.ErrorOccurred += (sender, args) => _logger.Error($"Sender task error: {args.GetException().Message}");
+            _senderTask.ErrorOccurred += (sender, args) => Logger.Error($"Sender task error: {args.GetException().Message}");
             _senderTask.Start();
 
             _watchdog.Start();
@@ -61,7 +61,7 @@ namespace RobotController.Communication
 
         public void Dispose()
         {
-            _logger.Info("Disposing robot connection...");
+            Logger.Info("Disposing robot connection...");
             Dispose(true);
             GC.SuppressFinalize(this);
         }

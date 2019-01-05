@@ -16,6 +16,8 @@ namespace RobotController.RobotModels
         {
             PidLeft = new PidModel();
             PidRight = new PidModel();
+            FuzzyLeft = new FuzzyModel();
+            FuzzyRight = new FuzzyModel();
             EncoderLeft = new EncoderModel();
             EncoderRight = new EncoderModel();
             Alarms = new AlarmModel();
@@ -23,12 +25,13 @@ namespace RobotController.RobotModels
 
         public static ParametersModel GetParameters()
         {
-            if (_parameters == null) _parameters = new ParametersModel();
-            return _parameters;
+            return _parameters ?? (_parameters = new ParametersModel());
         }
 
         public PidModel PidLeft { get; set; }
         public PidModel PidRight { get; set; }
+        public FuzzyModel FuzzyLeft { get; set; }
+        public FuzzyModel FuzzyRight { get; set; }
         public EncoderModel EncoderLeft { get; set; }
         public EncoderModel EncoderRight { get; set; }
         public AlarmModel Alarms { get; set; }

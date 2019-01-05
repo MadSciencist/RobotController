@@ -10,7 +10,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2018 STMicroelectronics
+  * COPYRIGHT(c) 2019 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -54,6 +54,7 @@
 #include <math.h>
 #include <stdio.h> 
 #include "PID.h"
+#include "fuzzy.h"
 #include "robot_params.h"
 #include "encoder.h"
 #include "motor_control.h"
@@ -93,19 +94,30 @@ void execute_closed_loop_control(){
         robotParams.driveLeft.speed,
         &outLeft,
         noDerivative,
-        reverse);
+        true);
     
     PID(&robotParams.driveRight.pid,
         robotParams.driveRight.setpoint,
         robotParams.driveRight.speed,
         &outRight,
         noDerivative,
-        reverse);
+        true);
   }
   else if(robotParams.controlType == closedLoopFuzzy)
   {
+    fuzzy(&robotParams.driveLeft.fuzzy,
+          robotParams.driveLeft.setpoint,
+          robotParams.driveLeft.speed,
+          &outLeft,
+          true);
     
+    fuzzy(&robotParams.driveRight.fuzzy,
+          robotParams.driveRight.setpoint,
+          robotParams.driveRight.speed,
+          &outRight,
+          true);
   } 
+  
   drive_motor_left((int16_t)outLeft);
   drive_motor_right((int16_t)outRight);
 }
@@ -118,7 +130,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
     update_slewrate_cnt();
     
     if(cntr == 25){ //each  5ms
-      get_velocity(&robotParams.driveLeft.speed, &robotParams.driveRight.speed);
+      get_velocity(&robotParams);
       execute_closed_loop_control();
       
       cntr = 0;
@@ -139,9 +151,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  InitSendQueue();
   ReadFromFlash(&robotParams, sizeof(robotParams), SECTOR5_FLASH_BEGINING);
   //fake_params();
-  InitSendQueue();
+  
   init_params(&robotParams);
   /* USER CODE END 1 */
 
@@ -193,8 +206,9 @@ int main(void)
     robotParams.state.voltage = ADC_RAW[0];
     robotParams.state.temperature = ADC_RAW[1];
     robotParams.driveLeft.current = ADC_RAW[2];
-    robotParams.driveRight.current = ADC_RAW[3];
-    
+    //robotParams.driveRight.current = ADC_RAW[3]; unsoldered current sensor noise
+    robotParams.driveRight.current = 503;
+      
     send_feedback(&robotParams); //sending feedback 'task'
     check_monitored_params(&robotParams); // threshold checks for alarms
     process_alarms(&robotParams); // process alarms timming
