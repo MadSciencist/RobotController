@@ -72,12 +72,10 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     
   case PidKi:
     if(addr == Left){
-      float value = get_double(payload, 0, LITTLE_ENDIAN);
-      PidSetParams(&robotParams.driveLeft.pid, robotParams.driveLeft.pid.kp, value, robotParams.driveLeft.pid.kd);
+      robotParams.driveLeft.pid.ki = get_double(payload, 0, LITTLE_ENDIAN);
     }
     else if (addr == Right){
-      float value = get_double(payload, 0, LITTLE_ENDIAN);
-      PidSetParams(&robotParams.driveRight.pid, robotParams.driveRight.pid.kp, value, robotParams.driveRight.pid.kd);
+      robotParams.driveRight.pid.ki = get_double(payload, 0, LITTLE_ENDIAN);
     }
     break;
     
@@ -92,14 +90,14 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     if(addr == Left){
       robotParams.driveLeft.pid.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
       robotParams.driveLeft.pid.posOutputLimit = robotParams.driveLeft.pid.posIntegralLimit;
-      robotParams.driveLeft.pid.negIntegralLimit = -robotParams.driveLeft.pid.posIntegralLimit;
-      robotParams.driveLeft.pid.negOutputLimit = -robotParams.driveLeft.pid.posOutputLimit;
+      robotParams.driveLeft.pid.negIntegralLimit = -1.0f * robotParams.driveLeft.pid.posIntegralLimit;
+      robotParams.driveLeft.pid.negOutputLimit = -1.0f * robotParams.driveLeft.pid.posOutputLimit;
     }
     else if (addr == Right){
       robotParams.driveRight.pid.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
       robotParams.driveRight.pid.posOutputLimit =  robotParams.driveRight.pid.posIntegralLimit;
-      robotParams.driveRight.pid.negIntegralLimit = - robotParams.driveRight.pid.posIntegralLimit;
-      robotParams.driveRight.pid.negOutputLimit = - robotParams.driveRight.pid.posOutputLimit;
+      robotParams.driveRight.pid.negIntegralLimit = -1.0f * robotParams.driveRight.pid.posIntegralLimit;
+      robotParams.driveRight.pid.negOutputLimit = -1.0f * robotParams.driveRight.pid.posOutputLimit;
     }
     break;
     
@@ -143,15 +141,15 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
   case FuzzyIntegralLimit:
     if(addr == Left){
       robotParams.driveLeft.fuzzy.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
-      robotParams.driveLeft.fuzzy.posOutputLimit = robotParams.driveLeft.pid.posIntegralLimit;
-      robotParams.driveLeft.fuzzy.negIntegralLimit = -robotParams.driveLeft.pid.posIntegralLimit;
-      robotParams.driveLeft.fuzzy.negOutputLimit = -robotParams.driveLeft.pid.posOutputLimit;
+      robotParams.driveLeft.fuzzy.posOutputLimit = robotParams.driveLeft.fuzzy.posIntegralLimit;
+      robotParams.driveLeft.fuzzy.negIntegralLimit = -1.0f * robotParams.driveLeft.fuzzy.posIntegralLimit;
+      robotParams.driveLeft.fuzzy.negOutputLimit = -1.0f * robotParams.driveLeft.fuzzy.posOutputLimit;
     }
     else if (addr == Right){
       robotParams.driveRight.fuzzy.posIntegralLimit = get_double(payload, 0, LITTLE_ENDIAN);
-      robotParams.driveRight.fuzzy.posOutputLimit =  robotParams.driveRight.pid.posIntegralLimit;
-      robotParams.driveRight.fuzzy.negIntegralLimit = - robotParams.driveRight.pid.posIntegralLimit;
-      robotParams.driveRight.fuzzy.negOutputLimit = - robotParams.driveRight.pid.posOutputLimit;
+      robotParams.driveRight.fuzzy.posOutputLimit =  robotParams.driveRight.fuzzy.posIntegralLimit;
+      robotParams.driveRight.fuzzy.negIntegralLimit = -1.0f * robotParams.driveRight.fuzzy.posIntegralLimit;
+      robotParams.driveRight.fuzzy.negOutputLimit = -1.0f * robotParams.driveRight.fuzzy.posOutputLimit;
     }
     break;
     

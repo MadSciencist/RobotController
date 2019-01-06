@@ -9,10 +9,7 @@ void InitSendQueue(){
 
 
 void UartSendQueued(SendQueueRec_t* rec){
-  if(q_isFull(&sendQueue)){
-    int a = 0;
-    return;
-  }
+  if(q_isFull(&sendQueue)) return;
   
   q_push(&sendQueue, rec);
   if(huart1.gState != HAL_UART_STATE_BUSY_TX){

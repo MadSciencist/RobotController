@@ -93,15 +93,15 @@ void execute_closed_loop_control(){
         robotParams.driveLeft.setpoint,
         robotParams.driveLeft.speed,
         &outLeft,
-        noDerivative,
-        true);
+        derivativeOnFeedback,
+        false);
     
     PID(&robotParams.driveRight.pid,
         robotParams.driveRight.setpoint,
         robotParams.driveRight.speed,
         &outRight,
-        noDerivative,
-        true);
+        derivativeOnFeedback,
+        false);
   }
   else if(robotParams.controlType == closedLoopFuzzy)
   {
@@ -109,13 +109,13 @@ void execute_closed_loop_control(){
           robotParams.driveLeft.setpoint,
           robotParams.driveLeft.speed,
           &outLeft,
-          true);
+          false);
     
     fuzzy(&robotParams.driveRight.fuzzy,
           robotParams.driveRight.setpoint,
           robotParams.driveRight.speed,
           &outRight,
-          true);
+          false);
   } 
   
   drive_motor_left((int16_t)outLeft);
@@ -205,9 +205,11 @@ int main(void)
   {
     robotParams.state.voltage = ADC_RAW[0];
     robotParams.state.temperature = ADC_RAW[1];
-    robotParams.driveLeft.current = ADC_RAW[2];
-    //robotParams.driveRight.current = ADC_RAW[3]; unsoldered current sensor noise
+    robotParams.driveLeft.current = ADC_RAW[3];
+    //robotParams.driveRight.current = ADC_RAW[2]; unsoldered current sensor noise
     robotParams.driveRight.current = 503;
+    static uint16_t internal_cpu_temp;
+    internal_cpu_temp = ADC_RAW[4];
       
     send_feedback(&robotParams); //sending feedback 'task'
     check_monitored_params(&robotParams); // threshold checks for alarms

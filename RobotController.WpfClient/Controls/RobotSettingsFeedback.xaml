@@ -17,16 +17,6 @@
                 <extendedControls:ExtendedTexBbox Text="{Binding Path=RobotControlsViewModel.ParametersModel.EncoderLeft.LowPassFilterCoeff, Mode=TwoWay, StringFormat={}{0:#.##}}"
                     OnEnterPressed="ExtendedTexBbox_OnOnEnterPressed" ECommand="EncoderLeftFilterCoef" ENode="Master" EPriority="Normal" EType="Float"
                                                   Height="23" Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="75" Width="101"/>
-                <Separator Height="21" Canvas.Left="11" Margin="0" Canvas.Top="173" Width="238" RenderTransformOrigin="0.5,0.5">
-                    <Separator.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="89.697"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Separator.RenderTransform>
-                </Separator>
                 <extendedControls:ExtentedCheckBox IsChecked="{Binding Path=RobotControlsViewModel.ParametersModel.EncoderLeft.IsReversed, Mode=TwoWay}" 
                                                    Click="CheckBox_OnChanged" EPriority="Normal" ECommand="EncoderLeftIsReversed" ENode="Master" 
                                                    Content="Reverse" Canvas.Left="10" Canvas.Top="114"/>

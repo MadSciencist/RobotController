@@ -42,20 +42,7 @@ typedef enum{
 //return 0 if ok
 uint8_t PID(PID_Properties_t* PID_Properties, float setpoint, float feedback, float* pOutput, derivative_t derivativeType, bool pidReverse);
 
-//set PID tunings
-//return 0 if parameters are invalid (<0) or null pointer
-//return 1 if set went ok
-uint8_t PidSetParams(PID_Properties_t* PID_Properties, float _kp, float _ki, float _kd);
-
-//get function that scale the hyperparameters into time-awarness form
-uint8_t GetKi(PID_Properties_t* props, float* ki);
-uint8_t GetKd(PID_Properties_t* props, float* kd);
-
 uint8_t ResetIntegrator(PID_Properties_t* props);
-
-//helper function to compare two floats withing epsilon accuracy
-//return true if floats are the same
-static uint8_t Compare(float a, float b, float epsilon);
 
 #define _PID_H_
 #endif

@@ -9,7 +9,8 @@ uint8_t fuzzy(Fuzzy_Properties_t* props, float setpoint, float feedback, float* 
   
   float error = (setpoint/scale_factor) - (feedback/scale_factor);
   float proportional = saturation( (error * props->kp), -1.0f, 1.0f);
-  float derivative = saturation( (props->kd * (error - props->lastError)), -1.0f, 1.0f);
+  float kd = props->kd / ((float)props->period / 1000.0f); // we need to take period into consideration (divide by 1000 to get seconds)
+  float derivative = saturation( (kd * (error - props->lastError)), -1.0f, 1.0f);
   
   if (fabs(setpoint) > props->deadband) {
     // fuzzification
@@ -41,15 +42,16 @@ uint8_t fuzzy(Fuzzy_Properties_t* props, float setpoint, float feedback, float* 
     float sum_fuzzified = pnb_dpb + pnb_dnb + pze_dnb + ppb_dnb + pnb_dze + pze_dze + ppb_dze + pze_dpb + ppb_dpb;
     float fuzzy_output = sum_weighted / sum_fuzzified;
     
-    props->integralSum += props->ki * fuzzy_output;
+    float ki = props->ki * ((float)props->period / 1000.0f); // we need to take period into consideration (divide by 1000 to get seconds)
+    props->integralSum += ki * fuzzy_output;
     
     // limit integral
     if (props->integralSum > props->posIntegralLimit) props->integralSum = props->posIntegralLimit;
     else if (props->integralSum < props->negIntegralLimit) props->integralSum = props->negIntegralLimit;
     
     //the output is actually value of the integral
-    if(reverse == false) *pOutput = (props->integralSum * scale_factor);
-    else *pOutput = -1.0f * (props->integralSum * scale_factor);
+    if(reverse == false) *pOutput = props->integralSum * scale_factor;
+    else *pOutput = -1.0f * props->integralSum * scale_factor;
   } else { //we are withing dead band range
     *pOutput = 0.0f;
   }

@@ -37,17 +37,10 @@ void process_requests(RobotParams_t* params, uint16_t params_len){
     uart_write_int16(TX_SendControlType, (uint8_t)params->controlType);
     uart_write_int16(TX_SendRegenerativeBreaking, (uint8_t)params->useRegenerativeBreaking);
     
-    /* PID controller params */
-    // get the hyperparameters in time-awareness form 
-    float ki1, ki2, kd1, kd2;
-    GetKi(&(params->driveLeft.pid), &ki1);
-    GetKi(&(params->driveRight.pid), &ki2);
-    GetKd(&(params->driveLeft.pid), &kd1);
-    GetKd(&(params->driveRight.pid), &kd2);
-    
+    /* PID controller params */ 
     uart_write_float(PidKp_1, params->driveLeft.pid.kp);
-    uart_write_float(PidKi_1, ki1);
-    uart_write_float(PidKd_1, kd1);
+    uart_write_float(PidKi_1, params->driveLeft.pid.ki);
+    uart_write_float(PidKd_1, params->driveLeft.pid.kd);
     uart_write_float(PidIntegralLimit_1, params->driveLeft.pid.posIntegralLimit);
     uart_write_float(PidDeadband_1, params->driveLeft.pid.deadband);
     uart_write_int16(PidPeriod_1, params->driveLeft.pid.period);
@@ -55,8 +48,8 @@ void process_requests(RobotParams_t* params, uint16_t params_len){
     HAL_Delay(20); //small delay, so we dont overflow the 20 element queue
     
     uart_write_float(PidKp_2, params->driveRight.pid.kp);
-    uart_write_float(PidKi_2, ki2);
-    uart_write_float(PidKd_2, kd2);
+    uart_write_float(PidKi_2, params->driveRight.pid.ki);
+    uart_write_float(PidKd_2, params->driveRight.pid.kd);
     uart_write_float(PidIntegralLimit_2, params->driveRight.pid.posIntegralLimit);
     uart_write_float(PidDeadband_2, params->driveRight.pid.deadband);
     uart_write_int16(PidPeriod_2, params->driveRight.pid.period);
