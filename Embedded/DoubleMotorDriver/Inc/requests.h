@@ -1,4 +1,4 @@
-#ifndef _SENDER_H_
+#ifndef _REQUESTS_H_
 
 #include "stm32f4xx.h"
 #include "main.h"
@@ -11,5 +11,5 @@
 void send_feedback(RobotParams_t* params);
 void process_requests(RobotParams_t* params, uint16_t params_len);
 
-#define _SENDER_H_
+#define _REQUESTS_H_
 #endif

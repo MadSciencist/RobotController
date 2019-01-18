@@ -92,6 +92,8 @@
                 </lvc:CartesianChart>
                 <Rectangle Fill="#FF3D3D46" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0" Stroke="Black" VerticalAlignment="Stretch"/>
                 <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Padding="10, 4" TextWrapping="Wrap" Text="Live data" Foreground="White"/>
+                <CheckBox Content="Raw velocity" IsChecked="{Binding Path=GuiStatusViewModel.IsRawVelocityEnabled, Mode=TwoWay}" Margin="136,5,-136,194" Grid.RowSpan="2"/>
+                <CheckBox Content="Raw current" IsChecked="{Binding Path=GuiStatusViewModel.IsRawCurrentEnabled, Mode=TwoWay}" Margin="256,5,-256,194" Grid.RowSpan="2"/>
             </Grid>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="0, 0, 5, 0" VerticalAlignment="Stretch">

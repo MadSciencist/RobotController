@@ -1,8 +1,8 @@
 #include "msg_rec.h"
 
 extern RobotParams_t robotParams;
-
 static uint8_t raw_received[14]; //received buffer
+uint16_t rec_timeout_ms;
 
 void start_receiver(){
   HAL_UART_Receive_DMA(&huart6, raw_received, 14); 
@@ -18,17 +18,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
          uint16_t frame_crc = (raw_received[12] << 8) | raw_received[11];
          uint16_t calculated_crc = crc_modbus(&raw_received[1], 10);
          
-         if(frame_crc == calculated_crc){
-           parse_data((addresses_t)raw_received[1], raw_received[2], &raw_received[3]);
+         if(frame_crc == calculated_crc){ //got valid msg
+           rec_timeout_ms = TIMEOUT_MS;
+           parse_data((addresses_t)raw_received[1], (gui2rob_t)raw_received[2], &raw_received[3]);
          }
        }
-    
-    start_receiver();
   }
 }
 
-static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
-  switch ((gui2rob_t)cmd){
+static void parse_data(addresses_t addr, gui2rob_t cmd, uint8_t* payload){
+  switch (cmd){
     
   case Controls:
     robotParams.driveLeft.setpoint = (float)get_int16(payload, 0, LITTLE_ENDIAN);
@@ -52,11 +51,15 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     break;
     
   case EepromRead:
+    robotParams.state.isEnabled = 0;
     robotParams.requests.readEeprom = 1;
+    robotParams.state.isEnabled = 0;
     break;
     
   case EepromWrite:
+    robotParams.state.isEnabled = 0;
     robotParams.requests.saveEeprom = 1;
+    robotParams.state.isEnabled = 0;
     break;
     
   case ControlType:
@@ -216,6 +219,13 @@ static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload){
     robotParams.driveRight.encoder.isEncoderReversed = get_uint8(payload, 0, LITTLE_ENDIAN);
     break;
     
+  case EncoderLeftFilterIsEnabled:
+    robotParams.driveLeft.encoder.isFilterEnabled = get_uint8(payload, 0, LITTLE_ENDIAN);
+    break;
+    
+  case EncoderRightFilterIsEnabled:
+    robotParams.driveRight.encoder.isFilterEnabled = get_uint8(payload, 0, LITTLE_ENDIAN);
+    break;
   default:
     break;
   }

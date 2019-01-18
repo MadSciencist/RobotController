@@ -93,13 +93,31 @@ namespace RobotController.WpfGui
             {
                 var now = DateTime.Now;
 
-                _mainViewModel.SpeedFeedbackChart.AddNewPoint(
-                    new MeasurementModel { DateTime = now, Value = e.LeftMotor.Velocity }, 
-                    new MeasurementModel { DateTime = now, Value = e.RightMotor.Velocity });
+                if (_mainViewModel.GuiStatusViewModel.IsRawVelocityEnabled)
+                {
+                    _mainViewModel.SpeedFeedbackChart.AddNewPoint(
+                        new MeasurementModel {DateTime = now, Value = e.LeftMotor.RawVelocity},
+                        new MeasurementModel {DateTime = now, Value = e.RightMotor.RawVelocity});
+                }
+                else
+                {
+                    _mainViewModel.SpeedFeedbackChart.AddNewPoint(
+                        new MeasurementModel { DateTime = now, Value = e.LeftMotor.Velocity },
+                        new MeasurementModel { DateTime = now, Value = e.RightMotor.Velocity });
+                }
 
-                _mainViewModel.CurrentFeedbackChart.AddNewPoint(
-                    new MeasurementModel {DateTime = now, Value = e.LeftMotor.Current},
-                    new MeasurementModel {DateTime = now, Value = e.RightMotor.Current });
+                if (_mainViewModel.GuiStatusViewModel.IsRawCurrentEnabled)
+                {
+                    _mainViewModel.CurrentFeedbackChart.AddNewPoint(
+                        new MeasurementModel {DateTime = now, Value = e.LeftMotor.RawCurrent},
+                        new MeasurementModel {DateTime = now, Value = e.RightMotor.RawCurrent });
+                }
+                else
+                {
+                    _mainViewModel.CurrentFeedbackChart.AddNewPoint(
+                        new MeasurementModel { DateTime = now, Value = e.LeftMotor.Current },
+                        new MeasurementModel { DateTime = now, Value = e.RightMotor.Current });
+                }
             }));
         }
 

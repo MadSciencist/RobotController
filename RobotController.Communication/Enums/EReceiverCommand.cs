@@ -38,6 +38,7 @@
         EncoderFilterCoef_1 = 130,
         EncoderIsReversed_1 = 131,
         EncoderScaleCoef_1 = 132,
+        EncoderIsFilterEnabled_1 = 133,
 
         PidKp_2 = 200,
         PidKi_2 = 201,
@@ -57,6 +58,7 @@
 
         EncoderFilterCoef_2 = 230,
         EncoderIsReversed_2 = 231,
-        EncoderScaleCoef_2 = 232
+        EncoderScaleCoef_2 = 232,
+        EncoderIsFilterEnabled_2 = 233
     }
 }

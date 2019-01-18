@@ -17,22 +17,29 @@
                 <extendedControls:ExtendedTexBbox Text="{Binding Path=RobotControlsViewModel.ParametersModel.EncoderLeft.LowPassFilterCoeff, Mode=TwoWay, StringFormat={}{0:#.##}}"
                     OnEnterPressed="ExtendedTexBbox_OnOnEnterPressed" ECommand="EncoderLeftFilterCoef" ENode="Master" EPriority="Normal" EType="Float"
                                                   Height="23" Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="75" Width="101"/>
+                <extendedControls:ExtentedCheckBox IsChecked="{Binding RobotControlsViewModel.ParametersModel.EncoderLeft.IsFilterEnabled, Mode=TwoWay}" 
+                                                   Click="CheckBox_OnChanged" EPriority="Normal" ECommand="EncoderLeftFilterIsEnabled" ENode="Master" 
+                                                   Content="Enable filtering" Canvas.Left="16" Canvas.Top="114"/>
                 <extendedControls:ExtentedCheckBox IsChecked="{Binding Path=RobotControlsViewModel.ParametersModel.EncoderLeft.IsReversed, Mode=TwoWay}" 
                                                    Click="CheckBox_OnChanged" EPriority="Normal" ECommand="EncoderLeftIsReversed" ENode="Master" 
-                                                   Content="Reverse" Canvas.Left="10" Canvas.Top="114"/>
+                                                   Content="Reverse" Canvas.Left="10" Canvas.Top="148"/>
                 <Label Content="Filter coefficient" Canvas.Top="44" Canvas.Left="149"/>
                 <extendedControls:ExtendedTexBbox Text="{Binding RobotControlsViewModel.ParametersModel.EncoderRight.LowPassFilterCoeff, Mode=OneWay, StringFormat=\{0:#.##\}}"
                     OnEnterPressed="ExtendedTexBbox_OnOnEnterPressed" ECommand="EncoderRightFilterCoef" ENode="Master" EPriority="Normal" EType="Float"
                     Height="23" Canvas.Left="149" TextWrapping="Wrap" Canvas.Top="75" Width="101"/>
+                <extendedControls:ExtentedCheckBox IsChecked="{Binding RobotControlsViewModel.ParametersModel.EncoderRight.IsFilterEnabled, Mode=TwoWay}" 
+                                                   Click="CheckBox_OnChanged" EPriority="Normal" ECommand="EncoderRightFilterIsEnabled" ENode="Master" 
+                                                   Content="Enable filtering" Canvas.Left="149" Canvas.Top="114"/>
                 <extendedControls:ExtentedCheckBox IsChecked="{Binding Path=RobotControlsViewModel.ParametersModel.EncoderRight.IsReversed, Mode=TwoWay}" 
                                                    Click="CheckBox_OnChanged" EPriority="Normal" ECommand="EncoderRightIsReversed" ENode="Master" 
-                                                   Content="Reverse" Canvas.Left="149" Canvas.Top="114"/>
+                                                   Content="Reverse" Canvas.Left="149" Canvas.Top="149"/>
                 <extendedControls:ExtendedTexBbox Text="{Binding RobotControlsViewModel.ParametersModel.EncoderLeft.ScaleCoeff, Mode=TwoWay, StringFormat=\{0:#.##\}}"
                     OnEnterPressed="ExtendedTexBbox_OnOnEnterPressed" ECommand="EncoderLeftScaleCoef" ENode="Master" EPriority="Normal" EType="Float"
-                    Height="23" Canvas.Left="6" TextWrapping="Wrap" Canvas.Top="161" Width="101"/>
+                    Height="23" Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="199" Width="101"/>
                 <extendedControls:ExtendedTexBbox Text="{Binding RobotControlsViewModel.ParametersModel.EncoderRight.ScaleCoeff, Mode=TwoWay, StringFormat=\{0:#.##\}}"
                     OnEnterPressed="ExtendedTexBbox_OnOnEnterPressed" ECommand="EncoderRightScaleCoef" ENode="Master" EPriority="Normal" EType="Float"
-                    Height="23" Canvas.Left="149" TextWrapping="Wrap" Canvas.Top="161" Width="101"/>
+                    Height="23" Canvas.Left="149" TextWrapping="Wrap" Canvas.Top="199" Width="101"/>
+                <Label Content="Scale coeff" Canvas.Top="168" Canvas.Left="10"/>
             </Canvas>
         </Border>
     </Grid>

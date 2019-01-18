@@ -8,6 +8,7 @@
 
 typedef struct {
   uint8_t isEncoderReversed; //bool
+  uint8_t isFilterEnabled;
   float encoderFilterCoef;
   float scaleCoef;
 } EncoderParams_t;

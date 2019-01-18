@@ -1,5 +1,4 @@
-﻿using RobotController.Gamepad.Config;
-using RobotController.WpfGui.Charts;
+﻿using RobotController.WpfGui.Charts;
 using RobotController.WpfGui.Models;
 
 namespace RobotController.WpfGui.ViewModels

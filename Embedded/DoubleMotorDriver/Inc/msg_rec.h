@@ -15,6 +15,8 @@
 #define FRAME_START_CHAR '<'
 #define FRAME_STOP_CHAR '>'
 
+#define TIMEOUT_MS (500 / 5) // update in 5ms IRQ
+
 typedef enum {  //data from PC to robot, r means robot
   KeepAlive = 0,
   Controls = 1,
@@ -54,7 +56,9 @@ typedef enum {  //data from PC to robot, r means robot
   EncoderRightIsReversed = 143,
   EncoderLeftScaleCoef = 144,
   EncoderRightScaleCoef = 145,
-
+  EncoderLeftFilterIsEnabled = 146,
+  EncoderRightFilterIsEnabled = 147,
+  
   Hello = 255
 } gui2rob_t;
 
@@ -69,7 +73,7 @@ typedef enum {
 
 void start_receiver();
 
-static void parse_data(addresses_t addr, uint8_t cmd, uint8_t* payload);
+static void parse_data(addresses_t addr, gui2rob_t cmd, uint8_t* payload);
 
 #define _MSG_REC_H_
 #endif

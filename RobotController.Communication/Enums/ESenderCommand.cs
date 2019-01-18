@@ -40,6 +40,8 @@
         EncoderRightIsReversed = 143,
         EncoderLeftScaleCoef = 144,
         EncoderRightScaleCoef = 145,
+        EncoderLeftFilterIsEnabled = 146,
+        EncoderRightFilterIsEnabled = 147,
 
         Hello = 255
     }

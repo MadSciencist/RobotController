@@ -288,6 +288,17 @@ namespace RobotController.Communication.Messages
                         _parameters.EncoderRight.IsReversed = BitConverter.ToBoolean(payload, 0);
                         ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
                         break;
+
+                    case EReceiverCommand.EncoderIsFilterEnabled_1:
+                        _parameters.EncoderLeft.IsFilterEnabled = BitConverter.ToBoolean(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
+                    case EReceiverCommand.EncoderIsFilterEnabled_2:
+                        _parameters.EncoderRight.IsFilterEnabled = BitConverter.ToBoolean(payload, 0);
+                        ParametersReceived?.Invoke(this, new MessageParsedEventArgs { Parameters = _parameters });
+                        break;
+
                     #endregion Encoder parameters
 
                     case EReceiverCommand.ControlType:

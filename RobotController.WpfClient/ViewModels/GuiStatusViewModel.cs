@@ -59,5 +59,27 @@ namespace RobotController.WpfGui.ViewModels
                 OnPropertyChanged(nameof(IsLogging));
             }
         }
+
+        private bool _rawVelocityChart = false;
+        public bool IsRawVelocityEnabled
+        {
+            get { return _rawVelocityChart; }
+            set
+            {
+                _rawVelocityChart = value;
+                OnPropertyChanged(nameof(IsRawVelocityEnabled));
+            }
+        }
+
+        private bool _rawCurrentChart = false;
+        public bool IsRawCurrentEnabled
+        {
+            get { return _rawCurrentChart; }
+            set
+            {
+                _rawCurrentChart = value;
+                OnPropertyChanged(nameof(IsRawCurrentEnabled));
+            }
+        }
     }
 }
