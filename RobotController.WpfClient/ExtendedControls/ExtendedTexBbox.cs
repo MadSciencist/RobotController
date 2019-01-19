@@ -1,5 +1,6 @@
 ﻿using RobotController.Communication.Enums;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using RobotController.WpfGui.BusinessLogic;
@@ -16,6 +17,7 @@ namespace RobotController.WpfGui.ExtendedControls
 
         public ExtendedTexBbox()
         {
+            this.Style = this.FindResource("MaterialDesignTextBox") as Style;
             base.KeyUp += OnKeyUp;
         }
 

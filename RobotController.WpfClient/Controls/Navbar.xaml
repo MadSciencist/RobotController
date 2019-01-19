@@ -8,26 +8,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="120">
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" >
-
         <Border  BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Margin="5,5,5,5" Width="290">
             <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                 <Image Height="65" Width="65" Canvas.Left="5.4" Canvas.Top="37.22" Source="../Assets/Icons/plug.png" />
                 <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="288"/>
                 <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Connection" VerticalAlignment="Top" Width="84.8" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
-                <TextBlock HorizontalAlignment="Left" Height="14.4" Text="Select port:" VerticalAlignment="Top" Width="84.8" Canvas.Left="80.8" Canvas.Top="50.6"/>
+                <TextBlock HorizontalAlignment="Left" Height="15" Text="Select port:" VerticalAlignment="Top" Width="85" Canvas.Left="76" Canvas.Top="49"/>
                 <ComboBox Name="PortComboBox" SelectedIndex="0" ItemsSource="{Binding Path=GuiStatusViewModel.AvailablePorts,Mode=TwoWay}"
                           SelectionChanged="PortComboBox_OnSelectionChanged"
-                          Width="84.8" Height="22" Canvas.Left="80.8" Canvas.Top="76" DropDownOpened="OnSerialPortDropDownOpened">
+                          Width="84" Height="22" Canvas.Left="71" Canvas.Top="76" DropDownOpened="OnSerialPortDropDownOpened">
                 </ComboBox>
-                <Button Content="Connect" Canvas.Left="193" Canvas.Top="38" Width="80" Height="25" Click="ConnectButtonClick"/>
-                <Button Content="Disconnect" Canvas.Left="193" Canvas.Top="73" Width="80" Height="25" Click="DisconnectButtonClick"/>
+                <Button Content="Connect" Canvas.Left="172" Canvas.Top="38" Width="106" Height="25" Click="ConnectButtonClick"/>
+                <Button Content="Disconnect" Canvas.Left="172" Canvas.Top="73" Width="106" Height="25" Click="DisconnectButtonClick"/>
             </Canvas>
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="1" Width="200" Margin="15,5,5,5">
-            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"> 
+            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+
                 <Image Height="56.467" Width="56.467" Canvas.Left="10" Canvas.Top="41.533" Source="../Assets/Icons/memory.png" />
-                <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="198" />
+                <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="198" Canvas.Left="-2" />
                 <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Robot EEPROM" VerticalAlignment="Top" Width="84.8" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
                 <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="EepromRead" ENode="Master" EPriority="High" Content="Read" Canvas.Left="99.2" Canvas.Top="37.22" Width="80" Height="25"/>
                 <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="EepromWrite" ENode="Master" EPriority="VeryHigh" Content="Write" Canvas.Left="99.2" Canvas.Top="73" Width="80" Height="25"/>
@@ -35,7 +35,7 @@
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="1" Margin="15,5,5,5" Width="200">
-            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"> 
+            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                 <Image Height="65" Width="72.467" Canvas.Left="10" Canvas.Top="37.22" Source="../Assets/Icons/gamepad.png" />
                 <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="198"/>
                 <TextBlock HorizontalAlignment="Left" Height="14.4" Text="Allow movement" VerticalAlignment="Top" Width="97.6" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
@@ -49,9 +49,9 @@
                 <Image Height="65" Width="72.467" Canvas.Left="10" Canvas.Top="37.22" Source="../Assets/Icons/database.png" />
                 <Rectangle Fill="#FF3D3D46" Height="28" Stroke="Black" StrokeDashArray="0 0" Width="268"/>
                 <TextBlock HorizontalAlignment="Left" Height="19" Text="Data logger" VerticalAlignment="Top" Width="97" Canvas.Left="10" Canvas.Top="5" Foreground="White" Margin="0"/>
-                <Button Click="StartLoggingButton_OnClick" Content="Start" Height="25" Canvas.Left="99" Canvas.Top="38" Width="80"/>
-                <Button Click="StopLoggingButton_OnClick" Content="Stop" Height="25" Canvas.Left="99" Canvas.Top="74" Width="80"/>
-                <Button Click="ButtonLogPath_OnClick" Content="Path" Height="26" Canvas.Left="200" Canvas.Top="73" Width="50" RenderTransformOrigin="0.008,0.446"/>
+                <Button Click="StartLoggingButton_OnClick" Content="Start" Height="25" Canvas.Left="94" Canvas.Top="38" Width="80"/>
+                <Button Click="StopLoggingButton_OnClick" Content="Stop" Height="25" Canvas.Left="94" Canvas.Top="74" Width="80"/>
+                <Button Click="ButtonLogPath_OnClick" Content="Path" Height="26" Canvas.Left="190" Canvas.Top="74" Width="67" RenderTransformOrigin="0.008,0.446"/>
                 <Image Height="31" Width="35" Canvas.Left="205" Canvas.Top="37" Source="../Assets/Icons/folder.png" />
             </Canvas>
         </Border>

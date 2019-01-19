@@ -145,7 +145,7 @@ namespace RobotController.WpfGui
                     Payload = (byte)0x00
                 };
 
-                _sender.SendMessage(message, source.EPriority);
+               TrySend(message, source.EPriority);
             }
         }
 
@@ -163,7 +163,7 @@ namespace RobotController.WpfGui
                         Payload = TypeCaster.Cast(e.Value, source.EType)
                     };
 
-                    _sender.SendMessage(message, source.EPriority);
+                    TrySend(message, source.EPriority);
                 }
                 catch (FormatException ex)
                 {
@@ -188,8 +188,18 @@ namespace RobotController.WpfGui
                     Payload = source.State
                 };
 
-                _sender.SendMessage(message, source.EPriority);
+                TrySend(message, source.EPriority);
             }
+        }
+
+        private void TrySend(ISendMessage message, EPriority priority)
+        {
+            if (_sender == null)
+            {
+                MessageBox.Show("Please connect first", "Connection error");
+                return;
+            }
+            _sender.SendMessage(message, priority);
         }
 
         //done
@@ -204,7 +214,7 @@ namespace RobotController.WpfGui
                     Payload = Convert.ToByte(source.IsChecked)
                 };
 
-                _sender.SendMessage(message, source.EPriority);
+                TrySend(message, source.EPriority);
             }
         }
 
@@ -332,7 +342,7 @@ namespace RobotController.WpfGui
                 Payload = Convert.ToByte(0)
             };
 
-            _robotConnectionService?.SendCommand(message, EPriority.High);
+            TrySend(message, EPriority.VeryHigh);
         }
 
         private void Navbar_OnSerialPortDropDownOpened(object sender, EventArgs e) => LoadPortNames();
