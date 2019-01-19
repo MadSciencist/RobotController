@@ -62,6 +62,7 @@ namespace RobotController.WpfGui
             CreateDataLogger(new LogConfig { Path = @".\default_log.csv" });
 
             _gamepadService.Start();
+
             DataContext = _mainViewModel;
         }
 
@@ -199,6 +200,7 @@ namespace RobotController.WpfGui
                 MessageBox.Show("Please connect first", "Connection error");
                 return;
             }
+
             _sender.SendMessage(message, priority);
         }
 
@@ -362,10 +364,6 @@ namespace RobotController.WpfGui
             var path = dialog.SelectDatalogPath();
 
             CreateDataLogger(new LogConfig { Path = path });
-        }
-
-        private void ControlSettings_OnLowPassFilterSliderChanged(object sender, short e)
-        {
         }
 
         private void Status_OnExportClicked(object sender, RoutedEventArgs e)

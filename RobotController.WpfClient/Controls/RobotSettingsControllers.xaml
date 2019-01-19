@@ -8,7 +8,7 @@
              xmlns:viewModels="clr-namespace:RobotController.WpfGui.ViewModels"
              xmlns:converters="clr-namespace:RobotController.WpfGui.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="482" d:DesignWidth="1000">
+             Height="480" Width="1020">
     <UserControl.Resources>
         <converters:RadioButtonConverter x:Key="RadioConverter" />
     </UserControl.Resources>

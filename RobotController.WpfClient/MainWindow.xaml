@@ -78,9 +78,7 @@
                 <controls:Status x:Name="Status" Margin="0" ExportClicked="Status_OnExportClicked" ImportClicked="Status_OnImportClicked"/>
             </TabItem>
             <TabItem Header="Control settings">
-                <controls:ControlSettings ExpoSliderChanged="ControlSettings_OnExpoSliderChanged" 
-                                          LowPassFilterSliderChanged="ControlSettings_OnLowPassFilterSliderChanged"/>
-
+                <controls:ControlSettings ExpoSliderChanged="ControlSettings_OnExpoSliderChanged"/>
             </TabItem>
             <TabItem Header="Robot settings">
                 <controls:RobotSettings TextBoxEnterPressed="RobotSettings_OnTextBoxEnterPressed" 

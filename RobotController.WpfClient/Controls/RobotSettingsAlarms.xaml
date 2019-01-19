@@ -7,83 +7,83 @@
              xmlns:extendedControls="clr-namespace:RobotController.WpfGui.ExtendedControls"
              xmlns:converters="clr-namespace:RobotController.WpfGui.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="482" d:DesignWidth="1000">
-
+             Height="480" Width="1020">
     <Canvas>
         <Canvas.Resources>
             <converters:CurrentConverter x:Key="CurrentConverter" />
             <converters:TemperatureConverter x:Key="TemperatureConverter" />
             <converters:VoltageConverter x:Key="VoltageConverter" />
         </Canvas.Resources>
-        <Border BorderBrush="Black" BorderThickness="1" Height="335" Canvas.Left="10" Canvas.Top="10" Width="310">
-            <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="309"/>
-                <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Voltage" VerticalAlignment="Top" Width="84.8" Canvas.Left="6.6" Canvas.Top="6" Foreground="White" Margin="0"/>
-                <Image Height="95" Width="130" Canvas.Top="60" Source="../Assets/Icons/alarm_voltage.png" Canvas.Left="10" />
-                <Label Content="Low voltage [V]" Canvas.Top="41" Canvas.Left="161"/>
-                <extendedControls:ExtendedTexBbox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.VoltageAlarm, Mode=TwoWay, StringFormat={}{0:#.##}}"
+
+        <Border Background="{DynamicResource MaterialDesignBackground}" HorizontalAlignment="Stretch" Height="390" Canvas.Left="5" Canvas.Top="5" Width="320">
+            <GroupBox Header="Voltage" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
+                <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
+                    <Image Height="95" Width="130" Canvas.Top="60" Source="../Assets/Icons/alarm_voltage.png" Canvas.Left="10" />
+                    <Label Content="Low voltage [V]" Canvas.Top="40" Canvas.Left="137"/>
+                    <extendedControls:ExtendedTexBbox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.VoltageAlarm, Mode=TwoWay, StringFormat={}{0:#.##}}"
                     OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="VoltageAlarm" ENode="Master" EPriority="Normal" EType="Uint16"
-                                                  Height="23" Canvas.Left="164" TextWrapping="Wrap" Canvas.Top="67" Width="101"/>
-                <Label Content="RAW value" Canvas.Top="104" Canvas.Left="161"/>
-                <TextBox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.VoltageAlarm, Converter={StaticResource VoltageConverter}}" 
-                         IsEnabled="False" Height="24" Canvas.Left="164" Canvas.Top="131" Width="101"/>
-                <Image Height="95" Width="130" Canvas.Top="205" Source="../Assets/Icons/alarm_crit_voltage.png" Canvas.Left="10" />
-                <Label Content="Critical low voltage [V]" Canvas.Top="196" Canvas.Left="161"/>
-                <extendedControls:ExtendedTexBbox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.CriticalVoltageAlarm, Mode=TwoWay, StringFormat={}{0:#.##}}"
+                                                  Height="23" Canvas.Left="140" TextWrapping="Wrap" Canvas.Top="66" Width="101"/>
+                    <Label Content="RAW value" Canvas.Top="101" Canvas.Left="137"/>
+                    <TextBox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.VoltageAlarm, Converter={StaticResource VoltageConverter}}" 
+                         IsEnabled="False" Height="24" Canvas.Left="140" Canvas.Top="131" Width="101"/>
+                    <Image Height="95" Width="130" Canvas.Top="205" Source="../Assets/Icons/alarm_crit_voltage.png" Canvas.Left="10" />
+                    <Label Content="Critical low voltage [V]" Canvas.Top="192" Canvas.Left="137"/>
+                    <extendedControls:ExtendedTexBbox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.CriticalVoltageAlarm, Mode=TwoWay, StringFormat={}{0:#.##}}"
                                                   OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CriticalVoltageAlarm" ENode="Master" EPriority="Normal" EType="Uint16"
-                                                  Height="22" Canvas.Left="161" TextWrapping="Wrap" Canvas.Top="222" Width="101"/>
-                <Label Content="RAW value" Canvas.Top="250" Canvas.Left="161"/>
-                <TextBox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.CriticalVoltageAlarm, Converter={StaticResource VoltageConverter}}" 
-                    IsEnabled="False" Height="24" Canvas.Left="161" Canvas.Top="276" Width="101"/>
-            </Canvas>
+                                                  Height="22" Canvas.Left="145" TextWrapping="Wrap" Canvas.Top="223" Width="101"/>
+                    <Label Content="RAW value" Canvas.Top="250" Canvas.Left="145"/>
+                    <TextBox Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.CriticalVoltageAlarm, Converter={StaticResource VoltageConverter}}" 
+                    IsEnabled="False" Height="24" Canvas.Left="145" Canvas.Top="275" Width="101"/>
+                </Canvas>
+            </GroupBox>
         </Border>
 
-        <Border BorderBrush="Black" BorderThickness="1" Height="335" Canvas.Left="330" Canvas.Top="10" Width="310">
-            <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="309"/>
-                <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Current" VerticalAlignment="Top" Width="84.8" Canvas.Left="6.6" Canvas.Top="6" Foreground="White" Margin="0"/>
-                <Image Height="95" Width="130" Canvas.Top="60" Source="../Assets/Icons/alarm_current.png" Canvas.Left="10" />
-                <Label Content="Over current left [A]" Canvas.Top="41" Canvas.Left="161"/>
-                <extendedControls:ExtendedTexBbox  OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CurrentLeftAlarm" ENode="Master" EPriority="Normal" EType="Uint16"
+        <Border Background="{DynamicResource MaterialDesignBackground}" HorizontalAlignment="Stretch" Height="390" Canvas.Left="330" Canvas.Top="5" Width="320">
+            <GroupBox Header="Current" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
+                <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
+                    <Image Height="95" Width="130" Canvas.Top="60" Source="../Assets/Icons/alarm_current.png" Canvas.Left="10" />
+                    <Label Content="Over current left [A]" Canvas.Top="42" Canvas.Left="150"/>
+                    <extendedControls:ExtendedTexBbox  OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CurrentLeftAlarm" ENode="Master" EPriority="Normal" EType="Uint16"
                                                   Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.LeftCurrentAlarm, Mode=TwoWay, StringFormat={}{0:#.##}}" 
-                                                  Height="23" Canvas.Left="164" TextWrapping="Wrap" Canvas.Top="67" Width="101"/>
-                <Label Content="RAW value" Canvas.Top="104" Canvas.Left="161"/>
-                <TextBox IsEnabled="False" Height="24" Canvas.Left="164" Canvas.Top="131" Width="101"
+                                                  Height="23" Canvas.Left="156" TextWrapping="Wrap" Canvas.Top="67" Width="101"/>
+                    <Label Content="RAW value" Canvas.Top="106" Canvas.Left="150"/>
+                    <TextBox IsEnabled="False" Height="24" Canvas.Left="156" Canvas.Top="131" Width="101"
                          Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.LeftCurrentAlarm, Converter={StaticResource CurrentConverter}}"/>
 
-                <Image Height="95" Width="130" Canvas.Top="205" Source="../Assets/Icons/alarm_current.png" Canvas.Left="10" />
-                <Label Content="Over current right [A]" Canvas.Top="196" Canvas.Left="161"/>
-                <extendedControls:ExtendedTexBbox OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CurrentRightAlarm" ENode="Left" EPriority="Normal" EType="Uint16" 
+                    <Image Height="95" Width="130" Canvas.Top="205" Source="../Assets/Icons/alarm_current.png" Canvas.Left="10" />
+                    <Label Content="Over current right [A]" Canvas.Top="191" Canvas.Left="145"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CurrentRightAlarm" ENode="Left" EPriority="Normal" EType="Uint16" 
                                                   Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.RightCurrentAlarm, Mode=TwoWay, StringFormat={}{0:#.##}}" 
-                                                  Height="22" Canvas.Left="161" TextWrapping="Wrap" Canvas.Top="222" Width="101"/>
-                <Label Content="RAW value" Canvas.Top="250" Canvas.Left="161"/>
-                <TextBox IsEnabled="False" Height="24" Canvas.Left="161" Canvas.Top="276" Width="101"
+                                                  Height="22" Canvas.Left="150" TextWrapping="Wrap" Canvas.Top="222" Width="101"/>
+                    <Label Content="RAW value" Canvas.Top="249" Canvas.Left="145"/>
+                    <TextBox IsEnabled="False" Height="24" Canvas.Left="150" Canvas.Top="276" Width="101"
                          Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.RightCurrentAlarm, Converter={StaticResource CurrentConverter}}"/>
-            </Canvas>
+                </Canvas>
+            </GroupBox>
         </Border>
 
-        <Border BorderBrush="Black" BorderThickness="1" Height="335" Canvas.Left="650" Canvas.Top="10" Width="340">
-            <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Rectangle Fill="#FF3D3D46" Stroke="Black" StrokeDashArray="0 0" Canvas.Left="0" Canvas.Top="0" HorizontalAlignment="Stretch" Height="28" VerticalAlignment="Top" Width="338"/>
-                <TextBlock HorizontalAlignment="Left" Height="14.4" TextWrapping="Wrap" Text="Temperature" VerticalAlignment="Top" Width="84.8" Canvas.Left="6.6" Canvas.Top="6" Foreground="White" Margin="0"/>
-                <Image Height="95" Width="130" Canvas.Top="60" Source="../Assets/Icons/alarm_temp.png" Canvas.Left="10" />
-                <Label Content="High temperature [T]" Canvas.Top="41" Canvas.Left="161"/>
-                <extendedControls:ExtendedTexBbox OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="TemperatureAlarm" ENode="Master" EPriority="Normal" EType="Uint16" 
+        <Border Background="{DynamicResource MaterialDesignBackground}" HorizontalAlignment="Stretch" Height="390" Canvas.Left="655" Canvas.Top="5" Width="340">
+            <GroupBox Header="Temperature" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
+                <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
+                    <Image Height="95" Width="130" Canvas.Top="60" Source="../Assets/Icons/alarm_temp.png" Canvas.Left="10" />
+                    <Label Content="High temperature [T]" Canvas.Top="42" Canvas.Left="145"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="TemperatureAlarm" ENode="Master" EPriority="Normal" EType="Uint16" 
                                                   Text="{Binding RobotControlsViewModel.ParametersModel.Alarms.TemperatureAlarm, StringFormat={}{0:#.##}, Mode=TwoWay}" 
-                                                  Height="23" Canvas.Left="164" TextWrapping="Wrap" Canvas.Top="67" Width="101"/>
-                <Label Content="RAW value" Canvas.Top="104" Canvas.Left="161"/>
-                <TextBox IsEnabled="False" Height="24" Canvas.Left="164" Canvas.Top="131" Width="101"
+                                                  Height="23" Canvas.Left="150" TextWrapping="Wrap" Canvas.Top="67" Width="101"/>
+                    <Label Content="RAW value" Canvas.Top="106" Canvas.Left="150"/>
+                    <TextBox IsEnabled="False" Height="24" Canvas.Left="150" Canvas.Top="131" Width="101"
                          Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.TemperatureAlarm, Converter={StaticResource TemperatureConverter}}"/>
 
-                <Image Height="95" Width="130" Canvas.Top="205" Source="../Assets/Icons/alarm_crit_temp.png" Canvas.Left="10" />
-                <Label Content="Critical high temperature [T]" Canvas.Top="196" Canvas.Left="161"/>
-                <extendedControls:ExtendedTexBbox OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CriticalTemperatureAlarm" ENode="Master" EPriority="Normal" EType="Uint16" 
+                    <Image Height="95" Width="130" Canvas.Top="205" Source="../Assets/Icons/alarm_crit_temp.png" Canvas.Left="10" />
+                    <Label Content="Critical high temperature [T]" Canvas.Top="192" Canvas.Left="150"/>
+                    <extendedControls:ExtendedTexBbox OnEnterPressed="ExtendedTexBbox_OnEnterPressed" ECommand="CriticalTemperatureAlarm" ENode="Master" EPriority="Normal" EType="Uint16" 
                                                   Text="{Binding RobotControlsViewModel.ParametersModel.Alarms.CriticalTemperatureAlarm, StringFormat={}{0:#.##}, Mode=TwoWay}" 
-                                                  Height="22" Canvas.Left="161" TextWrapping="Wrap" Canvas.Top="222" Width="101"/>
-                <Label Content="RAW value" Canvas.Top="250" Canvas.Left="161" Foreground="Black"/>
-                <TextBox IsEnabled="False" Height="24" Canvas.Left="161" Canvas.Top="276" Width="101"
+                                                  Height="22" Canvas.Left="155" TextWrapping="Wrap" Canvas.Top="223" Width="101"/>
+                    <Label Content="RAW value" Canvas.Top="250" Canvas.Left="150" Foreground="Black"/>
+                    <TextBox IsEnabled="False" Height="24" Canvas.Left="155" Canvas.Top="276" Width="101"
                          Text="{Binding Path=RobotControlsViewModel.ParametersModel.Alarms.CriticalTemperatureAlarm, Converter={StaticResource TemperatureConverter}}"/>
-            </Canvas>
+                </Canvas>
+            </GroupBox>
         </Border>
 
     </Canvas>
