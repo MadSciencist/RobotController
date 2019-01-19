@@ -12,6 +12,8 @@ namespace RobotController.RobotModels
     public class ParametersModel
     {
         private static ParametersModel _parameters; //singleton instance
+        private static readonly object _threadLock = new object();
+
         private ParametersModel()
         {
             PidLeft = new PidModel();
@@ -25,7 +27,10 @@ namespace RobotController.RobotModels
 
         public static ParametersModel GetParameters()
         {
-            return _parameters ?? (_parameters = new ParametersModel());
+            lock (_threadLock)
+            {
+                return _parameters ?? (_parameters = new ParametersModel());
+            }
         }
 
         public PidModel PidLeft { get; set; }

@@ -298,9 +298,10 @@ namespace RobotController.WpfGui
             {
                 var portName = _selectedPortName;
 
-                if (portName == string.Empty)
+                if (string.IsNullOrEmpty(portName))
                 {
                     Logger.Error("No ports found");
+                    MessageBox.Show("Please seelect serial port first.", "Port not found");
                     return;
                 }
 
