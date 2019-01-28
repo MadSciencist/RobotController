@@ -10,7 +10,7 @@
         <Border Background="{DynamicResource MaterialDesignBackground}" Height="109" Width="290" Margin="5">
             <GroupBox Header="Connection" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
                 <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
-                    <Image Height="65" Width="65" Canvas.Top="-7" Source="../Assets/Icons/plug.png" Canvas.Left="-9" />
+                    <Image Height="65" Width="65" Canvas.Top="-3" Source="../Assets/Icons/plug.png" Canvas.Left="-5" />
                     <TextBlock HorizontalAlignment="Left" Height="15" Text="Select port:" VerticalAlignment="Top" Width="85" Canvas.Left="71" Canvas.Top="10"/>
                     <ComboBox Name="PortComboBox" SelectedIndex="0" ItemsSource="{Binding Path=GuiStatusViewModel.AvailablePorts,Mode=TwoWay}"
                               SelectionChanged="PortComboBox_OnSelectionChanged"
