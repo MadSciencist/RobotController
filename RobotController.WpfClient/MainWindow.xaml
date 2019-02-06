@@ -15,7 +15,7 @@
     FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
     ResizeMode="NoResize"
-        Title="Robot Controller" Height="705" Width="1050" Closing="WindowClose">
+        Title="Robot Controller" Height="705" Width="1060" Closing="WindowClose">
     <Window.Resources>
         <!-- Workaround for freezing chart after chaning tabs: 
         https://stackoverflow.com/questions/9794151/stop-tabcontrol-from-recreating-its-children -->
