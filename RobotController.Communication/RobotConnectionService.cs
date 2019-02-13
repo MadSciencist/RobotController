@@ -10,11 +10,11 @@ using RobotController.Communication.Enums;
 
 namespace RobotController.Communication
 {
-    public class RobotConnectionService : IDisposable
+    public class RobotConnectionService : IDisposable, IRobotConnectionService
     {
-        public EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
-        public EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
-        public EventHandler<MessageParsedEventArgs> ParametersReceived;
+        public event EventHandler<MessageParsedEventArgs> SpeedCurrentFeedbackReceived;
+        public event EventHandler<MessageParsedEventArgs> VoltageTemperatureFeedbackReceived;
+        public event EventHandler<MessageParsedEventArgs> ParametersReceived;
         public event EventHandler<EventArgs> TimeoutOccured; 
 
         private readonly IStreamResource _streamResource;

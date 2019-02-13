@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\ISendMessage.cs" />
     <Compile Include="Interfaces\IReceiveMessage.cs" />
     <Compile Include="Interfaces\ISendQueueWrapper.cs" />
+    <Compile Include="IRobotConnectionService.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageExtractor.cs" />
     <Compile Include="Messages\MessageGenerator.cs" />

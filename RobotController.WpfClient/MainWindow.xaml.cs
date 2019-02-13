@@ -24,7 +24,6 @@ using System.IO.Ports;
 using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
-using LiveCharts.Wpf;
 
 namespace RobotController.WpfGui
 {
@@ -35,7 +34,7 @@ namespace RobotController.WpfGui
     {
         private SerialPort _serialPort;
         private IStreamResource _serialPortAdapter;
-        private ISerialPortFactory _serialPortFactory;
+        private readonly ISerialPortFactory _serialPortFactory;
         private SerialPortManager _serialPortManager;
         private RobotConnectionService _robotConnectionService;
         private ControlsSender _sender;

@@ -14,7 +14,7 @@
                     <TextBlock HorizontalAlignment="Left" Height="15" Text="Select port:" VerticalAlignment="Top" Width="85" Canvas.Left="71" Canvas.Top="10"/>
                     <ComboBox Name="PortComboBox" SelectedIndex="0" ItemsSource="{Binding Path=GuiStatusViewModel.AvailablePorts,Mode=TwoWay}"
                               SelectionChanged="PortComboBox_OnSelectionChanged"
-                              Width="84" Height="22" Canvas.Left="71" Canvas.Top="30" DropDownOpened="OnSerialPortDropDownOpened">
+                              Width="84" Height="31" Canvas.Left="67" Canvas.Top="27" DropDownOpened="OnSerialPortDropDownOpened">
                     </ComboBox>
                     <Button Content="Connect" Canvas.Left="166" Width="106" Height="25" Click="ConnectButtonClick"/>
                     <Button Content="Disconnect" Canvas.Left="166" Canvas.Top="33" Width="106" Height="25" Click="DisconnectButtonClick"/>
