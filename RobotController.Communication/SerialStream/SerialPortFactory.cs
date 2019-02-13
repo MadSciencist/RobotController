@@ -6,7 +6,7 @@ namespace RobotController.Communication.SerialStream
 {
     public class SerialPortFactory : ISerialPortFactory
     {
-        public int BaudRate { get; set; } = 115200;
+        public int BaudRate { get; set; } = 57600;
         public int DataBits { get; set; } = 8;
         public Parity Parity { get; set; } = Parity.None;
         public StopBits StopBits { get; set; } = StopBits.One;
