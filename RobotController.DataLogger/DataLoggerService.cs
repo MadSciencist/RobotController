@@ -76,7 +76,7 @@ namespace RobotController.DataLogger
             _log.LeftSpeed = e.LeftMotor.Velocity;
             _log.RawLeftSpeed = e.LeftMotor.RawVelocity;
             _log.RightSpeed = e.RightMotor.Velocity;
-            _log.RawRightSpeed = e.LeftMotor.RawVelocity;
+            _log.RawRightSpeed = e.RightMotor.RawVelocity;
             _log.LeftCurrent = e.LeftMotor.Current;
             _log.RawLeftCurrent = e.LeftMotor.RawCurrent;
             _log.RightCurrent = e.RightMotor.Current;
