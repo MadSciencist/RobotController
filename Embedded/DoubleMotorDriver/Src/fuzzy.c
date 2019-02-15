@@ -53,6 +53,7 @@ uint8_t fuzzy(Fuzzy_Properties_t* props, float setpoint, float feedback, float* 
     if(reverse == false) *pOutput = props->integralSum * scale_factor;
     else *pOutput = -1.0f * props->integralSum * scale_factor;
   } else { //we are withing dead band range
+    props->integralSum = 0.0f;
     *pOutput = 0.0f;
   }
   

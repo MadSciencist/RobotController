@@ -33,7 +33,7 @@
         </Border>
 
         <Border Background="{DynamicResource MaterialDesignBackground}" Height="109" Width="200" Margin="15,5,5,5">
-            <GroupBox Header="Robot memory" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
+            <GroupBox Header="Allow movement" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
                 <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
                     <Image Height="65" Width="72" Canvas.Left="10" Canvas.Top="1" Source="../Assets/Icons/gamepad.png" RenderTransformOrigin="-2.216,0.637" />
                     <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="StopMovement" ENode="Master" EPriority="VeryHigh" Content="Stop" Canvas.Left="102" Canvas.Top="30" Width="80" Height="25"/>

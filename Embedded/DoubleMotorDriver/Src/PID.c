@@ -49,6 +49,7 @@ uint8_t PID(PID_Properties_t* props, float setpoint, float feedback, float* pOut
     
     output = (proportionalOutput + props->integralSum + derivativeOutput);
   } else {
+    props->integralSum = 0.0f;
     output = 0;
   }
   
