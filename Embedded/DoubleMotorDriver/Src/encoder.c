@@ -23,7 +23,7 @@ void get_velocity(RobotParams_t* params){
     float leftEncFilterCoeff_2 = 1.0f - leftEncFilterCoeff_1;
     left = leftEncFilterCoeff_1 * left_aggregate + leftEncFilterCoeff_2 * left;
     left_aggregate = left;
-    if (left < 2.0f && left > -2.0f) left = 0.0f; //infinite response problem solution
+    if (left < 1.0f && left > -1.0f) left = 0.0f; //infinite response problem solution
   }
   
   // right motor

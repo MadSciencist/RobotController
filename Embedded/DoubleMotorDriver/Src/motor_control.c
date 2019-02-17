@@ -94,12 +94,12 @@ static void drive_left_motor_right(uint16_t value){
 
 static void drive_right_motor_left(uint16_t value){
   if(value > 100) value = 100;
-  TIM2->CCR1 = value;
+  TIM2->CCR2 = value;
 }
 
 static void drive_right_motor_right(uint16_t value){
   if(value > 100) value = 100;
-  TIM2->CCR2 = value;
+  TIM2->CCR1 = value;
 }
 
 static int16_t map(int16_t x, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max)

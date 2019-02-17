@@ -301,10 +301,9 @@ void assign_adc(){
   robotParams.state.voltage = ADC_RAW[0];
   robotParams.state.temperature = ADC_RAW[1];
   robotParams.driveLeft.current = ADC_RAW[3];
-  //robotParams.driveRight.current = ADC_RAW[2]; unsoldered current sensor noise
-  robotParams.driveRight.current = 503;
-  static uint16_t internal_cpu_temp;
-  internal_cpu_temp = ADC_RAW[4];
+  robotParams.driveRight.current = ADC_RAW[2];
+  //static uint16_t internal_cpu_temp;
+  //internal_cpu_temp = ADC_RAW[4];
 }
 
 void pulse_gen(){
