@@ -1,18 +1,15 @@
 #include "encoder.h"
 
 void get_velocity(RobotParams_t* params){
-  static int16_t oldEncoderCountLeft = 0, oldEncoderCountRight = 0;
-  int16_t encoderCountLeft = oldEncoderCountLeft;
-  int16_t encoderCountRight = oldEncoderCountRight;
+  static int16_t encoderCountLeft = 0, encoderCountRight = 0;
   
   encoderCountLeft = TIM1->CNT;
   TIM1->CNT = 0;
   encoderCountRight = TIM3->CNT;
   TIM3->CNT = 0;
   
-  float left = (float)(encoderCountLeft - oldEncoderCountLeft) / params->driveLeft.encoder.scaleCoef;
-  float right = (float)(encoderCountRight - oldEncoderCountRight) / params->driveRight.encoder.scaleCoef;
-  
+  float left = (float)(encoderCountLeft ) / params->driveLeft.encoder.scaleCoef;
+  float right = (float)(encoderCountRight) / params->driveRight.encoder.scaleCoef;
   
   // IIR filter
   static float left_aggregate = 0.0f, right_aggregate = 0.0f;

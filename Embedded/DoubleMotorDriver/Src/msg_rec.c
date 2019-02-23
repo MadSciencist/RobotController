@@ -31,7 +31,7 @@ static void parse_data(addresses_t addr, gui2rob_t cmd, uint8_t* payload){
     
   case Controls:
     robotParams.driveLeft.setpoint = (float)get_int16(payload, 0, LITTLE_ENDIAN);
-    robotParams.driveRight.setpoint = (float)get_int16(payload, 0, LITTLE_ENDIAN);
+    robotParams.driveRight.setpoint = (float)get_int16(payload, 2, LITTLE_ENDIAN);
     break;
     
   case AllowMovement:

@@ -52,7 +52,7 @@ namespace RobotController.Gamepad.Converters
             {
                 lut[i] = (short)Math.Ceiling((coefficientA + (double)_coefficientB * Math.Exp(coefficientC * i)));
 
-                lut[i] = Helpers.ConstrainNonnegative(lut[i], _outputRange);
+                lut[i] = Utils.ConstrainNonnegative(lut[i], _outputRange);
             }
 
             return lut;

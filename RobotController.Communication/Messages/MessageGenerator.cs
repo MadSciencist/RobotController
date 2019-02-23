@@ -35,6 +35,13 @@ namespace RobotController.Communication.Messages
 
             switch (payload)
             {
+                case ControlsModel data when payload is ControlsModel:
+                    var left = BitConverter.GetBytes(data.LeftSpeed);
+                    var right = BitConverter.GetBytes(data.RightSpeed);
+                    Buffer.BlockCopy(left, 0, bytes, 0, 2);
+                    Buffer.BlockCopy(right, 0, bytes, 2, 2);
+                    break;
+
                 case float data when payload is float:
                     bytes = BitConverter.GetBytes(data);
                     break;
@@ -79,13 +86,6 @@ namespace RobotController.Communication.Messages
                     Buffer.BlockCopy(data, 0, bytes, 0, 8);
                     break;
 
-                case ControlsModel data when payload is ControlsModel:
-                    var left = BitConverter.GetBytes(data.LeftSpeed);
-                    var right = BitConverter.GetBytes(data.RightSpeed);
-                    Buffer.BlockCopy(left, 0, bytes, 0, 2);
-                    Buffer.BlockCopy(right, 0, bytes, 2, 2);
-                    break;
-                    
                 default:
                     throw new NotImplementedException();
             }
