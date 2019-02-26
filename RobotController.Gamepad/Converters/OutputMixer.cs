@@ -7,6 +7,8 @@ namespace RobotController.Gamepad.Converters
 {
     public class OutputMixer
     {
+        public event EventHandler<short> ExponentialLookupProcessed;
+
         private readonly ISteeringConfig _config;
 
         public OutputMixer(ISteeringConfig config)
@@ -30,6 +32,7 @@ namespace RobotController.Gamepad.Converters
 
                 //process expo curve
                 ProcessExponentialLookup(ref tempLeft, ref tempRight, ref tempFwd, ref tempBwd);
+                ExponentialLookupProcessed?.Invoke(this, tempFwd);
 
                 //process expo curve (inifinite impulse response filter)
                 ProcessLowPassFilter(ref tempLeft, ref tempRight, ref tempFwd, ref tempBwd);

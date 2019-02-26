@@ -65,8 +65,10 @@ namespace RobotController.WpfGui
             DataContext = _mainViewModel;
         }
 
-        private void GamepadService_SteeringPointChanged(object sender, Point point) =>
+        private void GamepadService_SteeringPointChanged(object sender, Point point)
+        {
             _mainViewModel.GamepadChart.UpdateLivePointChart(point);
+        }
 
         private void ControlSettings_OnExpoSliderChanged(object sender, short e)
         {

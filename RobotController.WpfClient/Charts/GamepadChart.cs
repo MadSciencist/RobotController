@@ -15,7 +15,7 @@ namespace RobotController.WpfGui.Charts
 
         public GamepadChart()
         {
-            var lineChartPoints = new List<ObservablePoint> {new ObservablePoint(0, 0), new ObservablePoint(255, 255)};
+            var lineChartPoints = new List<ObservablePoint> { new ObservablePoint(0, 0), new ObservablePoint(255, 255) };
             LineChartValues = new ChartValues<ObservablePoint>();
             LineChartValues.AddRange(lineChartPoints);
 

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
+using System.Windows;
 using RobotController.RobotModels;
 
 namespace RobotController.Gamepad
@@ -118,24 +119,19 @@ namespace RobotController.Gamepad
             try
             {
                 var mixer = new OutputMixer(_config);
+                mixer.ExponentialLookupProcessed += (sender, expoLookupVal) =>
+                {
+                    SteeringPointChanged?.Invoke(this, new System.Windows.Point(_gamepadModel.RightTrigger, expoLookupVal));
+                };
+
                 var robotControls = mixer.Process(_gamepadModel);
 
-                SteeringPointChanged?.Invoke(this, GetSteeringPoint(robotControls));
                 RobotControlChanged?.Invoke(this, new RobotControlEventArgs { RobotControl = robotControls });
             }
             catch (Exception exception)
             {
                 GamepadErrorOccured?.Invoke(this, new ErrorEventArgs(exception));
             }
-        }
-
-        private System.Windows.Point GetSteeringPoint(ControlsModel robotControls)
-        {
-            var point = new System.Windows.Point(0, 0);
-            if (_gamepadModel.LeftTrigger != 0) return point;
-            point.X = _gamepadModel.RightTrigger;
-            point.Y = Math.Abs(robotControls.RightSpeed - 255);
-            return point;
         }
 
         public IList<short> UpdateExponentialCurve(short coefficient)
