@@ -1,4 +1,5 @@
 #ifndef _MSG_REC_H_
+#define _MSG_REC_H_
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
@@ -75,5 +76,4 @@ void start_receiver();
 
 static void parse_data(addresses_t addr, gui2rob_t cmd, uint8_t* payload);
 
-#define _MSG_REC_H_
 #endif

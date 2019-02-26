@@ -1,4 +1,5 @@
 #ifndef _MSG_GEN_H_
+#define _MSG_GEN_H_
 
 #include <string.h>
 #include "send_queue_manager.h"
@@ -78,5 +79,4 @@ void uart_write_double(GuiParser_t cmd, double val);
 /* private functions */
 static void gen_message(GuiParser_t cmd, uint8_t* payload);
 
-#define _MSG_GEN_H_
 #endif

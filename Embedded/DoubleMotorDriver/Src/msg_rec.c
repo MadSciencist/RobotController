@@ -8,10 +8,13 @@ void start_receiver(){
   HAL_UART_Receive_DMA(&huart6, raw_received, 14); 
 }
 
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   if(huart->Instance == USART2){    //RS485
     
   }else if(huart->Instance == USART6){ // radio modem
+    static uint32_t mismatched_frames = 0;
+    
     if(raw_received[0] == (uint8_t)FRAME_START_CHAR
        && raw_received[SIZEOF_RECEIVING_BUFFER-1] == (uint8_t)FRAME_STOP_CHAR){
          
@@ -21,7 +24,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
          if(frame_crc == calculated_crc){ //got valid msg
            rec_timeout_ms = TIMEOUT_MS;
            parse_data((addresses_t)raw_received[1], (gui2rob_t)raw_received[2], &raw_received[3]);
-         }
+         }else {
+         mismatched_frames++;
+         start_receiver();
+       }
+       }else {
+         mismatched_frames++;
+         start_receiver();
        }
   }
 }

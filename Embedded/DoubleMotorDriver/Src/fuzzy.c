@@ -9,8 +9,8 @@ uint8_t fuzzy(Fuzzy_Properties_t* props, float setpoint, float feedback, float* 
   
   float error = (setpoint/scale_factor) - (feedback/scale_factor);
   float proportional = saturation( (error * props->kp), -1.0f, 1.0f);
-  float kd = props->kd / ((float)props->period / 1000.0f); // we need to take period into consideration (divide by 1000 to get seconds)
-  float derivative = saturation( (kd * (error - props->lastError)), -1.0f, 1.0f);
+  double kd = props->kd / ((float)props->period / 1000.0f); // we need to take period into consideration (divide by 1000 to get seconds)
+  double derivative = saturation( (kd * (error - props->lastError)), -1.0f, 1.0f);
   
   if (fabs(setpoint) > props->deadband) {
     // fuzzification

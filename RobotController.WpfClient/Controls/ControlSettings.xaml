@@ -59,15 +59,16 @@
             <Border Background="{DynamicResource MaterialDesignBackground}" HorizontalAlignment="Stretch" Height="330"  Margin="5">
                 <GroupBox Header="Settings" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
                     <Canvas>
-                        <CheckBox IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.IsReversed, Mode=TwoWay}" Content="Reverse back-forward" Canvas.Left="10" Canvas.Top="10"/>
-                        <CheckBox IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.IsLeftRightReverse, Mode=TwoWay}" Content="Reverse left-right" Canvas.Left="10" Canvas.Top="32"/>
+                        <Label Canvas.Left="131" Canvas.Top="6">Max velocity %:</Label>
+                        <TextBox Text="{Binding ControlSettingsViewModel.SteeringConfig.VelocityBoundPercentage, Mode=TwoWay}"  Canvas.Left="140" Canvas.Top="31" Width="82"></TextBox>
+                        <CheckBox IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.IsReversed, Mode=TwoWay}" Content="Reverse" Canvas.Left="10" Canvas.Top="10"/>
+                        <CheckBox IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.IsLeftRightReverse, Mode=TwoWay}" Content="Reverse L-R" Canvas.Left="10" Canvas.Top="32"/>
                         <RadioButton GroupName="curveType" IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.UseExponentialCurve, Converter={StaticResource InverseBooleanConverter}, Mode=TwoWay}" Content="Use linear curve" Height="17" Canvas.Left="10" Canvas.Top="61" Width="194"/>
                         <RadioButton GroupName="curveType" IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.UseExponentialCurve, Mode=TwoWay}" Content="Use exponential curve" Height="16" Canvas.Left="10" Canvas.Top="83" Width="195"/>
                         <RadioButton GroupName="filterType" IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.UseLowPassFilter, Converter={StaticResource InverseBooleanConverter}, Mode=TwoWay}" Content="No filter" Height="16" Canvas.Left="10" Canvas.Top="178" Width="195"/>
                         <RadioButton GroupName="filterType" IsChecked="{Binding ControlSettingsViewModel.SteeringConfig.UseLowPassFilter, Mode=TwoWay}" Content="Use low pass filter" Height="17" Canvas.Left="10" Canvas.Top="199" Width="194"/>
                         <TextBlock Height="22" Canvas.Left="10" TextWrapping="Wrap" Text="Expo constant:" Canvas.Top="113" Width="121" RenderTransformOrigin="0.384,0.636"/>
-                        <Slider Value="{Binding ControlSettingsViewModel.SteeringConfig.ExponentialCurveCoefficient, Mode=TwoWay}" ValueChanged="OnExpoSliderChanged" Height="27" Canvas.Left="10" Canvas.Top="131" Width="195" Maximum="100" Minimum="1"  TickFrequency="5" SmallChange="1" >
-                        </Slider>
+                        <Slider Value="{Binding ControlSettingsViewModel.SteeringConfig.ExponentialCurveCoefficient, Mode=TwoWay}" ValueChanged="OnExpoSliderChanged" Height="27" Canvas.Left="10" Canvas.Top="131" Width="195" Maximum="100" Minimum="1"  TickFrequency="5" SmallChange="1" />
                         <TextBlock Height="14" Canvas.Left="10" TextWrapping="Wrap" Text="MIN" Canvas.Top="149" Width="39"/>
                         <TextBlock Height="14" Canvas.Left="173" TextWrapping="Wrap" Text="MAX" Canvas.Top="150" Width="32"/>
                         <Slider Value="{Binding ControlSettingsViewModel.SteeringConfig.LowPassCoefficient, Mode=TwoWay}" ValueChanged="OnFilterSliderChanged" Height="27" Canvas.Left="10" Canvas.Top="241" Width="195" Maximum="99" Minimum="1"  TickFrequency="5" SmallChange="1" />

@@ -53,6 +53,10 @@ namespace RobotController.Gamepad.Converters
                 //to -100 - 100 range
                 motorLeft = (short) ((float) motorLeft / 2.55f);
                 motorRight = (short)((float) motorRight / 2.55f);
+
+                // constrain to user defined boundary
+                motorLeft = Utils.ConstrainSymetrical(motorLeft, _config.VelocityBoundPercentage);
+                motorRight = Utils.ConstrainSymetrical(motorRight, _config.VelocityBoundPercentage);
             }
 
             return new ControlsModel(motorLeft, motorRight);

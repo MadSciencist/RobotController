@@ -9,12 +9,17 @@ void InitSendQueue(){
 
 
 void UartSendQueued(SendQueueRec_t* rec){
-  if(q_isFull(&sendQueue)) return;
+  static uint32_t queue_full_lost_msg_cnt = 0;
+  
+  if(q_isFull(&sendQueue)){
+    queue_full_lost_msg_cnt++;
+    return;
+  }
   
   q_push(&sendQueue, rec);
-  if(huart1.gState != HAL_UART_STATE_BUSY_TX){
-    DequeueAndSend();
-  }
+  //if(huart1.gState != HAL_UART_STATE_BUSY_TX){
+  DequeueAndSend();
+  // }
 }
 
 static void DequeueAndSend(){
@@ -29,12 +34,15 @@ static void DequeueAndSend(){
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
   if (huart->Instance == USART6){
     DequeueAndSend();
+    start_receiver();
   }
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
   if (huart->Instance == USART6){
     static uint8_t error_count = 0;
+    static __IO uint32_t  code = 0;
+    code = huart->ErrorCode;
     error_count++;
   }
 }
