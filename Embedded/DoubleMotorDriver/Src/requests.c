@@ -31,7 +31,11 @@ void send_feedback(RobotParams_t* params){
 }
 
 void process_requests(RobotParams_t* params, uint16_t params_len){
-  if(params->requests.readEeprom){
+  if(params->requests.restartReceiver){
+    //MX_USART1_UART_Init();
+    start_receiver();
+    params->requests.restartReceiver = 0;
+  }else if(params->requests.readEeprom){
     ReadFromFlash(params, params_len, SECTOR5_FLASH_BEGINING);
     
     uart_write_int16(TX_SendControlType, (uint8_t)params->controlType);

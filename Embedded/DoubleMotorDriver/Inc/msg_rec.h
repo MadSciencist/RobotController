@@ -16,7 +16,7 @@
 #define FRAME_START_CHAR '<'
 #define FRAME_STOP_CHAR '>'
 
-#define TIMEOUT_MS (500 / 5) // update in 5ms IRQ
+#define TIMEOUT_MS (1500 / 5) // update in 5ms IRQ
 
 typedef enum {  //data from PC to robot, r means robot
   KeepAlive = 0,
@@ -73,7 +73,7 @@ typedef enum {
 } addresses_t;
 
 void start_receiver();
-
+static bool find_frame();
 static void parse_data(addresses_t addr, gui2rob_t cmd, uint8_t* payload);
 
 #endif

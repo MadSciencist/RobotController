@@ -28,6 +28,7 @@ typedef struct {
   uint8_t saveEeprom; //bool
   uint8_t readEeprom; //bool
   uint8_t allowMovementChanged;
+  uint8_t restartReceiver;
 } Requests_t;
 
 typedef struct {

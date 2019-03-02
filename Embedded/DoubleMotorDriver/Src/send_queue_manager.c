@@ -1,5 +1,6 @@
 #include "send_queue_manager.h"
 
+extern RobotParams_t robotParams;
 Queue_t sendQueue;
 SendQueueRec_t dequeuedRec;
 
@@ -17,9 +18,7 @@ void UartSendQueued(SendQueueRec_t* rec){
   }
   
   q_push(&sendQueue, rec);
-  //if(huart1.gState != HAL_UART_STATE_BUSY_TX){
   DequeueAndSend();
-  // }
 }
 
 static void DequeueAndSend(){
@@ -39,10 +38,18 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
-  if (huart->Instance == USART6){
-    static uint8_t error_count = 0;
-    static __IO uint32_t  code = 0;
-    code = huart->ErrorCode;
-    error_count++;
+  if (huart->Instance == USART1){
+    static uint8_t error_count_uart1 = 0;
+    static __IO uint32_t  code_uart1 = 0;
+    code_uart1 = huart->ErrorCode;
+    error_count_uart1++;
+    robotParams.requests.restartReceiver = 1;
+    //start_receiver();
+  }
+  else if (huart->Instance == USART6){
+    static uint8_t error_count_uart6 = 0;
+    static __IO uint32_t  code_uart6 = 0;
+    code_uart6 = huart->ErrorCode;
+    error_count_uart6++;
   }
 }

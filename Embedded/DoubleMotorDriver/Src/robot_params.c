@@ -14,6 +14,7 @@ void init_params(RobotParams_t* params){
   params->requests.readEeprom = 0;
   params->requests.saveEeprom = 0;
   params->requests.allowMovementChanged = 0;
+  params->requests.restartReceiver = 0;
   
   params->driveLeft.setpoint = 0;
   params->driveLeft.speed = 0;

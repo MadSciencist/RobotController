@@ -26,7 +26,7 @@
             <GroupBox Header="Robot memory" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0">
                 <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
                     <Image Height="56" Width="56" Canvas.Left="10" Canvas.Top="1" Source="../Assets/Icons/memory.png" />
-                    <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="EepromRead" ENode="Master" EPriority="High" Content="Read" Canvas.Left="102" Canvas.Top="1" Width="80" Height="25"/>
+                    <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="EepromRead" ENode="Master" EPriority="VeryHigh" Content="Read" Canvas.Left="102" Canvas.Top="1" Width="80" Height="25"/>
                     <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="EepromWrite" ENode="Master" EPriority="VeryHigh" Content="Write" Canvas.Left="102" Canvas.Top="32" Width="80" Height="25"/>
                 </Canvas>
             </GroupBox>
@@ -37,7 +37,7 @@
                 <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0">
                     <Image Height="65" Width="72" Canvas.Left="10" Canvas.Top="1" Source="../Assets/Icons/gamepad.png" RenderTransformOrigin="-2.216,0.637" />
                     <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="StopMovement" ENode="Master" EPriority="VeryHigh" Content="Stop" Canvas.Left="102" Canvas.Top="30" Width="80" Height="25"/>
-                    <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="AllowMovement" ENode="Master" EPriority="Normal" Content="Start" Canvas.Left="102" Width="80" Height="25"/>
+                    <extendedControls:ExtendedButton Click="Button_OnSendingButtonClick" ECommand="AllowMovement" ENode="Master" EPriority="VeryHigh" Content="Start" Canvas.Left="102" Width="80" Height="25"/>
                 </Canvas>
             </GroupBox>
         </Border>

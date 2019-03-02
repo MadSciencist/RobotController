@@ -1,37 +1,59 @@
 #include "msg_rec.h"
+#define REC_LEN 14
 
 extern RobotParams_t robotParams;
-static uint8_t raw_received[14]; //received buffer
+static uint8_t raw_received[REC_LEN]; //received buffer
+static uint8_t msg_received[REC_LEN];
 uint16_t rec_timeout_ms;
 
 void start_receiver(){
-  HAL_UART_Receive_DMA(&huart6, raw_received, 14); 
+  HAL_UART_Receive_IT(&huart1, raw_received, REC_LEN); 
+ // memset(raw_received, 0x00, REC_LEN);
+  memset(msg_received, 0x00, REC_LEN);
 }
 
+static bool find_frame(){
+  for(uint8_t i = 0; i < REC_LEN; i++){
+    // best scenario - all bytes aligned correctly
+    if(i == 0){
+      if((raw_received[0] == '<') && (raw_received[REC_LEN-1]) == '>'){
+        memcpy(msg_received, raw_received, REC_LEN);
+        return true;
+      }
+    }
+    
+    // search start byte
+    if((raw_received[i]  == '<') && (raw_received[i-1] == '>')){
+      memcpy(&msg_received[0], &raw_received[i], (REC_LEN-i));
+      memcpy(&msg_received[REC_LEN-i], &raw_received[0], i);
+      
+      return true;
+    }
+    
+  } 
+  
+  return false;
+}
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-  if(huart->Instance == USART2){    //RS485
-    
-  }else if(huart->Instance == USART6){ // radio modem
-    static uint32_t mismatched_frames = 0;
-    
-    if(raw_received[0] == (uint8_t)FRAME_START_CHAR
-       && raw_received[SIZEOF_RECEIVING_BUFFER-1] == (uint8_t)FRAME_STOP_CHAR){
-         
-         uint16_t frame_crc = (raw_received[12] << 8) | raw_received[11];
-         uint16_t calculated_crc = crc_modbus(&raw_received[1], 10);
-         
-         if(frame_crc == calculated_crc){ //got valid msg
-           rec_timeout_ms = TIMEOUT_MS;
-           parse_data((addresses_t)raw_received[1], (gui2rob_t)raw_received[2], &raw_received[3]);
-         }else {
-         mismatched_frames++;
-         start_receiver();
-       }
-       }else {
-         mismatched_frames++;
-         start_receiver();
-       }
+  if(huart->Instance == USART1){ // radio modem
+    if(find_frame() == true){
+      if(msg_received[0] == (uint8_t)FRAME_START_CHAR
+         && msg_received[SIZEOF_RECEIVING_BUFFER-1] == (uint8_t)FRAME_STOP_CHAR){
+           
+           uint16_t frame_crc = (msg_received[12] << 8) | msg_received[11];
+           uint16_t calculated_crc = crc_modbus(&msg_received[1], 10);
+           
+           if(frame_crc == calculated_crc){ //got valid msg
+             rec_timeout_ms = TIMEOUT_MS;
+             parse_data((addresses_t)msg_received[1], (gui2rob_t)msg_received[2], &msg_received[3]);
+           }
+         }
+    }
+    else {
+      static int a;
+      a++;
+    }
   }
 }
 
@@ -46,13 +68,13 @@ static void parse_data(addresses_t addr, gui2rob_t cmd, uint8_t* payload){
   case AllowMovement:
     robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 1;
-    uart_write_int16(TX_MovementEnabled, 0);
+    //uart_write_int16(TX_MovementEnabled, 0);
     break;
     
   case StopMovement:
     robotParams.requests.allowMovementChanged = 1;
     robotParams.state.isEnabled = 0;
-    uart_write_int16(TX_MovementDisabled, 0);
+    //uart_write_int16(TX_MovementDisabled, 0);
     break;
     
   case Hello:

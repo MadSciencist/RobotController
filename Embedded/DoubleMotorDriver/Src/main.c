@@ -185,9 +185,9 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_USART1_UART_Init();
   MX_USART6_UART_Init();
   MX_TIM10_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC_RAW, ADC_MEASUREMENTS);
   disable_motors();
@@ -206,17 +206,6 @@ int main(void)
   while (1){
     check_timeout();
     assign_adc();
-    
-    /*
-    pulse_gen();
-    static uint16_t size = 0;
-    unsigned long ticks = HAL_GetTick();
-    if ((ticks - previousTime) > 5) {
-    memset(data, 0x00, sizeof(data));
-    size = sprintf(data, "%.2f %.2f \n\r", robotParams.driveRight.setpoint, robotParams.driveRight.speed);
-    HAL_UART_Transmit_IT(&huart6,data, size);
-    previousTime = ticks;
-  }*/
     
     send_feedback(&robotParams); //sending feedback 'task'
     check_monitored_params(&robotParams); // threshold checks for alarms
