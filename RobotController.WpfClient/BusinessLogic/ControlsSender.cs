@@ -29,7 +29,7 @@ namespace RobotController.WpfGui.BusinessLogic
                 Payload = _controls
             };
 
-            base.SendMessage(message, EPriority.High);
+            base.SendMessage(message, EPriority.Low);
         }
     }
 }

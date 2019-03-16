@@ -27,12 +27,13 @@ namespace RobotController.DataLogger
             _formatter = new CsvFormatter();
         }
 
-        public void SubscribeAndStart(RobotConnectionService robot, IGamepadService gamepad)
+        public void SubscribeAndStart(RobotConnectionService robot, IGamepadService gamepad, string parametersHeader)
         {
             _robot = robot;
             _gamepad = gamepad;
 
             _writer = new FileWriter(_config);
+            _writer.WriteLine(parametersHeader);
             _writer.WriteLine(_formatter.GetHeader());
             _log = new DatalogModel();
 
@@ -73,6 +74,7 @@ namespace RobotController.DataLogger
         /// </summary>
         private void RobotConnection_SpeedCurrentReceived(object sender, MessageParsedEventArgs e)
         {
+            _log.TimeStamp = DateTime.Now;
             _log.LeftSpeed = e.LeftMotor.Velocity;
             _log.RawLeftSpeed = e.LeftMotor.RawVelocity;
             _log.RightSpeed = e.RightMotor.Velocity;

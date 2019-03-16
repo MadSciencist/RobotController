@@ -1,7 +1,10 @@
-﻿namespace RobotController.DataLogger
+﻿using System;
+
+namespace RobotController.DataLogger
 {
     public class DatalogModel
     {
+        public DateTime TimeStamp { get; set; }
         public short LeftSetpoint { get; set; }
         public short RightSetpoint { get; set; }
         public double LeftSpeed { get; set; }

@@ -33,7 +33,7 @@ static void DequeueAndSend(){
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
   if (huart->Instance == USART6){
     DequeueAndSend();
-    start_receiver();
+    //start_receiver();
   }
 }
 
@@ -43,7 +43,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
     static __IO uint32_t  code_uart1 = 0;
     code_uart1 = huart->ErrorCode;
     error_count_uart1++;
-    robotParams.requests.restartReceiver = 1;
+    //robotParams.requests.restartReceiver = 1;
     //start_receiver();
   }
   else if (huart->Instance == USART6){

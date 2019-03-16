@@ -98,8 +98,8 @@ namespace RobotController.WpfGui
                 if (_mainViewModel.GuiStatusViewModel.IsRawVelocityEnabled)
                 {
                     _mainViewModel.SpeedFeedbackChart.AddNewPoint(
-                        new MeasurementModel {DateTime = now, Value = e.LeftMotor.RawVelocity},
-                        new MeasurementModel {DateTime = now, Value = e.RightMotor.RawVelocity});
+                        new MeasurementModel { DateTime = now, Value = e.LeftMotor.RawVelocity },
+                        new MeasurementModel { DateTime = now, Value = e.RightMotor.RawVelocity });
                 }
                 else
                 {
@@ -111,8 +111,8 @@ namespace RobotController.WpfGui
                 if (_mainViewModel.GuiStatusViewModel.IsRawCurrentEnabled)
                 {
                     _mainViewModel.CurrentFeedbackChart.AddNewPoint(
-                        new MeasurementModel {DateTime = now, Value = e.LeftMotor.RawCurrent},
-                        new MeasurementModel {DateTime = now, Value = e.RightMotor.RawCurrent });
+                        new MeasurementModel { DateTime = now, Value = e.LeftMotor.RawCurrent },
+                        new MeasurementModel { DateTime = now, Value = e.RightMotor.RawCurrent });
                 }
                 else
                 {
@@ -147,7 +147,7 @@ namespace RobotController.WpfGui
                     Payload = (byte)0x00
                 };
 
-               TrySend(message, source.EPriority);
+                TrySend(message, source.EPriority);
             }
         }
 
@@ -266,6 +266,47 @@ namespace RobotController.WpfGui
             _gamepadService.GamepadStateChanged += GamepadService_GamepadStateChanged;
             _gamepadService.RobotControlChanged += GamepadSerivce_RobotControlChanged;
             _gamepadService.SteeringPointChanged += GamepadService_SteeringPointChanged;
+            _gamepadService.StopClicked += GamepadService_OnStopClicked;
+            _gamepadService.StartClicked += GamepadService_OnStartClicked;
+            _gamepadService.LimitSpeedClicked += GamepadService_OnLimitSpeedClicked;
+            _gamepadService.AllowFullSpeedClicked += GamepadService_OnAllowFullSpeedClicked;
+        }
+
+        private void GamepadService_OnAllowFullSpeedClicked(object sender, EventArgs e)
+        {
+            // this is temp solution to refresh UI...
+            Logger.Info("Limitting velocity to 75%");
+            var config = _mainViewModel.ControlSettingsViewModel.SteeringConfig;
+            config.VelocityBoundPercentage = 75;
+            _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
+        }
+
+        private void GamepadService_OnLimitSpeedClicked(object sender, EventArgs e)
+        {
+            Logger.Info("Limitting velocity to 50%");
+            var config = _mainViewModel.ControlSettingsViewModel.SteeringConfig;
+            config.VelocityBoundPercentage = 50;
+            _mainViewModel.ControlSettingsViewModel.SteeringConfig = config;
+        }
+
+        private void GamepadService_OnStartClicked(object sender, EventArgs e)
+        =>
+            GenerateAndSendEmptyHighPriorityMessage(ESenderCommand.AllowMovement);
+
+        private void GamepadService_OnStopClicked(object sender, EventArgs e)
+        =>
+            GenerateAndSendEmptyHighPriorityMessage(ESenderCommand.StopMovement);
+
+        private void GenerateAndSendEmptyHighPriorityMessage(ESenderCommand command)
+        {
+            var message = new SendMessage
+            {
+                CommandType = command,
+                Node = ENode.Master,
+                Payload = (byte)0x00
+            };
+
+            _sender.SendMessage(message, EPriority.VeryHigh);
         }
 
         //done
@@ -353,8 +394,19 @@ namespace RobotController.WpfGui
         private string _selectedPortName;
         private void Navbar_OnSelectedPortChanged(object sender, string e) => _selectedPortName = e;
 
-        private void Navbar_OnStartLoggingClicked(object sender, RoutedEventArgs e) =>
-            _dataLoggerService.SubscribeAndStart(_robotConnectionService, _gamepadService);
+        private void Navbar_OnStartLoggingClicked(object sender, RoutedEventArgs e)
+        {
+            var parametersHeader = string.Empty;
+
+            using (var writer = new StringWriter())
+            {
+                var serializer = new XmlSerializer(typeof(ParametersModel));
+                serializer.Serialize(writer, _mainViewModel.RobotControlsViewModel.ParametersModel);
+                parametersHeader = writer.ToString();
+            }
+
+            _dataLoggerService.SubscribeAndStart(_robotConnectionService, _gamepadService, parametersHeader);
+        }
 
         private void Navbar_OnStopLoggingClicked(object sender, RoutedEventArgs e) =>
             _dataLoggerService.UnSubscribeAndStop();

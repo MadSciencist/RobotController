@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 
 namespace RobotController.DataLogger.Formatters
 {
@@ -8,7 +9,10 @@ namespace RobotController.DataLogger.Formatters
         {
             var sb = new StringBuilder();
 
-            sb.Append(log.LeftSetpoint)
+            sb.Append(log.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss.fff",
+                    CultureInfo.InvariantCulture))
+               .Append(',')
+              .Append(log.LeftSetpoint)
               .Append(',')
               .Append(log.RightSetpoint)
               .Append(',')
@@ -37,7 +41,7 @@ namespace RobotController.DataLogger.Formatters
 
         public string GetHeader()
         {
-            return "LEFT SETPOINT, RIGHT SETPOINT, LEFT VEL, RIGHT VEL, LEFT RAW VEL, RIGHT RAW VEL, LEFT CURR, LEFT RAW CURR, RIGHT CURR, RIGHT RAW CURR, VOLT, TEMP";
+            return "TIMESTAMP, LEFT SETPOINT, RIGHT SETPOINT, LEFT VEL, RIGHT VEL, LEFT RAW VEL, RIGHT RAW VEL, LEFT CURR, LEFT RAW CURR, RIGHT CURR, RIGHT RAW CURR, VOLT, TEMP";
         }
     }
 }

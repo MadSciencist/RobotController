@@ -13,9 +13,12 @@ namespace RobotController.Gamepad.Config
         public short ExponentialCurveCoefficient { get; set; } = 5;
         public bool UseLowPassFilter { get; set; } = true;
 
+        /// <summary>
+        /// It should be withing 20-100 range
+        /// </summary>
         public short VelocityBoundPercentage
         {
-            get => _velocityBoundPercentage ?? 50;
+            get => _velocityBoundPercentage ?? 75;
             set
             {
                 if(value < 20 && value > 100) throw new ArgumentException("Boundary should be in 20-100 range");

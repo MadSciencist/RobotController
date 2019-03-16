@@ -7,7 +7,7 @@ static uint8_t msg_received[REC_LEN];
 uint16_t rec_timeout_ms;
 
 void start_receiver(){
-  HAL_UART_Receive_IT(&huart1, raw_received, REC_LEN); 
+  HAL_UART_Receive_DMA(&huart1, raw_received, REC_LEN); 
  // memset(raw_received, 0x00, REC_LEN);
   memset(msg_received, 0x00, REC_LEN);
 }
@@ -29,7 +29,6 @@ static bool find_frame(){
       
       return true;
     }
-    
   } 
   
   return false;

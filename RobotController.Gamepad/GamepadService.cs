@@ -19,6 +19,10 @@ namespace RobotController.Gamepad
         public event EventHandler<RobotControlEventArgs> RobotControlChanged;
         public event EventHandler<System.Windows.Point> SteeringPointChanged; 
         public event EventHandler<ErrorEventArgs> GamepadErrorOccured;
+        public event EventHandler StopClicked;
+        public event EventHandler StartClicked;
+        public event EventHandler LimitSpeedClicked;
+        public event EventHandler AllowFullSpeedClicked;
 
         private readonly ISteeringConfig _config;
         private readonly GamepadModel _gamepadModel;
@@ -110,6 +114,11 @@ namespace RobotController.Gamepad
             _gamepadModel.IsBackPressed =
                 e.CurrentInputState.Gamepad.IsButtonPressed((int)ButtonFlags.XINPUT_GAMEPAD_BACK);
             #endregion
+
+            if (_gamepadModel.ActionButtons.IsBPressed) StopClicked?.Invoke(this, EventArgs.Empty);
+            if(_gamepadModel.ActionButtons.IsXPressed) AllowFullSpeedClicked?.Invoke(this, EventArgs.Empty);
+            if (_gamepadModel.ActionButtons.IsAPressed) LimitSpeedClicked?.Invoke(this, EventArgs.Empty);
+            if (_gamepadModel.IsStartPressed) StartClicked?.Invoke(this, EventArgs.Empty);
 
             GamepadStateChanged?.Invoke(this, new GamepadEventArgs { GamepadModel = _gamepadModel });
         }
