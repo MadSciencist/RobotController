@@ -70,10 +70,10 @@ namespace RobotController.WpfGui
             {
                 Params = new DoubleStepExperimentParams
                 {
-                    FirstStepVelocity = 50,
-                    FirstStepLength = TimeSpan.FromMilliseconds(1000),
-                    SecondStepVelocity = 65,
-                    SecondStepLength = TimeSpan.FromMilliseconds(1000)
+                    FirstStepVelocity = 40,
+                    FirstStepLength = TimeSpan.FromMilliseconds(2000),
+                    SecondStepVelocity = 60,
+                    SecondStepLength = TimeSpan.FromMilliseconds(2000)
                 }
             };
         }
@@ -291,10 +291,10 @@ namespace RobotController.WpfGui
             // experiment takes over manual control, and returns it after finishing
             _isManualControl = false;
             _experimentHandler.Handle();
-            _experimentHandler.Finished += (o, args) =>
+            _experimentHandler.Finished += (o, result) =>
             {
                 _isManualControl = true;
-                Logger.Info($"Experiment result: {args}");
+                Logger.Info($"Experiment result: {result}");
                 Logger.Info("Manual control restored");
             };
         }

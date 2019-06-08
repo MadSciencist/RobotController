@@ -21,10 +21,8 @@ namespace RobotController.WpfGui.BusinessLogic
 
         public override async void Handle()
         {
+            if (!IsValid()) return;
             Logger.Info("Experiment started");
-
-            if(!IsValid()) return;
-           
             await HandleAsync();
             Logger.Info("Experiment performed succesffully");
             base.OnFinished(_result);
