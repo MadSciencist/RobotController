@@ -33,6 +33,11 @@ namespace RobotController.Gamepad.Interfaces
         /// </summary>
         event EventHandler StartClicked;
 
+        /// <summary>
+        /// This will fire when B button is clicked
+        /// </summary>
+        event EventHandler BeginExperimentClicked;
+
         IList<short> UpdateExponentialCurve(short coefficient);
 
         void Start();

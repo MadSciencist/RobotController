@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
-using System.Windows;
-using RobotController.RobotModels;
 
 namespace RobotController.Gamepad
 {
@@ -22,6 +20,7 @@ namespace RobotController.Gamepad
         public event EventHandler StopClicked;
         public event EventHandler StartClicked;
         public event EventHandler LimitSpeedClicked;
+        public event EventHandler BeginExperimentClicked;
         public event EventHandler AllowFullSpeedClicked;
 
         private readonly ISteeringConfig _config;
@@ -119,6 +118,7 @@ namespace RobotController.Gamepad
             if(_gamepadModel.ActionButtons.IsXPressed) AllowFullSpeedClicked?.Invoke(this, EventArgs.Empty);
             if (_gamepadModel.ActionButtons.IsAPressed) LimitSpeedClicked?.Invoke(this, EventArgs.Empty);
             if (_gamepadModel.IsStartPressed) StartClicked?.Invoke(this, EventArgs.Empty);
+            if(_gamepadModel.ActionButtons.IsYPressed) BeginExperimentClicked?.Invoke(this, EventArgs.Empty);
 
             GamepadStateChanged?.Invoke(this, new GamepadEventArgs { GamepadModel = _gamepadModel });
         }

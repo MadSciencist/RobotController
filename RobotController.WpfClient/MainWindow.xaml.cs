@@ -45,6 +45,8 @@ namespace RobotController.WpfGui
         private SteeringConfig _steeringConfig;
 
         private DataLoggerService _dataLoggerService;
+        private readonly ExperimentHandler _experimentHandler;
+        private bool _isManualControl = true;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -63,6 +65,17 @@ namespace RobotController.WpfGui
             _gamepadService.Start();
 
             DataContext = _mainViewModel;
+
+            _experimentHandler = new DoubleStepExperimentHandler
+            {
+                Params = new DoubleStepExperimentParams
+                {
+                    FirstStepVelocity = 50,
+                    FirstStepLength = TimeSpan.FromMilliseconds(1000),
+                    SecondStepVelocity = 65,
+                    SecondStepLength = TimeSpan.FromMilliseconds(1000)
+                }
+            };
         }
 
         private void GamepadService_SteeringPointChanged(object sender, Point point)
@@ -81,7 +94,7 @@ namespace RobotController.WpfGui
         private void GamepadSerivce_RobotControlChanged(object sender, RobotControlEventArgs e)
         {
             _mainViewModel.RobotControlsViewModel.RobotControl = e.RobotControl;
-            _sender?.UpdateAndSendControls(e.RobotControl);
+           if(_isManualControl) _sender?.UpdateAndSendControls(e.RobotControl);
         }
 
         private void GamepadService_GamepadStateChanged(object sender, GamepadEventArgs e)
@@ -91,9 +104,9 @@ namespace RobotController.WpfGui
 
         private void RobotConnection_CurrentSpeedFeedbackReceived(object sender, MessageParsedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                var now = DateTime.Now;
+                var now = DateTime.UtcNow;
 
                 if (_mainViewModel.GuiStatusViewModel.IsRawVelocityEnabled)
                 {
@@ -120,7 +133,7 @@ namespace RobotController.WpfGui
                         new MeasurementModel { DateTime = now, Value = e.LeftMotor.Current },
                         new MeasurementModel { DateTime = now, Value = e.RightMotor.Current });
                 }
-            }));
+            });
         }
 
         // done
@@ -270,6 +283,20 @@ namespace RobotController.WpfGui
             _gamepadService.StartClicked += GamepadService_OnStartClicked;
             _gamepadService.LimitSpeedClicked += GamepadService_OnLimitSpeedClicked;
             _gamepadService.AllowFullSpeedClicked += GamepadService_OnAllowFullSpeedClicked;
+            _gamepadService.BeginExperimentClicked += GamepadServiceOnBeginExperimentClicked;
+        }
+
+        private void GamepadServiceOnBeginExperimentClicked(object sender, EventArgs e)
+        {
+            // experiment takes over manual control, and returns it after finishing
+            _isManualControl = false;
+            _experimentHandler.Handle();
+            _experimentHandler.Finished += (o, args) =>
+            {
+                _isManualControl = true;
+                Logger.Info($"Experiment result: {args}");
+                Logger.Info("Manual control restored");
+            };
         }
 
         private void GamepadService_OnAllowFullSpeedClicked(object sender, EventArgs e)
@@ -290,12 +317,16 @@ namespace RobotController.WpfGui
         }
 
         private void GamepadService_OnStartClicked(object sender, EventArgs e)
-        =>
+        {
+            Logger.Info("Start clicked");
             GenerateAndSendEmptyHighPriorityMessage(ESenderCommand.AllowMovement);
+        }
 
         private void GamepadService_OnStopClicked(object sender, EventArgs e)
-        =>
+        { 
+            Logger.Info("Stop clicked");
             GenerateAndSendEmptyHighPriorityMessage(ESenderCommand.StopMovement);
+        }
 
         private void GenerateAndSendEmptyHighPriorityMessage(ESenderCommand command)
         {
@@ -306,7 +337,7 @@ namespace RobotController.WpfGui
                 Payload = (byte)0x00
             };
 
-            _sender.SendMessage(message, EPriority.VeryHigh);
+            TrySend(message, EPriority.VeryHigh);
         }
 
         //done
@@ -355,7 +386,7 @@ namespace RobotController.WpfGui
                 if (string.IsNullOrEmpty(portName))
                 {
                     Logger.Error("No ports found");
-                    MessageBox.Show("Please seelect serial port first.", "Port not found");
+                    MessageBox.Show("Please select serial port first.", "Port not found");
                     return;
                 }
 
@@ -372,6 +403,8 @@ namespace RobotController.WpfGui
                 _robotConnectionService.ParametersReceived += RobotConnection_ParametersReceived;
 
                 _sender = new ControlsSender(_robotConnectionService, 50);
+
+                _experimentHandler.Sender = _sender;
 
                 RequestParameters();
             }
@@ -396,7 +429,7 @@ namespace RobotController.WpfGui
 
         private void Navbar_OnStartLoggingClicked(object sender, RoutedEventArgs e)
         {
-            var parametersHeader = string.Empty;
+            string parametersHeader;
 
             using (var writer = new StringWriter())
             {

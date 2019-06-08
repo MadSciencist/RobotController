@@ -13,6 +13,7 @@ namespace RobotController.WpfGui.BusinessLogic
 
         public ControlsSender(RobotConnectionService robotConnectionService, int interval) : base(robotConnectionService)
         {
+            _controls = new ControlsModel(0, 0);
             _timer = new Timer(interval);   
             _timer.Elapsed += TimerOnElapsed;
             _timer.Start();

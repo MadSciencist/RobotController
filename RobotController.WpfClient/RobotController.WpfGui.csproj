@@ -80,6 +80,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BusinessLogic\ControlsSender.cs" />
+    <Compile Include="BusinessLogic\DoubleStepExperimentHandler.cs" />
+    <Compile Include="BusinessLogic\DoubleStepExperimentParams.cs" />
+    <Compile Include="BusinessLogic\ExperimentHandler.cs" />
     <Compile Include="BusinessLogic\Sender.cs" />
     <Compile Include="BusinessLogic\SendingTextBoxEventArgs.cs" />
     <Compile Include="BusinessLogic\TypeCaster.cs" />
