@@ -6,6 +6,7 @@ using RobotController.DataLogger.File;
 using RobotController.DataLogger.Formatters;
 using RobotController.Gamepad.EventArguments;
 using RobotController.Gamepad.Interfaces;
+using RobotController.RobotModels;
 
 namespace RobotController.DataLogger
 {
@@ -20,6 +21,7 @@ namespace RobotController.DataLogger
         private readonly IFormatter _formatter;
         private IFileWriter _writer;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public ControlsModel Setpoints { get; set; }
 
         public DataLoggerService(ILogConfig config)
         {
@@ -36,10 +38,11 @@ namespace RobotController.DataLogger
             _writer.WriteLine(parametersHeader);
             _writer.WriteLine(_formatter.GetHeader());
             _log = new DatalogModel();
+            Setpoints = new ControlsModel(0 ,0);
 
             try
             {
-                _gamepad.RobotControlChanged += GamepadSerrvice_RobotControlChanged;
+               // _gamepad.RobotControlChanged += GamepadSerrvice_RobotControlChanged;
                 _robot.SpeedCurrentFeedbackReceived += RobotConnection_SpeedCurrentReceived;
                 _robot.VoltageTemperatureFeedbackReceived += RobotConnection_VoltageTemperatureReceived;
                 _logger.Info($"Started on path {_config.Path}");
@@ -55,7 +58,7 @@ namespace RobotController.DataLogger
         {
             try
             {
-                _gamepad.RobotControlChanged -= GamepadSerrvice_RobotControlChanged;
+                //_gamepad.RobotControlChanged -= GamepadSerrvice_RobotControlChanged;
                 _robot.SpeedCurrentFeedbackReceived -= RobotConnection_SpeedCurrentReceived;
                 _robot.VoltageTemperatureFeedbackReceived -= RobotConnection_VoltageTemperatureReceived;
                 _logger.Info("Stopped");
@@ -83,6 +86,8 @@ namespace RobotController.DataLogger
             _log.RawLeftCurrent = e.LeftMotor.RawCurrent;
             _log.RightCurrent = e.RightMotor.Current;
             _log.RawRightCurrent = e.RightMotor.RawCurrent;
+            _log.LeftSetpoint = Setpoints.LeftSpeed;
+            _log.RightSetpoint = Setpoints.RightSpeed;
 
             Log();
         }
@@ -95,8 +100,8 @@ namespace RobotController.DataLogger
 
         private void GamepadSerrvice_RobotControlChanged(object sender, RobotControlEventArgs e)
         {
-            _log.LeftSetpoint = e.RobotControl.LeftSpeed;
-            _log.RightSetpoint = e.RobotControl.RightSpeed;
+           // _log.LeftSetpoint = e.RobotControl.LeftSpeed;
+           // _log.RightSetpoint = e.RobotControl.RightSpeed;
         }
 
         private void Log()

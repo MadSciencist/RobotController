@@ -9,6 +9,7 @@ namespace RobotController.WpfGui.BusinessLogic
     public class DoubleStepExperimentHandler : ExperimentHandler
     {
         public DoubleStepExperimentParams Params { get; set; }
+        public event EventHandler<ControlsModel> ComputedNewControls;
 
         private static Logger Logger;
         private string _result;
@@ -28,20 +29,23 @@ namespace RobotController.WpfGui.BusinessLogic
             base.OnFinished(_result);
         }
 
-        private Task HandleAsync()
-        {
-            return Task.Factory.StartNew(Action, CancellationToken.None);
-        }
-
-        private void Action()
+        protected override void Action()
         {
             try
             {
-                Sender.UpdateAndSendControls(new ControlsModel(Params.FirstStepVelocity, Params.FirstStepVelocity));
+                var controls = new ControlsModel(Params.FirstStepVelocity, Params.FirstStepVelocity);
+                ComputedNewControls?.Invoke(this, controls);
+                Sender.UpdateAndSendControls(controls);
                 Thread.Sleep(Params.FirstStepLength);
-                Sender.UpdateAndSendControls(new ControlsModel(Params.SecondStepVelocity, Params.SecondStepVelocity));
+
+                var controls2 = new ControlsModel(Params.SecondStepVelocity, Params.SecondStepVelocity);
+                ComputedNewControls?.Invoke(this, controls2);
+                Sender.UpdateAndSendControls(controls2);
                 Thread.Sleep(Params.SecondStepLength);
-                Sender.UpdateAndSendControls(new ControlsModel(0, 0));
+
+                var controls3 = new ControlsModel(0, 0);
+                ComputedNewControls?.Invoke(this, controls3);
+                Sender.UpdateAndSendControls(controls3);
                 _result = "success";
             }
             catch (Exception ex)

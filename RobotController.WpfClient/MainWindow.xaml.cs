@@ -45,7 +45,7 @@ namespace RobotController.WpfGui
         private SteeringConfig _steeringConfig;
 
         private DataLoggerService _dataLoggerService;
-        private readonly ExperimentHandler _experimentHandler;
+        private readonly DoubleStepExperimentHandler _experimentHandler;
         private bool _isManualControl = true;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -71,9 +71,9 @@ namespace RobotController.WpfGui
                 Params = new DoubleStepExperimentParams
                 {
                     FirstStepVelocity = 40,
-                    FirstStepLength = TimeSpan.FromMilliseconds(2000),
+                    FirstStepLength = TimeSpan.FromMilliseconds(2500),
                     SecondStepVelocity = 60,
-                    SecondStepLength = TimeSpan.FromMilliseconds(2000)
+                    SecondStepLength = TimeSpan.FromMilliseconds(2500)
                 }
             };
         }
@@ -106,7 +106,7 @@ namespace RobotController.WpfGui
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var now = DateTime.UtcNow;
+                var now = DateTime.Now;
 
                 if (_mainViewModel.GuiStatusViewModel.IsRawVelocityEnabled)
                 {
@@ -275,7 +275,7 @@ namespace RobotController.WpfGui
         private void CreateGamepadService()
         {
             _steeringConfig = new SteeringConfig();
-            _gamepadService = new GamepadService(_steeringConfig, 0, 40);
+            _gamepadService = new GamepadService(_steeringConfig, 1, 40);
             _gamepadService.GamepadStateChanged += GamepadService_GamepadStateChanged;
             _gamepadService.RobotControlChanged += GamepadSerivce_RobotControlChanged;
             _gamepadService.SteeringPointChanged += GamepadService_SteeringPointChanged;
@@ -296,6 +296,11 @@ namespace RobotController.WpfGui
                 _isManualControl = true;
                 Logger.Info($"Experiment result: {result}");
                 Logger.Info("Manual control restored");
+            };
+            _experimentHandler.ComputedNewControls += (o, setpoints) =>
+            {
+                if (_dataLoggerService == null) return;
+                _dataLoggerService.Setpoints = new ControlsModel(setpoints.LeftSpeed, setpoints.RightSpeed);
             };
         }
 
